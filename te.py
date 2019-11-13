@@ -23,21 +23,28 @@ def save_text(text, filename):
     else:
         print('saving ' + text + ' to ' + filename)
 
-class Screen:
-    def on(self):
-        self.stdscr = curses.initscr()
-        curses.noecho()
-        curses.cbreak()
-        self.stdscr.keypad(True)
-    def off(self):
-        self.stdscr.keypad(False)
-        curses.nocbreak()
-        curses.echo()
-        curses.endwin()
-    def get_keyboard_input():
+def initialize_curses():
+    return curses.initscr()
+
+def cleanup_curses(stdscr):
+    stdscr.keypad(False)
+    curses.nocbreak()
+    curses.echo()
+    curses.endwin()
+
+class CursesScreen:
+    def __init__(self, stdscr):
+        self.stdscr = stdscr
+
+class CursesKeyboard:
+    def __init__(self, stdscr):
+        self.stdscr = stdscr
+    def get_input(self):
         key = self.stdscr.getch()
         if key < 256:
             return chr(key)
+        elif key == curses.KEY_RESIZE:
+            return 'resize'
         else:
             return key
 
@@ -47,14 +54,11 @@ def main():
     edit_text(text)
     save_text(text, filename)
 
-    screen = Screen()
-    screen.on()
-    while True:
-        key = get_keyboard_input()
-        if key == 'q':
-            break
-        else:
-            print(key)
-    screen.off()
+    stdscr = initialize_curses()
+    screen = CursesScreen(stdscr)
+    keyboard = CursesKeyboard(stdscr)
+    key = keyboard.get_input()
+    cleanup_curses(stdscr)
+    print(key)
 
 main()

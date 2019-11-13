@@ -1,4 +1,5 @@
 import sys
+import curses
 
 def get_filename_from_command_line():
     if len(sys.argv) == 2:
@@ -22,10 +23,29 @@ def save_text(text, filename):
     else:
         print('saving ' + text + ' to ' + filename)
 
+class Screen:
+    def on(self):
+        self.stdscr = curses.initscr()
+        curses.noecho()
+        curses.cbreak()
+        self.stdscr.keypad(True)
+    def off(self):
+        self.stdscr.keypad(False)
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+    def get_keyboard_input(self):
+        self.stdscr.addch(0, 0, 'a')
+
 def main():
     filename = get_filename_from_command_line()
     text = load_text(filename)
     edit_text(text)
     save_text(text, filename)
+
+    screen = Screen()
+    screen.on()
+    screen.get_keyboard_input()
+    screen.off()
 
 main()

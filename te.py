@@ -35,7 +35,12 @@ class Screen:
         curses.echo()
         curses.endwin()
     def get_keyboard_input(self):
-        self.stdscr.addch(0, 0, 'a')
+        while True:
+            key = self.stdscr.getch()
+            if key == ord('q'):
+                break
+            else:
+                self.stdscr.addch(0, 0, key)
 
 def main():
     filename = get_filename_from_command_line()

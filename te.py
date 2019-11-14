@@ -24,7 +24,11 @@ def save_text(text, filename):
         print('saving ' + text + ' to ' + filename)
 
 def initialize_curses():
-    return curses.initscr()
+    stdscr = curses.initscr()
+    curses.noecho()
+    curses.cbreak()
+    stdscr.keypad(True)
+    return stdscr
 
 def cleanup_curses(stdscr):
     stdscr.keypad(False)
@@ -48,23 +52,22 @@ class Kernel:
     def __init__(self, screen, text):
         self.screen = screen
         self.text = text
-    def resize_handler(self):
+    def handle_resize(self):
         print('got resize')
     def move_cursor_up(self):
         print('moving cursor up')
 
 def dispatch_input(stdscr, kernel, user_commands):
     while True:
-        key = self.stdscr.getch()
+        key = stdscr.getch()
         if key == ord('q'):
             return
         elif key < 256:
             user_commands.handle_input(chr(key))
         elif key == curses.KEY_RESIZE:
-            kernel.resize_handler()
+            kernel.handle_resize()
         else:
             pass
-
 
 def main():
     filename = get_filename_from_command_line()
@@ -74,10 +77,9 @@ def main():
 
     stdscr = initialize_curses()
     screen = CursesScreen(stdscr)
-    keyboard = CursesKeyboard(stdscr)
-    kernel = Kernel(screen, None)
-    dispatch_input(kernel)
+    kernel = Kernel(screen, text)
+    user_commands = UserCommands(kernel)
+    dispatch_input(stdscr, kernel, user_commands)
     cleanup_curses(stdscr)
-    print(key)
 
 main()

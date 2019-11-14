@@ -36,17 +36,35 @@ class CursesScreen:
     def __init__(self, stdscr):
         self.stdscr = stdscr
 
-class CursesKeyboard:
-    def __init__(self, stdscr):
-        self.stdscr = stdscr
-    def get_input(self):
+class UserCommands:
+    def __init__(self, kernel):
+        self.kernel = kernel
+    def handle_input(self, command):
+        print('handling ' + command)
+        if command == 'm':
+            self.kernel.move_cursor_up()
+
+class Kernel:
+    def __init__(self, screen, text):
+        self.screen = screen
+        self.text = text
+    def resize_handler(self):
+        print('got resize')
+    def move_cursor_up(self):
+        print('moving cursor up')
+
+def dispatch_input(stdscr, kernel, user_commands):
+    while True:
         key = self.stdscr.getch()
-        if key < 256:
-            return chr(key)
+        if key == ord('q'):
+            return
+        elif key < 256:
+            user_commands.handle_input(chr(key))
         elif key == curses.KEY_RESIZE:
-            return 'resize'
+            kernel.resize_handler()
         else:
-            return key
+            pass
+
 
 def main():
     filename = get_filename_from_command_line()
@@ -57,7 +75,8 @@ def main():
     stdscr = initialize_curses()
     screen = CursesScreen(stdscr)
     keyboard = CursesKeyboard(stdscr)
-    key = keyboard.get_input()
+    kernel = Kernel(screen, None)
+    dispatch_input(kernel)
     cleanup_curses(stdscr)
     print(key)
 

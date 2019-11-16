@@ -53,7 +53,7 @@ def dispatch_signals(signal_stream, screen_refresher, user_commands):
         else:
             user_commands.handle_character(get_character(signal))
 
-class IO:
+class CursesIO:
     def __init__(self):
         self.stdscr = curses.initscr()
         curses.noecho()
@@ -81,6 +81,6 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-    start_editor(IO())
+    start_editor(CursesIO())
 
 main()

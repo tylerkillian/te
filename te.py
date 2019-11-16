@@ -11,11 +11,11 @@ class CursesSignalStream:
     def get_next_signal():
         chr_int = self.stdscr.getch()
         if chr_int < 256:
-            user_commands.dispatch(chr(key))
-        elif key == curses.KEY_RESIZE:
-            screen_refresher.refresh()
+            return 'CHARACTER_' + chr(key)
+        elif chr_int == curses.KEY_RESIZE:
+            return 'RESIZE'
         else:
-            pass
+            return 'UNKNOWN'
 
 class Text:
     def __init__(self):
@@ -42,8 +42,8 @@ class Kernel:
 
 def dispatch_signals(signal_stream, screen_refresher, user_commands):
     while True:
-        key = signal_stream.getch()
-        if key == ord('q'):
+        signal = signal_stream.get_next_signal()
+        if signal == 'CHARACTE
             return
         elif key < 256:
             user_commands.dispatch(chr(key))

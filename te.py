@@ -58,8 +58,8 @@ def main():
 
     screen = CursesScreen(stdscr)
     text = Text()
-    screen_offset = {"numLines": 0, "numColumns": 0}
-    cursor_position = {"rowOffset": 0, "columnOffset": 0}
+    cursor = Cursor(sceen, text)
+    field_of_view = FieldOfView(screen, text)
     user_commands = UserCommands(Kernel(screen, text, screen_offset, cursor_position))
 
     dispatch_input(stdscr, screen_resizer, user_commands)

@@ -1,28 +1,6 @@
 import sys
 import curses
 
-def get_filename_from_command_line():
-    if len(sys.argv) == 2:
-        return sys.argv[1]
-    else:
-        return None
-
-def load_text(filename):
-    if not filename:
-        return ""
-    print('loading ' + filename)
-    return "the text"
-
-def edit_text(text):
-    print('editing ' + text)
-
-def save_text(text, filename):
-    if not filename:
-        print('ask for filename')
-        print('save ' + text)
-    else:
-        print('saving ' + text + ' to ' + filename)
-
 def initialize_curses():
     stdscr = curses.initscr()
     curses.noecho()
@@ -40,6 +18,10 @@ class CursesScreen:
     def __init__(self, stdscr):
         self.stdscr = stdscr
 
+class Text:
+    def __init__(self):
+        self.text = ""
+
 class UserCommands:
     def __init__(self, kernel):
         self.kernel = kernel
@@ -49,9 +31,11 @@ class UserCommands:
             self.kernel.move_cursor_up()
 
 class Kernel:
-    def __init__(self, screen, text):
+    def __init__(self, screen, text, screen_offset, cursor_position):
         self.screen = screen
         self.text = text
+        self.screen_offset = screen_offset
+        self.cursor_position = cursor_position
     def handle_resize(self):
         print('got resize')
     def move_cursor_up(self):
@@ -70,16 +54,16 @@ def dispatch_input(stdscr, kernel, user_commands):
             pass
 
 def main():
-    filename = get_filename_from_command_line()
-    text = load_text(filename)
-    edit_text(text)
-    save_text(text, filename)
-
     stdscr = initialize_curses()
+
     screen = CursesScreen(stdscr)
-    kernel = Kernel(screen, text)
-    user_commands = UserCommands(kernel)
-    dispatch_input(stdscr, kernel, user_commands)
+    text = Text()
+    screen_offset = {"numLines": 0, "numColumns": 0}
+    cursor_position = {"rowOffset": 0, "columnOffset": 0}
+    user_commands = UserCommands(Kernel(screen, text, screen_offset, cursor_position))
+
+    dispatch_input(stdscr, screen_resizer, user_commands)
+
     cleanup_curses(stdscr)
 
 main()

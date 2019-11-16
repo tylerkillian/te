@@ -40,17 +40,18 @@ class Kernel:
     def move_cursor_up(self):
         print('moving cursor up')
 
+def get_character(signal):
+    return signal[-1]
+
 def dispatch_signals(signal_stream, screen_refresher, user_commands):
     while True:
         signal = signal_stream.get_next_signal()
-        if signal == 'CHARACTE
+        if signal == 'CHARACTER_q':
             return
-        elif key < 256:
-            user_commands.dispatch(chr(key))
-        elif key == curses.KEY_RESIZE:
+        elif signal == 'RESIZE':
             screen_refresher.refresh()
         else:
-            pass
+            user_commands.handle_character(get_character(signal))
 
 class IO:
     def __init__(self):

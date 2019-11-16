@@ -14,7 +14,7 @@ def cleanup_curses(stdscr):
     curses.echo()
     curses.endwin()
 
-class Screen:
+class CursesScreen:
     def __init__(self, stdscr):
         self.stdscr = stdscr
 
@@ -54,26 +54,27 @@ def dispatch_input(stdscr, kernel, user_commands):
             pass
 
 def open_io():
-    return {'stdscr': initialize_curses()}
+    stdscr = initialize_curses()
+    return {
+        'screen': CursesScreen(stdscr),
+        'signal_stream': stdscr
+    }
 
 def close_io(io):
-    cleanup_curses(io['stdscr'])
+    cleanup_curses(io['signal_stream'])
 
-def start_editor(screen, text, cursor, screen_offset):
-    screen_refresher = ScreenRefresher(screen, text, cursor, screen_offset)
-    kernel = Kernel(text, cursor, screen_offset, screen_refresher)
-    user_commands = UserCommands(kernel)
-    dispatch_input(stdscr, screen_resizer, user_commands)
-
-def main():
-    io = open_io()
-
-    screen = CursesScreen(io['stdscr'])
+def start_editor(io):
     text = Text()
     cursor = Cursor(text)
     screen_offset = ScreenOffset(text)
-    start_editor(screen, text, cursor, screen_offset)
+    screen_refresher = ScreenRefresher(io['screen'], text, cursor, screen_offset)
+    kernel = Kernel(text, cursor, screen_offset, screen_refresher)
+    user_commands = UserCommands(kernel)
+    dispatch_input(io['signal_stream'], screen_refresher, user_commands)
 
+def main():
+    io = open_io()
+    start_editor(io)
     close_io(io)
 
 main()

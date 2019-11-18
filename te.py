@@ -39,8 +39,8 @@ class ScreenRefresher:
         self.text = text
         self.cursor = cursor
         self.screen_offset = screen_offset
-    def refresh():
-        pass
+    def refresh(self):
+        print('resizing')
 
 class UserCommands:
     def __init__(self, kernel):

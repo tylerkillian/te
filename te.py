@@ -21,6 +21,10 @@ class Text:
     def __init__(self):
         self.text = ""
 
+class Text:
+    def __init__(self, text):
+        self.text = text
+
 class UserCommands:
     def __init__(self, kernel):
         self.kernel = kernel

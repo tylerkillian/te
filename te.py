@@ -21,8 +21,16 @@ class Text:
     def __init__(self):
         self.text = ""
 
-class Text:
+class Cursor:
     def __init__(self, text):
+        self.lineOffset = 0
+        self.columnOffset = 0
+        self.text = text
+
+class ScreenOffset:
+    def __init__(self, text):
+        self.lineOffset = 0
+        self.columnOffset = 0
         self.text = text
 
 class UserCommands:
@@ -88,6 +96,9 @@ def main():
     #start_editor(CursesIO())
     io = CursesIO()
     ss = CursesSignalStream(io.stdscr)
+    text = Text()
+    cursor = Cursor(text)
+    screen_offset = ScreenOffset(text)
     chr_int = ss.get_next_signal()
     del io
     print(chr_int)

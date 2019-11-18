@@ -49,13 +49,11 @@ class UserCommands:
             self.kernel.move_cursor_up()
 
 class Kernel:
-    def __init__(self, screen, text, screen_offset, cursor_position):
-        self.screen = screen
+    def __init__(self, text, cursor, screen_offset, screen_refresher):
         self.text = text
+        self.cursor = cursor
         self.screen_offset = screen_offset
-        self.cursor_position = cursor_position
-    def handle_resize(self):
-        print('got resize')
+        self.screen_refresher = screen_refresher
     def move_cursor_up(self):
         print('moving cursor up')
 
@@ -108,9 +106,10 @@ def main():
     screen_offset = ScreenOffset(text)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     kernel = Kernel(text, cursor, screen_offset, screen_refresher)
-    chr_int = ss.get_next_signal()
+    user_commands = UserCommands(kernel)
+    dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
+    #chr_int = ss.get_next_signal()
     del io
-    print(chr_int)
     print('hello')
 
 main()

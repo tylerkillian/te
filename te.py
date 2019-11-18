@@ -33,6 +33,13 @@ class ScreenOffset:
         self.columnOffset = 0
         self.text = text
 
+class ScreenRefresher:
+    def __init__(screen, text, cursor, screen_offset):
+        self.screen = screen
+        self.text = text
+        self.cursor = cursor
+        self.screen_offset = sceen_offset
+
 class UserCommands:
     def __init__(self, kernel):
         self.kernel = kernel

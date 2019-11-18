@@ -34,11 +34,11 @@ class ScreenOffset:
         self.text = text
 
 class ScreenRefresher:
-    def __init__(screen, text, cursor, screen_offset):
+    def __init__(self, screen, text, cursor, screen_offset):
         self.screen = screen
         self.text = text
         self.cursor = cursor
-        self.screen_offset = sceen_offset
+        self.screen_offset = screen_offset
 
 class UserCommands:
     def __init__(self, kernel):
@@ -106,6 +106,8 @@ def main():
     text = Text()
     cursor = Cursor(text)
     screen_offset = ScreenOffset(text)
+    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
+    kernel = Kernel(text, cursor, screen_offset, screen_refresher)
     chr_int = ss.get_next_signal()
     del io
     print(chr_int)

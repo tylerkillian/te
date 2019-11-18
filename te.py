@@ -100,18 +100,6 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-    #start_editor(CursesIO())
-    io = CursesIO()
-    ss = CursesSignalStream(io.stdscr)
-    text = Text()
-    cursor = Cursor(text)
-    screen_offset = ScreenOffset(text)
-    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-    kernel = Kernel(text, cursor, screen_offset, screen_refresher)
-    user_commands = UserCommands(kernel)
-    dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
-    #chr_int = ss.get_next_signal()
-    del io
-    print('hello')
+    start_editor(CursesIO())
 
 main()

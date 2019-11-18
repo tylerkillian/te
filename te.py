@@ -8,10 +8,10 @@ class CursesScreen:
 class CursesSignalStream:
     def __init__(self, stdscr):
         self.stdscr = stdscr
-    def get_next_signal():
+    def get_next_signal(self):
         chr_int = self.stdscr.getch()
         if chr_int < 256:
-            return 'CHARACTER_' + chr(key)
+            return 'CHARACTER_' + chr(chr_int)
         elif chr_int == curses.KEY_RESIZE:
             return 'RESIZE'
         else:
@@ -81,6 +81,12 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-    start_editor(CursesIO())
+    #start_editor(CursesIO())
+    io = CursesIO()
+    ss = CursesSignalStream(io.stdscr)
+    chr_int = ss.get_next_signal()
+    del io
+    print(chr_int)
+    print('hello')
 
 main()

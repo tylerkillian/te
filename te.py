@@ -39,13 +39,15 @@ class ScreenRefresher:
         self.text = text
         self.cursor = cursor
         self.screen_offset = screen_offset
+    def refresh():
+        pass
 
 class UserCommands:
     def __init__(self, kernel):
         self.kernel = kernel
-    def handle_input(self, command):
-        print('handling ' + command)
-        if command == 'm':
+    def handle_character(self, character):
+        print('handling ' + character)
+        if character == 'm':
             self.kernel.move_cursor_up()
 
 class Kernel:

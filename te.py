@@ -20,18 +20,24 @@ class CursesSignalStream:
 class Text:
     def __init__(self):
         self.text = ""
+    def get_text(self, line_offset, column_offset):
+        pass
 
 class Cursor:
     def __init__(self, text):
-        self.lineOffset = 0
-        self.columnOffset = 0
+        self.line_offset = 0
+        self.column_offset = 0
         self.text = text
 
 class ScreenOffset:
     def __init__(self, text):
-        self.lineOffset = 0
-        self.columnOffset = 0
+        self.line_offset = 0
+        self.column_offset = 0
         self.text = text
+    def get_line_offset(self):
+        return self.line_offset
+    def get_column_offset(self):
+        return self.column_offset
 
 class ScreenRefresher:
     def __init__(self, screen, text, cursor, screen_offset):
@@ -41,6 +47,7 @@ class ScreenRefresher:
         self.screen_offset = screen_offset
     def refresh(self):
         self.screen.stdscr.addstr('resizing')
+        text_to_draw = self.text.get_text(self.screen_offset.get_line_offset, self.screen_offset.get_column_offset)
 
 class UserCommands:
     def __init__(self, kernel):

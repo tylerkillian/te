@@ -4,6 +4,13 @@ import curses
 class CursesScreen:
     def __init__(self, stdscr):
         self.stdscr = stdscr
+    def draw(self, data):
+        self.stdscr.erase()
+        for line_index, line in enumerate(data):
+            for character_index, character in enumerate(line):
+                self.stdscr.addch(line_index, character_index, ord(character))
+        self.stdscr.refresh()
+                
 
 class CursesSignalStream:
     def __init__(self, stdscr):
@@ -113,6 +120,6 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-    start_editor(CursesIO())
+#    start_editor(CursesIO())
 
 main()

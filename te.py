@@ -47,7 +47,13 @@ class ScreenRefresher:
         self.screen_offset = screen_offset
     def refresh(self):
         self.screen.stdscr.addstr('resizing')
-        text_to_draw = self.text.get_text(self.screen_offset.get_line_offset, self.screen_offset.get_column_offset)
+        text_to_draw = self.text.get_text(
+            self.screen_offset.get_line_offset(),
+            self.screen.get_num_lines(),
+            self.screen_offset.get_column_offset(),
+            self.screen.get_num_columns())
+        self.screen.draw(text_to_draw)
+        self.screen.set_cursor_position(cursor.get_line_offset() - screen.get_line_offset(), cursor.get_column_offset() - screen.get_column_offset())
 
 class UserCommands:
     def __init__(self, kernel):

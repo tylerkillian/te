@@ -10,6 +10,8 @@ class CursesScreen:
             for character_index, character in enumerate(line):
                 self.stdscr.addch(line_index, character_index, ord(character))
         self.stdscr.refresh()
+    def set_cursor_position(self, line_index, column_index):
+        self.stdscr.move(line_index, column_index)
                 
 
 class CursesSignalStream:
@@ -123,6 +125,7 @@ def main():
 #    start_editor(CursesIO())
     io = CursesIO()
     io.screen.draw([['a'], ['b', 'b'], [], ['c', 'c', 'c']])
+    io.screen.set_cursor_position(2, 1)
     io.get_signal_stream().get_next_signal()
 
 main()

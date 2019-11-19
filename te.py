@@ -121,5 +121,8 @@ def start_editor(io):
 
 def main():
 #    start_editor(CursesIO())
+    io = CursesIO()
+    io.screen.draw([['a'], ['b', 'b'], [], ['c', 'c', 'c']])
+    io.get_signal_stream().get_next_signal()
 
 main()

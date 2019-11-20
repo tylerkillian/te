@@ -53,8 +53,8 @@ class CursesSignalStream:
             return 'UNKNOWN'
 
 class Text:
-    def __init__(self):
-        self.text = ""
+    def __init__(self, text=''):
+        self.text = text
     def get_text(self, line_offset, column_offset):
         pass
 
@@ -150,7 +150,8 @@ def start_editor(io):
 def main():
 #    start_editor(CursesIO())
     io = CursesIO()
-    io.screen.draw(POEM)
+    text = Text(POEM)
+    io.screen.draw(text.get_text(0, 2, 0, 3))
     io.screen.set_cursor_position(2, 1)
     io.get_signal_stream().get_next_signal()
 

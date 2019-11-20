@@ -32,13 +32,12 @@ class CursesScreen:
         self.stdscr = stdscr
     def draw(self, data):
         self.stdscr.erase()
-        self.set_cursor_position(0, 0)
         junk = open('positions','w')
         try:
             for line_index, line in enumerate(data):
-                self.set_cursor_position(line_index, 0)
                 for character_index, character in enumerate(line):
                     junk.write(str(self.get_num_lines()) + ' ' + str(self.get_num_columns()) + ' ' + str(line_index) + ' ' +  str(character_index) + '\n')
+                    junk.write(str(len(data)) + ' ' + str(len(line)) + '\n')
                     self.stdscr.addch(line_index, character_index, ord(character))
             junk.close()
         except Exception as e:

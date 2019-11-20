@@ -162,13 +162,13 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-#    start_editor(CursesIO())
-    io = CursesIO()
-    text = Text(POEM)
-    cursor = Cursor(text, 3, 4)
-    screen_offset = ScreenOffset(text, 1, 2)
-    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-    screen_refresher.refresh()
-    io.get_signal_stream().get_next_signal()
+    start_editor(CursesIO())
+#    io = CursesIO()
+#    text = Text(POEM)
+#    cursor = Cursor(text, 3, 4)
+#    screen_offset = ScreenOffset(text, 1, 2)
+#    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
+#    screen_refresher.refresh()
+#    io.get_signal_stream().get_next_signal()
 
 main()

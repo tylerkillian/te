@@ -154,7 +154,7 @@ def main():
 #    start_editor(CursesIO())
     text = Text(POEM)
     io = CursesIO()
-    io.screen.draw(text.get_text(0, 2, 0, 3))
+    io.screen.draw(text.get_text(3, 100, 5, 6))
     io.screen.set_cursor_position(2, 1)
     io.get_signal_stream().get_next_signal()
 

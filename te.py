@@ -57,10 +57,8 @@ class Text:
         self.text = text
     def get_text(self, line_offset, num_lines, column_offset, num_columns):
         result = []
-        for line_index in range(line_offset, line_offset + num_lines):
-            result.append('')
-            for column_index in range(column_offset, column_offset + num_columns):
-                result[line_index] += self.text[column_index]
+        for line in self.text[line_offset:line_offset + num_lines]:
+            result.append(line[column_offset:column_offset + num_columns])
         return result
 
 class Cursor:
@@ -154,8 +152,8 @@ def start_editor(io):
 
 def main():
 #    start_editor(CursesIO())
-    io = CursesIO()
     text = Text(POEM)
+    io = CursesIO()
     io.screen.draw(text.get_text(0, 2, 0, 3))
     io.screen.set_cursor_position(2, 1)
     io.get_signal_stream().get_next_signal()

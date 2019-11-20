@@ -32,9 +32,23 @@ class CursesScreen:
         self.stdscr = stdscr
     def draw(self, data):
         self.stdscr.erase()
-        for line_index, line in enumerate(data):
-            for character_index, character in enumerate(line):
-                self.stdscr.addch(line_index, character_index, ord(character))
+        self.set_cursor_position(0, 0)
+        junk = open('positions','w')
+        try:
+            for line_index, line in enumerate(data):
+                self.set_cursor_position(line_index, 0)
+                for character_index, character in enumerate(line):
+                    junk.write(str(self.get_num_lines()) + ' ' + str(self.get_num_columns()) + ' ' + str(line_index) + ' ' +  str(character_index) + '\n')
+                    self.stdscr.addch(line_index, character_index, ord(character))
+            junk.close()
+        except Exception as e:
+            junk.close()
+            self.stdscr.keypad(False)
+            curses.nocbreak()
+            curses.echo()
+            curses.endwin()
+            print('got ' + str(e))
+            sys.exit()
         self.stdscr.refresh()
     def set_cursor_position(self, line_index, column_index):
         self.stdscr.move(line_index, column_index)
@@ -162,18 +176,18 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-    try:
-        start_editor(CursesIO())
-    except Exception as e:
-        print(str(e))
-        while True:
-            pass
-#    io = CursesIO()
-#    text = Text(POEM)
-#    cursor = Cursor(text, 3, 4)
-#    screen_offset = ScreenOffset(text, 1, 2)
-#    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-#    screen_refresher.refresh()
-#    io.get_signal_stream().get_next_signal()
+#    try:
+#        start_editor(CursesIO())
+#    except Exception as e:
+#        print(str(e))
+#        while True:
+#            pass
+    io = CursesIO()
+    text = Text(POEM)
+    cursor = Cursor(text, 3, 4)
+    screen_offset = ScreenOffset(text, 1, 2)
+    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
+    screen_refresher.refresh()
+    io.get_signal_stream().get_next_signal()
 
 main()

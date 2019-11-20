@@ -153,7 +153,7 @@ class CursesIO:
         return self.signal_stream
 
 def start_editor(io):
-    text = Text()
+    text = Text(POEM)
     cursor = Cursor(text)
     screen_offset = ScreenOffset(text)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
@@ -162,7 +162,12 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-    start_editor(CursesIO())
+    try:
+        start_editor(CursesIO())
+    except Exception as e:
+        print(str(e))
+        while True:
+            pass
 #    io = CursesIO()
 #    text = Text(POEM)
 #    cursor = Cursor(text, 3, 4)

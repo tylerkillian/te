@@ -38,16 +38,11 @@ class CursesScreen:
                 for character_index, character in enumerate(line):
                     junk.write(str(self.get_num_lines()) + ' ' + str(self.get_num_columns()) + ' ' + str(line_index) + ' ' +  str(character_index) + '\n')
                     junk.write(str(len(data)) + ' ' + str(len(line)) + '\n')
+                    #self.stdscr.getch()
                     self.stdscr.addch(line_index, character_index, ord(character))
             junk.close()
-        except Exception as e:
-            junk.close()
-            self.stdscr.keypad(False)
-            curses.nocbreak()
-            curses.echo()
-            curses.endwin()
-            print('got ' + str(e))
-            sys.exit()
+        except Exception: # capture exception after writing to lower right hand corner of window
+            pass
         self.stdscr.refresh()
     def set_cursor_position(self, line_index, column_index):
         self.stdscr.move(line_index, column_index)
@@ -183,8 +178,8 @@ def main():
 #            pass
     io = CursesIO()
     text = Text(POEM)
-    cursor = Cursor(text, 3, 4)
-    screen_offset = ScreenOffset(text, 1, 2)
+    cursor = Cursor(text, 0, 0)
+    screen_offset = ScreenOffset(text, 0, 0)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     screen_refresher.refresh()
     io.get_signal_stream().get_next_signal()

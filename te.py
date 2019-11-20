@@ -38,6 +38,12 @@ class CursesScreen:
         self.stdscr.refresh()
     def set_cursor_position(self, line_index, column_index):
         self.stdscr.move(line_index, column_index)
+    def get_num_lines(self):
+        num_lines, _ = self.stdscr.getmaxyx()
+        return num_lines
+    def get_num_columns(self):
+        _, num_columns = self.stdscr.getmaxyx()
+        return num_columns
                 
 
 class CursesSignalStream:
@@ -62,15 +68,19 @@ class Text:
         return result
 
 class Cursor:
-    def __init__(self, text):
-        self.line_offset = 0
-        self.column_offset = 0
+    def __init__(self, text, line_offset=0, column_offset=0):
+        self.line_offset = line_offset
+        self.column_offset = column_offset
         self.text = text
+    def get_line_offset(self):
+        return self.line_offset
+    def get_column_offset(self):
+        return self.column_offset
 
 class ScreenOffset:
-    def __init__(self, text):
-        self.line_offset = 0
-        self.column_offset = 0
+    def __init__(self, text, line_offset=0, column_offset=0):
+        self.line_offset = line_offset
+        self.column_offset = column_offset
         self.text = text
     def get_line_offset(self):
         return self.line_offset
@@ -84,14 +94,15 @@ class ScreenRefresher:
         self.cursor = cursor
         self.screen_offset = screen_offset
     def refresh(self):
-        self.screen.stdscr.addstr('resizing')
         text_to_draw = self.text.get_text(
             self.screen_offset.get_line_offset(),
             self.screen.get_num_lines(),
             self.screen_offset.get_column_offset(),
             self.screen.get_num_columns())
         self.screen.draw(text_to_draw)
-        self.screen.set_cursor_position(cursor.get_line_offset() - screen.get_line_offset(), cursor.get_column_offset() - screen.get_column_offset())
+        self.screen.set_cursor_position(
+            self.cursor.get_line_offset() - self.screen_offset.get_line_offset(),
+            self.cursor.get_column_offset() - self.screen_offset.get_column_offset())
 
 class UserCommands:
     def __init__(self, kernel):
@@ -152,10 +163,12 @@ def start_editor(io):
 
 def main():
 #    start_editor(CursesIO())
-    text = Text(POEM)
     io = CursesIO()
-    io.screen.draw(text.get_text(3, 100, 5, 6))
-    io.screen.set_cursor_position(2, 1)
+    text = Text(POEM)
+    cursor = Cursor(text, 3, 4)
+    screen_offset = ScreenOffset(text, 1, 2)
+    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
+    screen_refresher.refresh()
     io.get_signal_stream().get_next_signal()
 
 main()

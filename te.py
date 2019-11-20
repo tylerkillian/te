@@ -55,8 +55,13 @@ class CursesSignalStream:
 class Text:
     def __init__(self, text=''):
         self.text = text
-    def get_text(self, line_offset, column_offset):
-        pass
+    def get_text(self, line_offset, num_lines, column_offset, num_columns):
+        result = []
+        for line_index in range(line_offset, line_offset + num_lines):
+            result.append('')
+            for column_index in range(column_offset, column_offset + num_columns):
+                result[line_index] += self.text[column_index]
+        return result
 
 class Cursor:
     def __init__(self, text):

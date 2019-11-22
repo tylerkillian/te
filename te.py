@@ -72,6 +72,8 @@ class Text:
         for line in self.text[line_offset:line_offset + num_lines]:
             result.append(line[column_offset:column_offset + num_columns])
         return result
+    def get_line_length(self, line_index):
+        return len(self.text[line_index])
 
 class Cursor:
     def __init__(self, text, line_offset=0, column_offset=0):
@@ -80,8 +82,12 @@ class Cursor:
         self.text = text
     def get_line_offset(self):
         return self.line_offset
+    def set_line_offset(self, value):
+        self.line_offset = value
     def get_column_offset(self):
         return self.column_offset
+    def set_column_offset(self, value):
+        self.column_offset = value
 
 class ScreenOffset:
     def __init__(self, text, line_offset=0, column_offset=0):
@@ -90,6 +96,8 @@ class ScreenOffset:
         self.text = text
     def get_line_offset(self):
         return self.line_offset
+    def set_line_offset(self, value):
+        self.line_offset = value
     def get_column_offset(self):
         return self.column_offset
 
@@ -117,7 +125,20 @@ class Kernel:
         self.screen_offset = screen_offset
         self.screen_refresher = screen_refresher
     def move_cursor_up(self):
-        self.screen_refresher.screen.stdscr.addstr('moving cursor up')
+        #self.screen_refresher.screen.stdscr.addstr('moving cursor up')
+        cursor_current_line = self.cursor.get_line_offset()
+        if cursor_current_line == 0:
+            return
+        self.cursor.set_line_offset(cursor_current_line - 1)
+        cursor_current_column = self.cursor.get_column_offset()
+        current_line_length = self.text.get_line_length(cursor_current_line - 1)
+        if cursor_current_column > current_line_length:
+            self.cursor.set_column_offset(current_line_length)
+        if self.screen_offset.get_line_offset() > self.cursor.get_line_offset():
+            self.screen_offset.set_line_offset(self.cursor.get_line_offset())
+        if self.screen_offset.get_column_offset() > self.cursor.get_column_offset():
+            self.screen_offset.set_column_offset(self.cursor.get_column_offset())
+        self.screen_refresher.refresh()
 
 class UserCommands:
     def __init__(self, kernel):
@@ -163,8 +184,8 @@ class CursesIO:
 
 def start_editor(io):
     text = Text(POEM)
-    cursor = Cursor(text, 2, 3)
-    screen_offset = ScreenOffset(text)
+    cursor = Cursor(text, 10, 50)
+    screen_offset = ScreenOffset(text, 2, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     kernel = Kernel(text, cursor, screen_offset, screen_refresher)
     user_commands = UserCommands(kernel)

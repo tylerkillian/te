@@ -126,18 +126,16 @@ class Kernel:
         self.screen_refresher = screen_refresher
     def move_cursor_up(self):
         #self.screen_refresher.screen.stdscr.addstr('moving cursor up')
-        cursor_current_line = self.cursor.get_line_index()
-        if cursor_current_line == 0:
+        if self.cursor.get_line_index() == 0:
             return
-        self.cursor.set_line_index(cursor_current_line - 1)
-        cursor_current_column = self.cursor.get_column_index()
-        current_line_length = self.text.get_line_length(cursor_current_line - 1)
-        if cursor_current_column > current_line_length:
-            self.cursor.set_column_index(current_line_length)
-        if self.screen_offset.get_line_index() > self.cursor.get_line_index():
-            self.screen_offset.set_line_index(self.cursor.get_line_index())
-        if self.screen_offset.get_column_index() > self.cursor.get_column_index():
-            self.screen_offset.set_column_index(self.cursor.get_column_index())
+        self.cursor.set_line_index(self.cursor.get_line_index() - 1)
+        if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
+            self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
+
+        #if self.screen_offset.get_line_index() > cursor_new_line_index:
+        #    self.screen_offset.set_line_index(self.cursor.get_line_index())
+        #if self.screen_offset.get_column_index() > self.cursor.get_column_index():
+        #    self.screen_offset.set_column_index(self.cursor.get_column_index())
         self.screen_refresher.refresh()
 
 class UserCommands:
@@ -185,7 +183,7 @@ class CursesIO:
 def start_editor(io):
     text = Text(POEM)
     cursor = Cursor(text, 10, 50)
-    screen_offset = ScreenOffset(text, 2, 3)
+    screen_offset = ScreenOffset(text)#, 2, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     kernel = Kernel(text, cursor, screen_offset, screen_refresher)
     user_commands = UserCommands(kernel)

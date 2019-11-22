@@ -67,39 +67,39 @@ class CursesSignalStream:
 class Text:
     def __init__(self, text=''):
         self.text = text
-    def get_text(self, line_offset, num_lines, column_offset, num_columns):
+    def get_text(self, line_index, num_lines, column_index, num_columns):
         result = []
-        for line in self.text[line_offset:line_offset + num_lines]:
-            result.append(line[column_offset:column_offset + num_columns])
+        for line in self.text[line_index:line_index + num_lines]:
+            result.append(line[column_index:column_index + num_columns])
         return result
     def get_line_length(self, line_index):
         return len(self.text[line_index])
 
 class Cursor:
-    def __init__(self, text, line_offset=0, column_offset=0):
-        self.line_offset = line_offset
-        self.column_offset = column_offset
+    def __init__(self, text, line_index=0, column_index=0):
+        self.line_index = line_index
+        self.column_index = column_index
         self.text = text
-    def get_line_offset(self):
-        return self.line_offset
-    def set_line_offset(self, value):
-        self.line_offset = value
-    def get_column_offset(self):
-        return self.column_offset
-    def set_column_offset(self, value):
-        self.column_offset = value
+    def get_line_index(self):
+        return self.line_index
+    def set_line_index(self, value):
+        self.line_index = value
+    def get_column_index(self):
+        return self.column_index
+    def set_column_index(self, value):
+        self.column_index = value
 
 class ScreenOffset:
-    def __init__(self, text, line_offset=0, column_offset=0):
-        self.line_offset = line_offset
-        self.column_offset = column_offset
+    def __init__(self, text, line_index=0, column_index=0):
+        self.line_index = line_index
+        self.column_index = column_index
         self.text = text
-    def get_line_offset(self):
-        return self.line_offset
-    def set_line_offset(self, value):
-        self.line_offset = value
-    def get_column_offset(self):
-        return self.column_offset
+    def get_line_index(self):
+        return self.line_index
+    def set_line_index(self, value):
+        self.line_index = value
+    def get_column_index(self):
+        return self.column_index
 
 class ScreenRefresher:
     def __init__(self, screen, text, cursor, screen_offset):
@@ -109,14 +109,14 @@ class ScreenRefresher:
         self.screen_offset = screen_offset
     def refresh(self):
         text_to_draw = self.text.get_text(
-            self.screen_offset.get_line_offset(),
+            self.screen_offset.get_line_index(),
             self.screen.get_num_lines(),
-            self.screen_offset.get_column_offset(),
+            self.screen_offset.get_column_index(),
             self.screen.get_num_columns())
         self.screen.draw(text_to_draw)
         self.screen.set_cursor_position(
-            self.cursor.get_line_offset() - self.screen_offset.get_line_offset(),
-            self.cursor.get_column_offset() - self.screen_offset.get_column_offset())
+            self.cursor.get_line_index() - self.screen_offset.get_line_index(),
+            self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
 class Kernel:
     def __init__(self, text, cursor, screen_offset, screen_refresher):
@@ -126,18 +126,18 @@ class Kernel:
         self.screen_refresher = screen_refresher
     def move_cursor_up(self):
         #self.screen_refresher.screen.stdscr.addstr('moving cursor up')
-        cursor_current_line = self.cursor.get_line_offset()
+        cursor_current_line = self.cursor.get_line_index()
         if cursor_current_line == 0:
             return
-        self.cursor.set_line_offset(cursor_current_line - 1)
-        cursor_current_column = self.cursor.get_column_offset()
+        self.cursor.set_line_index(cursor_current_line - 1)
+        cursor_current_column = self.cursor.get_column_index()
         current_line_length = self.text.get_line_length(cursor_current_line - 1)
         if cursor_current_column > current_line_length:
-            self.cursor.set_column_offset(current_line_length)
-        if self.screen_offset.get_line_offset() > self.cursor.get_line_offset():
-            self.screen_offset.set_line_offset(self.cursor.get_line_offset())
-        if self.screen_offset.get_column_offset() > self.cursor.get_column_offset():
-            self.screen_offset.set_column_offset(self.cursor.get_column_offset())
+            self.cursor.set_column_index(current_line_length)
+        if self.screen_offset.get_line_index() > self.cursor.get_line_index():
+            self.screen_offset.set_line_index(self.cursor.get_line_index())
+        if self.screen_offset.get_column_index() > self.cursor.get_column_index():
+            self.screen_offset.set_column_index(self.cursor.get_column_index())
         self.screen_refresher.refresh()
 
 class UserCommands:

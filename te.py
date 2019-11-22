@@ -32,13 +32,9 @@ class CursesScreen:
         self.stdscr = stdscr
     def draw(self, data):
         self.stdscr.erase()
-        junk = open('positions','w')
         try:
             for line_index, line in enumerate(data):
                 for character_index, character in enumerate(line):
-                    junk.write(str(self.get_num_lines()) + ' ' + str(self.get_num_columns()) + ' ' + str(line_index) + ' ' +  str(character_index) + '\n')
-                    junk.write(str(len(data)) + ' ' + str(len(line)) + '\n')
-                    #self.stdscr.getch()
                     self.stdscr.addch(line_index, character_index, ord(character))
             junk.close()
         except Exception: # capture exception after writing to lower right hand corner of window
@@ -63,6 +59,8 @@ class CursesSignalStream:
             return 'CHARACTER_' + chr(chr_int)
         elif chr_int == curses.KEY_RESIZE:
             return 'RESIZE'
+        elif chr_int == curses.KEY_UP:
+            return 'UP'
         else:
             return 'UNKNOWN'
 
@@ -112,14 +110,6 @@ class ScreenRefresher:
             self.cursor.get_line_offset() - self.screen_offset.get_line_offset(),
             self.cursor.get_column_offset() - self.screen_offset.get_column_offset())
 
-class UserCommands:
-    def __init__(self, kernel):
-        self.kernel = kernel
-    def handle_character(self, character):
-        print('handling ' + character)
-        if character == 'm':
-            self.kernel.move_cursor_up()
-
 class Kernel:
     def __init__(self, text, cursor, screen_offset, screen_refresher):
         self.text = text
@@ -127,7 +117,16 @@ class Kernel:
         self.screen_offset = screen_offset
         self.screen_refresher = screen_refresher
     def move_cursor_up(self):
-        print('moving cursor up')
+        self.screen_refresher.screen.stdscr.addstr('moving cursor up')
+
+class UserCommands:
+    def __init__(self, kernel):
+        self.kernel = kernel
+    def handle_character(self, character):
+        self.kernel.screen_refresher.screen.stdscr.addstr('handling ' + character)
+    def handle_arrow(self, direction):
+        if direction == 'UP':
+            self.kernel.move_cursor_up()
 
 def get_character(signal):
     return signal[-1]
@@ -139,6 +138,8 @@ def dispatch_signals(signal_stream, screen_refresher, user_commands):
             return
         elif signal == 'RESIZE':
             screen_refresher.refresh()
+        elif signal == 'UP':
+            user_commands.handle_arrow('UP')
         else:
             user_commands.handle_character(get_character(signal))
 
@@ -162,26 +163,28 @@ class CursesIO:
 
 def start_editor(io):
     text = Text(POEM)
-    cursor = Cursor(text)
+    cursor = Cursor(text, 2, 3)
     screen_offset = ScreenOffset(text)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     kernel = Kernel(text, cursor, screen_offset, screen_refresher)
     user_commands = UserCommands(kernel)
+    screen_refresher.refresh()
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
+     start_editor(CursesIO())
 #    try:
 #        start_editor(CursesIO())
 #    except Exception as e:
 #        print(str(e))
 #        while True:
 #            pass
-    io = CursesIO()
-    text = Text(POEM)
-    cursor = Cursor(text, 0, 0)
-    screen_offset = ScreenOffset(text, 0, 0)
-    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-    screen_refresher.refresh()
-    io.get_signal_stream().get_next_signal()
+#    io = CursesIO()
+#    text = Text(POEM)
+#    cursor = Cursor(text, 0, 0)
+#    screen_offset = ScreenOffset(text, 0, 0)
+#    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
+#    screen_refresher.refresh()
+#    io.get_signal_stream().get_next_signal()
 
 main()

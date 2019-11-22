@@ -63,8 +63,6 @@ class CursesSignalStream:
             return 'CHARACTER_' + chr(chr_int)
         elif chr_int == curses.KEY_RESIZE:
             return 'RESIZE'
-        elif chr_int == curses.KEY_UP:
-            return 'UP'
         else:
             return 'UNKNOWN'
 
@@ -121,8 +119,6 @@ class UserCommands:
         print('handling ' + character)
         if character == 'm':
             self.kernel.move_cursor_up()
-    def handle_arrow(self, direction):
-        self.kernel.move_cursor_up()
 
 class Kernel:
     def __init__(self, text, cursor, screen_offset, screen_refresher):

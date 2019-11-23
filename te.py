@@ -49,7 +49,6 @@ class CursesScreen:
         _, num_columns = self.stdscr.getmaxyx()
         return num_columns
                 
-
 class CursesSignalStream:
     def __init__(self, stdscr):
         self.stdscr = stdscr
@@ -74,6 +73,8 @@ class Text:
         return result
     def get_line_length(self, line_index):
         return len(self.text[line_index])
+    def get_num_lines(self):
+        return len(self.text)
 
 class Cursor:
     def __init__(self, text, line_index=0, column_index=0):
@@ -133,6 +134,17 @@ class Kernel:
         if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
             self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
         if self.screen_offset.get_line_index() > self.cursor.get_line_index():
+            self.screen_offset.set_line_index(self.cursor.get_line_index())
+        if self.screen_offset.get_column_index() > self.cursor.get_column_index():
+            self.screen_offset.set_column_index(self.cursor.get_column_index())
+        self.screen_refresher.refresh()
+    def move_cursor_down(self):
+        if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
+            return
+        self.cursor.set_line_index(self.cursor.get_line_index() + 1)
+        if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
+            self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
+        if self.screen_offset.get_line_index() + self.screen_offset < self.cursor.get_line_index():
             self.screen_offset.set_line_index(self.cursor.get_line_index())
         if self.screen_offset.get_column_index() > self.cursor.get_column_index():
             self.screen_offset.set_column_index(self.cursor.get_column_index())

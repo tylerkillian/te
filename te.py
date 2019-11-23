@@ -1,5 +1,6 @@
 import sys
 import curses
+import traceback
 
 POEM = [
     'Two roads diverged in a yellow wood,',
@@ -218,7 +219,7 @@ def main():
         stdscr = curses_open()
         start_editor(CursesIO(stdscr))
     except Exception as e:
-        f = open('te.error', 'w')
+        f = open('error_out', 'w')
         f.write('Exception: ' + str(e) + '\n\n')
         f.write('Stack trace: ' + traceback.format_exc())
         f.close()

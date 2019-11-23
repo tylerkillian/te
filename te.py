@@ -257,7 +257,7 @@ class CursesIO:
 
 def start_editor(io):
     text = Text(POEM)
-    cursor = Cursor(text, 10, 50)
+    cursor = Cursor(text, 12, 50)
     screen_offset = ScreenOffset(text, 4, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     cursor_movements = CursorMovements(text, io.get_screen(), cursor, screen_offset)

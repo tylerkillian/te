@@ -214,16 +214,14 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-    error = None
     try:
         stdscr = curses_open()
         start_editor(CursesIO(stdscr))
     except Exception as e:
-        error = str(e)
+        f = open('te.error', 'w')
+        f.write(str(e) + '\n')
+        f.close()
     finally:
         curses_close(stdscr)
-    return error
 
-error = main()
-if error:
-    print('got error')
+main()

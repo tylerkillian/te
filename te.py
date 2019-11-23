@@ -41,7 +41,8 @@ class CursesScreen:
             pass
         self.stdscr.refresh()
     def set_cursor_position(self, line_index, column_index):
-        self.stdscr.move(line_index, column_index)
+        #self.stdscr.move(line_index, column_index)
+        pass
     def get_num_lines(self):
         num_lines, _ = self.stdscr.getmaxyx()
         return num_lines

@@ -125,12 +125,11 @@ class ScreenRefresher:
             self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
 class CursorMovements:
-    def __init__(self, text, screen, cursor, screen_offset, screen_refresher):
+    def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
-        self.screen_refresher = screen_refresher
     def move_cursor_up(self):
         if self.cursor.get_line_index() == 0:
             return
@@ -141,7 +140,6 @@ class CursorMovements:
             self.screen_offset.set_line_index(self.cursor.get_line_index())
         if self.screen_offset.get_column_index() > self.cursor.get_column_index():
             self.screen_offset.set_column_index(self.cursor.get_column_index())
-        self.screen_refresher.refresh()
     def move_cursor_down(self):
         if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
             return
@@ -152,7 +150,6 @@ class CursorMovements:
             self.screen_offset.set_line_index(self.screen_offset.get_line_index() + 1)
         if self.screen_offset.get_column_index() > self.cursor.get_column_index():
             self.screen_offset.set_column_index(self.cursor.get_column_index())
-        self.screen_refresher.refresh()
 
 def get_character(signal):
     return signal[-1]
@@ -199,7 +196,7 @@ def start_editor(io):
     cursor = Cursor(text, 10, 50)
     screen_offset = ScreenOffset(text, 4, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-    cursor_movements = CursorMovements(text, io.get_screen(), cursor, screen_offset, screen_refresher)
+    cursor_movements = CursorMovements(text, io.get_screen(), cursor, screen_offset)
     screen_refresher.refresh()
     dispatch_signals(io.get_signal_stream(), screen_refresher, cursor_movements)
 

@@ -162,7 +162,7 @@ class UserCommands:
         if direction == 'UP':
             self.kernel.move_cursor_up()
         elif direction == 'DOWN':
-            self.kernel.move_cursor_up()
+            self.kernel.move_cursor_down()
 
 def get_character(signal):
     return signal[-1]

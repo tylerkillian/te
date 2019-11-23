@@ -41,8 +41,7 @@ class CursesScreen:
             pass
         self.stdscr.refresh()
     def set_cursor_position(self, line_index, column_index):
-        #self.stdscr.move(line_index, column_index)
-        pass
+        self.stdscr.move(line_index, column_index)
     def get_num_lines(self):
         num_lines, _ = self.stdscr.getmaxyx()
         return num_lines
@@ -202,7 +201,7 @@ class CursesIO:
 
 def start_editor(io):
     text = Text(POEM)
-    cursor = Cursor(text, 10, 50)
+    cursor = Cursor(text, 10, 5)
     screen_offset = ScreenOffset(text, 8, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     kernel = Kernel(text, io.get_screen(), cursor, screen_offset, screen_refresher)

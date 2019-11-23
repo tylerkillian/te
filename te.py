@@ -163,10 +163,10 @@ class MoveCursorUp:
         return True
     def set_screen_offset(self, cursor, screen_offset):
         if screen_offset.get_line_index() > cursor.get_line_index():
-            screen_offset.set_line_index(self.cursor_line_index)
-        if screen_offset.get_column_index() > self.cursor_column_index:
-            screen_offset.set_column_index(self.cursor_column_index)
-    def respond(text, cursor, screen_offset):
+            screen_offset.set_line_index(cursor.get_line_index())
+        if screen_offset.get_column_index() > cursor.get_column_index():
+            screen_offset.set_column_index(cursor.get_column_index())
+    def respond(self, text, cursor, screen_offset):
         cursor_moved = self.set_cursor_position(text, cursor)
         if cursor_moved:
             self.set_screen_offset(cursor, screen_offset)

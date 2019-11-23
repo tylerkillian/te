@@ -153,23 +153,26 @@ class CursorMovements:
 
 class MoveCursorUp:
     def __init__(self):
+        self.target_line_length = None
         self.cursor_line_index = None
         self.cursor_column_index = None
-    def modify_text(self, text):
+    def modify_text(self, text, cursor_line_index, cursor_column_index):
+        if cursor_line_index > 0:
+            self.target_line_{length
         pass
     def set_cursor_position(self, cursor):
-        if self.cursor.get_line_index() == 0:
+        if cursor.get_line_index() == 0:
             return
-        self.cursor.set_line_index(self.cursor.get_line_index() - 1)
-        if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
-            self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
-        self.cursor_line_index = self.cursor.get_line_index()
-        self.cursor_column_index = self.cursor.get_column_index()
+        cursor.set_line_index(cursor.get_line_index() - 1)
+        if cursor.get_column_index() > text.get_line_length(cursor.get_line_index()):
+            cursor.set_column_index(text.get_line_length(cursor.get_line_index()))
+        self.cursor_line_index = cursor.get_line_index()
+        self.cursor_column_index = cursor.get_column_index()
     def set_screen_offset(self, screen_offset):
-        if self.screen_offset.get_line_index() > self.cursor_line_index:
-            self.screen_offset.set_line_index(self.cursor_line_index)
-        if self.screen_offset.get_column_index() > self.cursor_column_index:
-            self.screen_offset.set_column_index(self.cursor_column_index)
+        if screen_offset.get_line_index() > self.cursor_line_index:
+            screen_offset.set_line_index(self.cursor_line_index)
+        if screen_offset.get_column_index() > self.cursor_column_index:
+            screen_offset.set_column_index(self.cursor_column_index)
 
 def get_character(signal):
     return signal[-1]

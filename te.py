@@ -219,7 +219,8 @@ def main():
         start_editor(CursesIO(stdscr))
     except Exception as e:
         f = open('te.error', 'w')
-        f.write(str(e) + '\n')
+        f.write('Exception: ' + str(e) + '\n\n')
+        f.write('Stack trace: ' + traceback,.format_exc() + '\n\n')
         f.close()
     finally:
         curses_close(stdscr)

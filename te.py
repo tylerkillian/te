@@ -186,26 +186,29 @@ def API():
             return MoveCursorDown()
         else:
             return
+    return api
 
 def get_character(signal):
     return signal[-1]
 
-def dispatch_signals(signal_stream, screen_refresher, cursor_movements):
-    while True:
-        signal = signal_stream.get_next_signal()
-        if signal == 'CHARACTER_q':
-            return
-        elif signal == 'RESIZE':
-            pass
-        elif signal == 'UP':
-            cursor_movements.move_cursor_up()
-        elif signal == 'DOWN':
-            cursor_movements.move_cursor_down()
-        else:
-            screen_refresher.screen.stdscr.addstr('handling ' + get_character(signal))
-        screen_refresher.refresh()
+#def dispatch_signals(signal_stream, screen_refresher, cursor_movements):
+#    while True:
+#        signal = signal_stream.get_next_signal()
+#        if signal == 'CHARACTER_q':
+#            return
+#        elif signal == 'RESIZE':
+#            pass
+#        elif signal == 'UP':
+#            cursor_movements.move_cursor_up()
+#        elif signal == 'DOWN':
+#            cursor_movements.move_cursor_down()
+#        else:
+#            screen_refresher.screen.stdscr.addstr('handling ' + get_character(signal))
+#        screen_refresher.refresh()
 
 def dispatch_signals(signal_stream, api, text, cursor, screen_offset, screen_refresher):
+    print(api)
+    print(signal_stream)
     signal_handler = api(signal_stream.get_next_signal())
     while signal_handler:
         signal_handler.modify_text(text)
@@ -243,7 +246,7 @@ def start_editor(io):
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     cursor_movements = CursorMovements(text, io.get_screen(), cursor, screen_offset)
     screen_refresher.refresh()
-    dispatch_signals(io.get_signal_stream(), API(), text, cursor, screen_offset, screen_refresher):
+    dispatch_signals(io.get_signal_stream(), API(), text, cursor, screen_offset, screen_refresher)
 
 def main():
     try:

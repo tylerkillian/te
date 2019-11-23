@@ -220,7 +220,7 @@ def main():
     except Exception as e:
         f = open('te.error', 'w')
         f.write('Exception: ' + str(e) + '\n\n')
-        f.write('Stack trace: ' + traceback,.format_exc() + '\n\n')
+        f.write('Stack trace: ' + traceback.format_exc())
         f.close()
     finally:
         curses_close(stdscr)

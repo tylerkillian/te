@@ -156,19 +156,22 @@ class MoveCursorUp:
         self.target_line_length = None
         self.cursor_line_index = None
         self.cursor_column_index = None
+        self.moved = False
     def modify_text(self, text, cursor_line_index, cursor_column_index):
         if cursor_line_index > 0:
-            self.target_line_{length
-        pass
+            self.target_line_length = text.get_line_length(cursor_line_index - 1)
     def set_cursor_position(self, cursor):
         if cursor.get_line_index() == 0:
             return
         cursor.set_line_index(cursor.get_line_index() - 1)
-        if cursor.get_column_index() > text.get_line_length(cursor.get_line_index()):
-            cursor.set_column_index(text.get_line_length(cursor.get_line_index()))
+        if cursor.get_column_index() > self.target_line_length:
+            cursor.set_column_index(self.target_line_length)
         self.cursor_line_index = cursor.get_line_index()
         self.cursor_column_index = cursor.get_column_index()
+        self.moved = True
     def set_screen_offset(self, screen_offset):
+        if not self.moved:
+            return
         if screen_offset.get_line_index() > self.cursor_line_index:
             screen_offset.set_line_index(self.cursor_line_index)
         if screen_offset.get_column_index() > self.cursor_column_index:
@@ -214,7 +217,7 @@ def dispatch_signals(signal_stream, api, text, cursor, screen_offset, screen_ref
     print(signal_stream)
     signal_handler = api(signal_stream.get_next_signal())
     while signal_handler:
-        signal_handler.modify_text(text)
+        signal_handler.modify_text(text, cursor.get_line_index(), cursor.get_column_index())
         signal_handler.set_cursor_position(cursor)
         signal_handler.set_screen_offset(screen_offset)
         screen_refresher.refresh()

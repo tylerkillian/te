@@ -60,6 +60,8 @@ class CursesSignalStream:
             return 'RESIZE'
         elif chr_int == curses.KEY_UP:
             return 'UP'
+        elif chr_int == curses.KEY_DOWN:
+            return 'DOWN'
         else:
             return 'UNKNOWN'
 
@@ -122,8 +124,9 @@ class ScreenRefresher:
             self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
 class Kernel:
-    def __init__(self, text, cursor, screen_offset, screen_refresher):
+    def __init__(self, text, screen, cursor, screen_offset, screen_refresher):
         self.text = text
+        self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
         self.screen_refresher = screen_refresher
@@ -144,8 +147,8 @@ class Kernel:
         self.cursor.set_line_index(self.cursor.get_line_index() + 1)
         if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
             self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
-        if self.screen_offset.get_line_index() + self.screen_offset < self.cursor.get_line_index():
-            self.screen_offset.set_line_index(self.cursor.get_line_index())
+        if self.screen_offset.get_line_index() + self.screen.get_num_lines() == self.cursor.get_line_index():
+            self.screen_offset.set_line_index(self.screen_offset.get_line_index() + 1)
         if self.screen_offset.get_column_index() > self.cursor.get_column_index():
             self.screen_offset.set_column_index(self.cursor.get_column_index())
         self.screen_refresher.refresh()
@@ -157,6 +160,8 @@ class UserCommands:
         self.kernel.screen_refresher.screen.stdscr.addstr('handling ' + character)
     def handle_arrow(self, direction):
         if direction == 'UP':
+            self.kernel.move_cursor_up()
+        elif direction == 'DOWN':
             self.kernel.move_cursor_up()
 
 def get_character(signal):
@@ -171,6 +176,8 @@ def dispatch_signals(signal_stream, screen_refresher, user_commands):
             screen_refresher.refresh()
         elif signal == 'UP':
             user_commands.handle_arrow('UP')
+        elif signal == 'DOWN':
+            user_commands.handle_arrow('DOWN')
         else:
             user_commands.handle_character(get_character(signal))
 
@@ -197,7 +204,7 @@ def start_editor(io):
     cursor = Cursor(text, 10, 50)
     screen_offset = ScreenOffset(text, 8, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-    kernel = Kernel(text, cursor, screen_offset, screen_refresher)
+    kernel = Kernel(text, io.get_screen(), cursor, screen_offset, screen_refresher)
     user_commands = UserCommands(kernel)
     screen_refresher.refresh()
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)

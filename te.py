@@ -163,13 +163,14 @@ def dispatch_signals(signal_stream, screen_refresher, cursor_movements):
         if signal == 'CHARACTER_q':
             return
         elif signal == 'RESIZE':
-            screen_refresher.refresh()
+            pass
         elif signal == 'UP':
             cursor_movements.move_cursor_up()
         elif signal == 'DOWN':
             cursor_movements.move_cursor_down()
         else:
             screen_refresher.screen.stdscr.addstr('handling ' + get_character(signal))
+        screen_refresher.refresh()
 
 def curses_open():
     stdscr = curses.initscr()

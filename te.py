@@ -211,21 +211,6 @@ def API():
 def get_character(signal):
     return signal[-1]
 
-#def dispatch_signals(signal_stream, screen_refresher, cursor_movements):
-#    while True:
-#        signal = signal_stream.get_next_signal()
-#        if signal == 'CHARACTER_q':
-#            return
-#        elif signal == 'RESIZE':
-#            pass
-#        elif signal == 'UP':
-#            cursor_movements.move_cursor_up()
-#        elif signal == 'DOWN':
-#            cursor_movements.move_cursor_down()
-#        else:
-#            screen_refresher.screen.stdscr.addstr('handling ' + get_character(signal))
-#        screen_refresher.refresh()
-
 def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, screen_refresher):
     signal_handler = api(signal_stream.get_next_signal())
     while signal_handler:

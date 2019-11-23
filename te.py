@@ -124,7 +124,7 @@ class ScreenRefresher:
             self.cursor.get_line_index() - self.screen_offset.get_line_index(),
             self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
-class Kernel:
+class CursorMovements:
     def __init__(self, text, screen, cursor, screen_offset, screen_refresher):
         self.text = text
         self.screen = screen
@@ -154,21 +154,10 @@ class Kernel:
             self.screen_offset.set_column_index(self.cursor.get_column_index())
         self.screen_refresher.refresh()
 
-class UserCommands:
-    def __init__(self, kernel):
-        self.kernel = kernel
-    def handle_character(self, character):
-        self.kernel.screen_refresher.screen.stdscr.addstr('handling ' + character)
-    def handle_arrow(self, direction):
-        if direction == 'UP':
-            self.kernel.move_cursor_up()
-        elif direction == 'DOWN':
-            self.kernel.move_cursor_down()
-
 def get_character(signal):
     return signal[-1]
 
-def dispatch_signals(signal_stream, screen_refresher, user_commands):
+def dispatch_signals(signal_stream, screen_refresher, cursor_movements):
     while True:
         signal = signal_stream.get_next_signal()
         if signal == 'CHARACTER_q':
@@ -176,11 +165,11 @@ def dispatch_signals(signal_stream, screen_refresher, user_commands):
         elif signal == 'RESIZE':
             screen_refresher.refresh()
         elif signal == 'UP':
-            user_commands.handle_arrow('UP')
+            cursor_movements.move_cursor_up()
         elif signal == 'DOWN':
-            user_commands.handle_arrow('DOWN')
+            cursor_movements.move_cursor_down()
         else:
-            user_commands.handle_character(get_character(signal))
+            screen_refresher.screen.stdscr.addstr('handling ' + get_character(signal))
 
 def curses_open():
     stdscr = curses.initscr()
@@ -209,10 +198,9 @@ def start_editor(io):
     cursor = Cursor(text, 10, 50)
     screen_offset = ScreenOffset(text, 4, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-    kernel = Kernel(text, io.get_screen(), cursor, screen_offset, screen_refresher)
-    user_commands = UserCommands(kernel)
+    cursor_movements = CursorMovements(text, io.get_screen(), cursor, screen_offset, screen_refresher)
     screen_refresher.refresh()
-    dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
+    dispatch_signals(io.get_signal_stream(), screen_refresher, cursor_movements)
 
 def main():
     try:

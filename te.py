@@ -181,19 +181,23 @@ def dispatch_signals(signal_stream, screen_refresher, user_commands):
         else:
             user_commands.handle_character(get_character(signal))
 
+def curses_open():
+    stdscr = curses.initscr()
+    curses.noecho()
+    curses.cbreak()
+    stdscr.keypad(True)
+    return stdscr
+
+def curses_close(stdscr):
+    stdscr.keypad(False)
+    curses.nocbreak()
+    curses.echo()
+    curses.endwin()
+
 class CursesIO:
-    def __init__(self):
-        self.stdscr = curses.initscr()
-        curses.noecho()
-        curses.cbreak()
-        self.stdscr.keypad(True)
-        self.screen = CursesScreen(self.stdscr)
-        self.signal_stream = CursesSignalStream(self.stdscr)
-    def __del__(self):
-        self.stdscr.keypad(False)
-        curses.nocbreak()
-        curses.echo()
-        curses.endwin()
+    def __init__(self, stdscr):
+        self.screen = CursesScreen(stdscr)
+        self.signal_stream = CursesSignalStream(stdscr)
     def get_screen(self):
         return self.screen
     def get_signal_stream(self):
@@ -201,8 +205,8 @@ class CursesIO:
 
 def start_editor(io):
     text = Text(POEM)
-    cursor = Cursor(text, 10, 5)
-    screen_offset = ScreenOffset(text, 8, 3)
+    cursor = Cursor(text, 10, 50)
+    screen_offset = ScreenOffset(text, 4, 3)
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     kernel = Kernel(text, io.get_screen(), cursor, screen_offset, screen_refresher)
     user_commands = UserCommands(kernel)
@@ -210,19 +214,16 @@ def start_editor(io):
     dispatch_signals(io.get_signal_stream(), screen_refresher, user_commands)
 
 def main():
-     start_editor(CursesIO())
-#    try:
-#        start_editor(CursesIO())
-#    except Exception as e:
-#        print(str(e))
-#        while True:
-#            pass
-#    io = CursesIO()
-#    text = Text(POEM)
-#    cursor = Cursor(text, 0, 0)
-#    screen_offset = ScreenOffset(text, 0, 0)
-#    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-#    screen_refresher.refresh()
-#    io.get_signal_stream().get_next_signal()
+    error = None
+    try:
+        stdscr = curses_open()
+        start_editor(CursesIO(stdscr))
+    except Exception as e:
+        error = str(e)
+    finally:
+        curses_close(stdscr)
+    return error
 
-main()
+error = main()
+if error:
+    print('got error')

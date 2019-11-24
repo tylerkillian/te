@@ -63,6 +63,8 @@ class CursesSignalStream:
             return 'UP'
         elif chr_int == curses.KEY_DOWN:
             return 'DOWN'
+        elif chr_int == curses.KEY_RIGHT:
+            return 'RIGHT'
         else:
             return 'UNKNOWN'
 
@@ -78,6 +80,8 @@ class Text:
         return len(self.text[line_index])
     def get_num_lines(self):
         return len(self.text)
+    def get_num_columns(self, line_index):
+        return len(self.text[line_index])
 
 class Cursor:
     def __init__(self, text, line_index=0, column_index=0):
@@ -170,9 +174,29 @@ class MoveCursorDown:
         if cursor_moved:
             self.set_screen_offset()
 
+class MoveCursorRight:
+    def __init__(self, text, screen, cursor, screen_offset):
+        self.text = text
+        self.screen = screen
+        self.cursor = cursor
+        self.screen_offset = screen_offset
+    def set_cursor_position(self):
+        if self.cursor.get_column_index() == self.text.get_num_columns(self.cursor.get_line_index()):
+            return False
+        self.cursor.set_column_index(self.cursor.get_column_index() + 1)
+        return True
+    def set_screen_offset(self):
+        if self.screen_offset.get_column_index() + self.screen.get_num_columns() == self.cursor.get_column_index():
+            self.screen_offset.set_column_index(self.screen_offset.get_column_index() + 1)
+    def respond(self):
+        cursor_moved = self.set_cursor_position()
+        if cursor_moved:
+            self.set_screen_offset()
+
 def API(text, screen, cursor, screen_offset):
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
     move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
+    move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
     def api(signal):
         if signal == 'CHARACTER_q':
             return
@@ -182,6 +206,8 @@ def API(text, screen, cursor, screen_offset):
             return move_cursor_up
         elif signal == 'DOWN':
             return move_cursor_down
+        elif signal == 'RIGHT':
+            return move_cursor_right
         else:
             return
     return api
@@ -209,7 +235,7 @@ def curses_close(stdscr):
 
 def start_editor(screen, signal_stream):
     text = Text(POEM)
-    cursor = Cursor(text, 12, 50)
+    cursor = Cursor(text, 12, 5)
     screen_offset = ScreenOffset(text, 4, 3)
 
     api = API(text, screen, cursor, screen_offset)

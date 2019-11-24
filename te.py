@@ -174,20 +174,20 @@ class MoveCursorDown:
         if cursor_moved:
             self.set_screen_offset()
 
-class MoveCursorRight:
+class MoveCursorLeft:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
     def set_cursor_position(self):
-        if self.cursor.get_column_index() == self.text.get_num_columns(self.cursor.get_line_index()):
+        if self.cursor.get_column_index() == 0:
             return False
-        self.cursor.set_column_index(self.cursor.get_column_index() + 1)
+        self.cursor.set_column_index(self.cursor.get_column_index() - 1)
         return True
     def set_screen_offset(self):
-        if self.screen_offset.get_column_index() + self.screen.get_num_columns() == self.cursor.get_column_index():
-            self.screen_offset.set_column_index(self.screen_offset.get_column_index() + 1)
+        if self.screen_offset.get_column_index() > self.cursor.get_column_index():
+            self.screen_offset.set_column_index(self.screen_offset.get_column_index() - 1)
     def respond(self):
         cursor_moved = self.set_cursor_position()
         if cursor_moved:

@@ -139,6 +139,8 @@ class Resize:
     def respond(self):
         if self.cursor.get_line_index() - self.screen_offset.get_line_index() >=  self.screen.get_num_lines():
             self.screen_offset.set_line_index(self.cursor.get_line_index() - self.screen.get_num_lines() + 1)
+        if self.cursor.get_column_index() - self.screen_offset.get_column_index() >=  self.screen.get_num_columns():
+            self.screen_offset.set_column_index(self.cursor.get_column_index() - self.screen.get_num_columns() + 1)
 
 class MoveCursorUp:
     def __init__(self, text, screen, cursor, screen_offset):

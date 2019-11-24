@@ -124,56 +124,43 @@ class ScreenRefresher:
             self.cursor.get_line_index() - self.screen_offset.get_line_index(),
             self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
-class CursorMovements:
+class MoveCursorUp:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
-    def move_cursor_up(self):
-        if self.cursor.get_line_index() == 0:
-            return
-        self.cursor.set_line_index(self.cursor.get_line_index() - 1)
-        if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
-            self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
-        if self.screen_offset.get_line_index() > self.cursor.get_line_index():
-            self.screen_offset.set_line_index(self.cursor.get_line_index())
-        if self.screen_offset.get_column_index() > self.cursor.get_column_index():
-            self.screen_offset.set_column_index(self.cursor.get_column_index())
-    def move_cursor_down(self):
-        if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
-            return
-        self.cursor.set_line_index(self.cursor.get_line_index() + 1)
-        if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
-            self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
-        if self.screen_offset.get_line_index() + self.screen.get_num_lines() == self.cursor.get_line_index():
-            self.screen_offset.set_line_index(self.screen_offset.get_line_index() + 1)
-        if self.screen_offset.get_column_index() > self.cursor.get_column_index():
-            self.screen_offset.set_column_index(self.cursor.get_column_index())
-
-class MoveCursorUp:
-    def __init__(self):
-        pass
-    def set_cursor_position(self, text, cursor):
+    def set_cursor_position(self):
+        text = self.text 
+        screen = self.screen
+        cursor = self.cursor
+        screen_offset = self.screen_offset
         if cursor.get_line_index() == 0:
             return False
         cursor.set_line_index(cursor.get_line_index() - 1)
         if cursor.get_column_index() > text.get_line_length(cursor.get_line_index()):
             cursor.set_column_index(text.get_line_length(cursor.get_line_index()))
         return True
-    def set_screen_offset(self, cursor, screen_offset):
+    def set_screen_offset(self):
+        text = self.text 
+        screen = self.screen
+        cursor = self.cursor
+        screen_offset = self.screen_offset
         if screen_offset.get_line_index() > cursor.get_line_index():
             screen_offset.set_line_index(cursor.get_line_index())
         if screen_offset.get_column_index() > cursor.get_column_index():
             screen_offset.set_column_index(cursor.get_column_index())
-    def respond(self, text, screen, cursor, screen_offset):
-        cursor_moved = self.set_cursor_position(text, cursor)
+    def respond(self):
+        cursor_moved = self.set_cursor_position()
         if cursor_moved:
-            self.set_screen_offset(cursor, screen_offset)
+            self.set_screen_offset()
 
 class MoveCursorDown:
-    def __init__(self):
-        pass
+    def __init__(self, text, screen, cursor, screen_offset):
+        self.text = text
+        self.screen = screen
+        self.cursor = cursor
+        self.screen_offset = screen_offset
     def set_cursor_position(self, text, cursor):
         if cursor.get_line_index() == text.get_num_lines() - 1:
             return False
@@ -213,11 +200,11 @@ def API(text, screen, cursor, screen_offset):
 def get_character(signal):
     return signal[-1]
 
-def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, screen_refresher):
+def dispatch_signals(signal_stream, api, screen_refresher):
     signal_handler = api(signal_stream.get_next_signal())
     while signal_handler:
-        signal_handler.respond(text, screen, cursor, screen_offset)
         screen_refresher.refresh()
+        signal_handler.respond(text, screen, cursor, screen_offset)
         signal_handler = api(signal_stream.get_next_signal())
 
 def curses_open():
@@ -248,12 +235,10 @@ def start_editor(io):
     cursor = Cursor(text, 12, 50)
     screen_offset = ScreenOffset(text, 4, 3)
 
-    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
-    cursor_movements = CursorMovements(text, io.get_screen(), cursor, screen_offset)
-    screen_refresher.refresh()
-
+    signal_stream = io.get_signal_stream()
     api = API(text, screen, cursor, screen_offset)
-    dispatch_signals(io.get_signal_stream(), API(), text, io.get_screen(), cursor, screen_offset, screen_refresher)
+    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
+    dispatch_signals(signal_stream, api, screen_refresher)
 
 def main():
     try:

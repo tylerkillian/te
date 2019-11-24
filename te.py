@@ -161,22 +161,30 @@ class MoveCursorDown:
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
-    def set_cursor_position(self, text, cursor):
+    def set_cursor_position(self):
+        text = self.text 
+        screen = self.screen
+        cursor = self.cursor
+        screen_offset = self.screen_offset
         if cursor.get_line_index() == text.get_num_lines() - 1:
             return False
         cursor.set_line_index(cursor.get_line_index() + 1)
         if cursor.get_column_index() > text.get_line_length(cursor.get_line_index()):
             cursor.set_column_index(text.get_line_length(cursor.get_line_index()))
         return True
-    def set_screen_offset(self, screen, cursor, screen_offset):
+    def set_screen_offset(self):
+        text = self.text 
+        screen = self.screen
+        cursor = self.cursor
+        screen_offset = self.screen_offset
         if screen_offset.get_line_index() + screen.get_num_lines() == cursor.get_line_index():
             screen_offset.set_line_index(screen_offset.get_line_index() + 1)
         if screen_offset.get_column_index() > cursor.get_column_index():
             screen_offset.set_column_index(cursor.get_column_index())
-    def respond(self, text, screen, cursor, screen_offset):
-        cursor_moved = self.set_cursor_position(text, cursor)
+    def respond(self):
+        cursor_moved = self.set_cursor_position()
         if cursor_moved:
-            self.set_screen_offset(screen, cursor, screen_offset)
+            self.set_screen_offset()
 
 def get_character(signal):
     return signal[-1]

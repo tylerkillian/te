@@ -65,6 +65,8 @@ class CursesSignalStream:
             return 'DOWN'
         elif chr_int == curses.KEY_RIGHT:
             return 'RIGHT'
+        elif chr_int == curses.KEY_LEFT:
+            return 'LEFT'
         else:
             return 'UNKNOWN'
 

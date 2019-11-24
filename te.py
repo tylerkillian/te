@@ -130,6 +130,16 @@ class ScreenRefresher:
             self.cursor.get_line_index() - self.screen_offset.get_line_index(),
             self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
+class Resize
+    def __init__(self, text, screen, cursor, screen_offset):
+        self.text = text
+        self.screen = screen
+        self.cursor = cursor
+        self.screen_offset = screen_offset
+    def respond(self):
+        if self.screen_offset.get_line_index() + self.screen.get_num_lines() < self.cursor.get_line_index():
+            self.screen_offset.set_line_index(self.cursor.get_line_index() - self.screen.get_num_lines() + 1)
+
 class MoveCursorUp:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
@@ -215,6 +225,7 @@ class MoveCursorRight:
             self.set_screen_offset()
 
 def API(text, screen, cursor, screen_offset):
+    resize = Resize(text, screen, cursor, screen_offset)
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
     move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
     move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
@@ -223,7 +234,7 @@ def API(text, screen, cursor, screen_offset):
         if signal == 'CHARACTER_q':
             return
         elif signal == 'RESIZE':
-            return
+            return resize
         elif signal == 'UP':
             return move_cursor_up
         elif signal == 'DOWN':

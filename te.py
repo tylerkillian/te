@@ -137,7 +137,7 @@ class Resize
         self.cursor = cursor
         self.screen_offset = screen_offset
     def respond(self):
-        if self.screen_offset.get_line_index() + self.screen.get_num_lines() < self.cursor.get_line_index():
+        if self.cursor.get_line_index() - self.screen_offset.get_line_index() >=  self.screen.get_num_lines():
             self.screen_offset.set_line_index(self.cursor.get_line_index() - self.screen.get_num_lines() + 1)
 
 class MoveCursorUp:

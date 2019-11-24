@@ -216,6 +216,7 @@ def API(text, screen, cursor, screen_offset):
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
     move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
     move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
+    move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
     def api(signal):
         if signal == 'CHARACTER_q':
             return
@@ -227,6 +228,8 @@ def API(text, screen, cursor, screen_offset):
             return move_cursor_down
         elif signal == 'RIGHT':
             return move_cursor_right
+        elif signal == 'LEFT':
+            return move_cursor_left
         else:
             return
     return api

@@ -201,10 +201,11 @@ def get_character(signal):
     return signal[-1]
 
 def dispatch_signals(signal_stream, api, screen_refresher):
+    screen_refresher.refresh()
     signal_handler = api(signal_stream.get_next_signal())
     while signal_handler:
+        signal_handler.respond()
         screen_refresher.refresh()
-        signal_handler.respond(text, screen, cursor, screen_offset)
         signal_handler = api(signal_stream.get_next_signal())
 
 def curses_open():

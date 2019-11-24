@@ -170,9 +170,6 @@ class MoveCursorDown:
         if cursor_moved:
             self.set_screen_offset()
 
-def get_character(signal):
-    return signal[-1]
-
 def API(text, screen, cursor, screen_offset):
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
     move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
@@ -188,9 +185,6 @@ def API(text, screen, cursor, screen_offset):
         else:
             return
     return api
-
-def get_character(signal):
-    return signal[-1]
 
 def dispatch_signals(signal_stream, api, screen_refresher):
     screen_refresher.refresh()

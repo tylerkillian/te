@@ -207,22 +207,11 @@ def curses_close(stdscr):
     curses.echo()
     curses.endwin()
 
-class CursesIO:
-    def __init__(self, stdscr):
-        self.screen = CursesScreen(stdscr)
-        self.signal_stream = CursesSignalStream(stdscr)
-    def get_screen(self):
-        return self.screen
-    def get_signal_stream(self):
-        return self.signal_stream
-
-def start_editor(io):
+def start_editor(screen, signal_stream):
     text = Text(POEM)
-    screen = io.get_screen()
     cursor = Cursor(text, 12, 50)
     screen_offset = ScreenOffset(text, 4, 3)
 
-    signal_stream = io.get_signal_stream()
     api = API(text, screen, cursor, screen_offset)
     screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
     dispatch_signals(signal_stream, api, screen_refresher)
@@ -230,7 +219,7 @@ def start_editor(io):
 def main():
     try:
         stdscr = curses_open()
-        start_editor(CursesIO(stdscr))
+        start_editor(CursesScreen(stdscr), CursesSignalStream(stdscr))
     except Exception as e:
         f = open('error_out', 'w')
         f.write('Exception: ' + str(e) + '\n\n')

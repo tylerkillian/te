@@ -108,9 +108,9 @@ class ScreenOffset:
         self.column_index = value
 
 class ScreenRefresher:
-    def __init__(self, screen, text, cursor, screen_offset):
-        self.screen = screen
+    def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
+        self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
     def refresh(self):
@@ -237,7 +237,7 @@ def start_editor(io):
 
     signal_stream = io.get_signal_stream()
     api = API(text, screen, cursor, screen_offset)
-    screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
+    screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
     dispatch_signals(signal_stream, api, screen_refresher)
 
 def main():

@@ -194,16 +194,18 @@ class MoveCursorDown:
 def get_character(signal):
     return signal[-1]
 
-def API():
+def API(text, screen, cursor, screen_offset):
+    move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
+    move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
     def api(signal):
         if signal == 'CHARACTER_q':
             return
         elif signal == 'RESIZE':
             return
         elif signal == 'UP':
-            return MoveCursorUp()
+            return move_cursor_up
         elif signal == 'DOWN':
-            return MoveCursorDown()
+            return move_cursor_down
         else:
             return
     return api
@@ -242,11 +244,15 @@ class CursesIO:
 
 def start_editor(io):
     text = Text(POEM)
+    screen = io.get_screen()
     cursor = Cursor(text, 12, 50)
     screen_offset = ScreenOffset(text, 4, 3)
+
     screen_refresher = ScreenRefresher(io.get_screen(), text, cursor, screen_offset)
     cursor_movements = CursorMovements(text, io.get_screen(), cursor, screen_offset)
     screen_refresher.refresh()
+
+    api = API(text, screen, cursor, screen_offset)
     dispatch_signals(io.get_signal_stream(), API(), text, io.get_screen(), cursor, screen_offset, screen_refresher)
 
 def main():

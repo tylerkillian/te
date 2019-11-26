@@ -67,6 +67,8 @@ class CursesSignalStream:
             return 'RIGHT'
         elif chr_int == curses.KEY_LEFT:
             return 'LEFT'
+        elif chr_int == curses.DL:
+            return 'DELETE'
         else:
             return 'UNKNOWN'
 
@@ -270,6 +272,7 @@ def API(text, screen, cursor, screen_offset):
     move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
     move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
     move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
+    delete_characater = DeleteCharacter(text, screen, cursor, screen_offset)
     def api(signal):
         if signal == 'CHARACTER_q':
             return
@@ -283,6 +286,8 @@ def API(text, screen, cursor, screen_offset):
             return move_cursor_right
         elif signal == 'LEFT':
             return move_cursor_left
+        elif signal == 'DELETE':
+            return delete_character
         else:
             return
     return api

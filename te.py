@@ -258,6 +258,12 @@ class DeleteCharacter:
     def delete_next_line(self):
         next_line_index = self.cursor.get_line_index() + 1
         self.text.delete_line(next_line_index)
+    def delete_current_character(self):
+        current_line_index = self.cursor.get_line_index()
+        current_line = self.text.get_line(current_line_index)
+        current_character_index = self.cursor.get_column_index()
+        new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
+        self.text.set_line(current_line_index, new_line)
     def respond(self):
         if self.cursor_at_end_of_text():
             return
@@ -273,7 +279,7 @@ def API(text, screen, cursor, screen_offset):
     move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
     move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
     move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
-    delete_characater = DeleteCharacter(text, screen, cursor, screen_offset)
+    delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
     def api(signal):
         if signal == 'CHARACTER_q':
             return

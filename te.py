@@ -84,6 +84,10 @@ class Text:
         return len(self.text)
     def get_num_columns(self, line_index):
         return len(self.text[line_index])
+    def get_line(self, line_index):
+        return self.text[line_index]
+    def delete_line(self, line_index):
+        del self.text[line_index]
 
 class Cursor:
     def __init__(self, text, line_index=0, column_index=0):

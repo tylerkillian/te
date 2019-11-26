@@ -230,6 +230,32 @@ class MoveCursorRight:
         if cursor_moved:
             self.set_screen_offset()
 
+class DeleteCharacter:
+    def __init__(self, text, screen, cursor, screen_offset):
+        self.text = text
+        self.screen = screen
+        self.cursor = cursor
+        self.screen_offset = screen_offset
+    def cursor_at_last_line(self):
+        if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
+            return True
+        return False
+    def cursor_at_end_of_line(self):
+        if self.cursor.get_column_index() == self.text.get_line_length(self.cursor.get_line_index()):
+            return True
+        return False
+    def cursor_at_end_of_text(self):
+        if self.cursor_at_last_line() and self.cursor_at_end_of_line():
+            return True
+        return False
+    def respond(self):
+        if self.cursor_at_end_of_text():
+            return
+        if self.cursor_at_end_of_line():
+            self.append_next_line_to_current_line()
+            self.delete_next_line()
+        self.delete_current_character()
+
 def API(text, screen, cursor, screen_offset):
     resize = Resize(text, screen, cursor, screen_offset)
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)

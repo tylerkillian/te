@@ -253,7 +253,9 @@ class DeleteCharacter:
         current_line = self.text.get_line(current_line_index)
         next_line = self.text.get_line(current_line_index + 1)
         self.text.set_line(current_line_index, current_line + next_line)
-    def detel
+    def delete_next_line(self):
+        next_line_index = self.cursor.get_line_index() + 1
+        self.text.delete_line(next_line_index)
     def respond(self):
         if self.cursor_at_end_of_text():
             return

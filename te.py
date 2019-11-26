@@ -264,6 +264,7 @@ class DeleteCharacter:
         if self.cursor_at_end_of_line():
             self.append_next_line_to_current_line()
             self.delete_next_line()
+            return
         self.delete_current_character()
 
 def API(text, screen, cursor, screen_offset):

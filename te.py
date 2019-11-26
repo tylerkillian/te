@@ -67,7 +67,7 @@ class CursesSignalStream:
             return 'RIGHT'
         elif chr_int == curses.KEY_LEFT:
             return 'LEFT'
-        elif chr_int == curses.DL:
+        elif chr_int == curses.KEY_DL:
             return 'DELETE'
         else:
             return 'UNKNOWN'
@@ -326,6 +326,10 @@ def start_editor(screen, signal_stream):
 def main():
     try:
         stdscr = curses_open()
+        chr_int = stdscr.getch()
+        print(chr_int)
+        while True: pass
+        return
         start_editor(CursesScreen(stdscr), CursesSignalStream(stdscr))
     except Exception as e:
         f = open('error_out', 'w')

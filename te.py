@@ -328,6 +328,8 @@ def main():
         stdscr = curses_open()
         chr_int = stdscr.getch()
         print(chr_int)
+        print(curses.KEY_DL)
+        #print(curses)
         while True: pass
         return
         start_editor(CursesScreen(stdscr), CursesSignalStream(stdscr))

@@ -88,6 +88,8 @@ class Text:
         return len(self.text[line_index])
     def get_line(self, line_index):
         return self.text[line_index]
+    def set_line(self, line_index, value):
+        self.text[line_index] = value
     def delete_line(self, line_index):
         del self.text[line_index]
 

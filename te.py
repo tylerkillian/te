@@ -248,6 +248,12 @@ class DeleteCharacter:
         if self.cursor_at_last_line() and self.cursor_at_end_of_line():
             return True
         return False
+    def append_next_line_to_current_line(self):
+        current_line_index = self.cursor.get_line_index()
+        current_line = self.text.get_line(current_line_index)
+        next_line = self.text.get_line(current_line_index + 1)
+        self.text.set_line(current_line_index, current_line + next_line)
+    def detel
     def respond(self):
         if self.cursor_at_end_of_text():
             return

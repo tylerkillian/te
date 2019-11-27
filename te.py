@@ -224,7 +224,7 @@ class MoveCursorLeft:
         if self.screen_offset.get_line_index() > self.cursor.get_line_index():
             self.screen_offset.set_line_index(self.cursor.get_line_index())
         if self.screen_offset.get_column_index() + self.screen.get_num_columns() <= self.cursor.get_column_index():
-            self.screen_offset.set_column_index(self.cursor.get_column_index() - self.screen_offset.get_num_columns() + 1)
+            self.screen_offset.set_column_index(self.cursor.get_column_index() - self.screen.get_num_columns() + 1)
     def respond(self):
         cursor_moved = self.set_cursor_position()
         if cursor_moved:

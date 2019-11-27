@@ -250,6 +250,8 @@ class MoveCursorRight:
             self.screen_offset.set_column_index(self.screen_offset.get_column_index() + 1)
         if self.screen_offset.get_column_index() > self.cursor.get_column_index():
             self.screen_offset.set_column_index(0)
+        if self.screen_offset.get_line_index() + self.screen.get_num_lines() == self.cursor.get_line_index():
+            self.screen_offset.set_line_index(self.screen_offset.get_line_index() + 1)
     def respond(self):
         cursor_moved = self.set_cursor_position()
         if cursor_moved:

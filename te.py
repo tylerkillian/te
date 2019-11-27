@@ -69,6 +69,8 @@ class CursesSignalStream:
             return 'LEFT'
         elif chr_int == curses.KEY_DC:
             return 'DELETE'
+        elif chr_int == curses.KEY_BACKSPACE:
+            return 'BACKSPACE'
         else:
             return 'UNKNOWN'
 
@@ -275,6 +277,21 @@ class DeleteCharacter:
             return
         self.delete_current_character()
 
+class Backspace:
+    def __init__(self, cursor, move_cursor_left, delete_character):
+        self.cursor = cursor
+        self.move_cursor_left = move_cursor_left
+        self.delete_character = delete_character
+    def cursor_at_beginning_of_text(self):
+        if self.cursor.get_line_index() == 0 and self.cursor.get_column_index() == 0:
+            return True
+        return False
+    def respond(self):
+        if self.cursor_at_beginning_of_text():
+            return
+        self.move_cursor_left.respond()
+        self.delete_character.respond()
+
 def API(text, screen, cursor, screen_offset):
     resize = Resize(text, screen, cursor, screen_offset)
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
@@ -282,6 +299,7 @@ def API(text, screen, cursor, screen_offset):
     move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
     move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
     delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
+    backspace = Backspace(cursor, move_cursor_left, delete_character)
     def api(signal):
         if signal == 'CHARACTER_q':
             return
@@ -297,6 +315,8 @@ def API(text, screen, cursor, screen_offset):
             return move_cursor_left
         elif signal == 'DELETE':
             return delete_character
+        elif signal == 'BACKSPACE':
+            return backspace
         else:
             return
     return api

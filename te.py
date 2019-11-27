@@ -223,9 +223,26 @@ class MoveCursorRight:
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
+    def cursor_at_last_line(self):
+        if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
+            return True
+        return False
+    def cursor_at_end_of_line(self):
+        if self.cursor.get_column_index() == self.text.get_line_length(self.cursor.get_line_index()):
+            return True
+        return False
+    def cursor_at_end_of_text(self):
+        if self.cursor_at_last_line() and self.cursor_at_end_of_line():
+            return True
+        return False
     def set_cursor_position(self):
-        if self.cursor.get_column_index() == self.text.get_num_columns(self.cursor.get_line_index()):
+        if self.cursor_at_end_of_text():
             return False
+        if self.cursor_at_end_of_line():
+            self.cursor.set_column_index(0)
+            next_line_index = self.cursor.get_line_index() + 1
+            self.cursor.set_line_index(next_line_index)
+            return True
         self.cursor.set_column_index(self.cursor.get_column_index() + 1)
         return True
     def set_screen_offset(self):

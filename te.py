@@ -327,18 +327,18 @@ class Backspace:
         self.delete_character.respond()
 
 class InsertCharacter:
-    def __init__(self, move_cursor_right, character):
+    def __init__(self, text, cursor, move_cursor_right, character):
+        self.text = text
+        self.cursor = cursor
         self.move_cursor_right = move_cursor_right
         self.character = character
-    def cursor_at_beginning_of_text(self):
-        if self.cursor.get_line_index() == 0 and self.cursor.get_column_index() == 0:
-            return True
-        return False
     def respond(self):
-        if self.cursor_at_beginning_of_text():
-            return
-        self.move_cursor_left.respond()
-        self.delete_character.respond()
+        line_index = self.cursor.get_line_index()
+        cursor_column = self.cursor.get_column_index()
+        line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
+        line_after_cursor = self.text.get_line(line_index)[cursor_column:]
+        self.text.set_line(line_index, line_before_cursor + self.character + line_after_cursor)
+        self.move_cursor_right.respond()
 
 def API(text, screen, cursor, screen_offset):
     resize = Resize(text, screen, cursor, screen_offset)
@@ -364,7 +364,7 @@ def API(text, screen, cursor, screen_offset):
         elif signal == 'BACKSPACE':
             return backspace
         else:
-            return InsertCharacter(text, move_cursor_right, signal[-1])
+            return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
     return api
 
 def dispatch_signals(signal_stream, api, screen_refresher):

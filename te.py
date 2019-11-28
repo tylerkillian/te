@@ -95,7 +95,7 @@ class Text:
     def set_line(self, line_index, value):
         self.text[line_index] = value
     def insert_line(self, line_index, line):
-        self.text
+        self.text.insert(line_index, line)
     def delete_line(self, line_index):
         del self.text[line_index]
 

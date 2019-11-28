@@ -353,8 +353,8 @@ class InsertLine:
         line_index = self.cursor.get_line_index()
         cursor_column = self.cursor.get_column_index()
         line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
-        self.text.set_line(line_index, line_before_cursor)
         line_after_cursor = self.text.get_line(line_index)[cursor_column:]
+        self.text.set_line(line_index, line_before_cursor)
         self.text.insert_line(line_index + 1, line_after_cursor)
         self.move_cursor_right.respond()
 

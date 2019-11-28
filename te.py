@@ -94,6 +94,8 @@ class Text:
         return self.text[line_index]
     def set_line(self, line_index, value):
         self.text[line_index] = value
+    def insert_line(self, line_index, line):
+        self.text
     def delete_line(self, line_index):
         del self.text[line_index]
 
@@ -353,6 +355,7 @@ class InsertLine:
         line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
         self.text.set_line(line_index, line_before_cursor)
         line_after_cursor = self.text.get_line(line_index)[cursor_column:]
+        self.text.insert_line(line_index + 1, line_after_cursor)
         self.move_cursor_right.respond()
 
 def API(text, screen, cursor, screen_offset):

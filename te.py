@@ -55,7 +55,9 @@ class CursesSignalStream:
         self.stdscr = stdscr
     def get_next_signal(self):
         chr_int = self.stdscr.getch()
-        if chr_int < 256:
+        if chr_int == 10:
+            return 'ENTER'
+        elif chr_int < 256:
             return 'CHARACTER_' + chr(chr_int)
         elif chr_int == curses.KEY_RESIZE:
             return 'RESIZE'
@@ -340,6 +342,19 @@ class InsertCharacter:
         self.text.set_line(line_index, line_before_cursor + self.character + line_after_cursor)
         self.move_cursor_right.respond()
 
+class InsertLine:
+    def __init__(self, text, cursor, move_cursor_right):
+        self.text = text
+        self.cursor = cursor
+        self.move_cursor_right = move_cursor_right
+    def respond(self):
+        line_index = self.cursor.get_line_index()
+        cursor_column = self.cursor.get_column_index()
+        line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
+        self.text.set_line(line_index, line_before_cursor)
+        line_after_cursor = self.text.get_line(line_index)[cursor_column:]
+        self.move_cursor_right.respond()
+
 def API(text, screen, cursor, screen_offset):
     resize = Resize(text, screen, cursor, screen_offset)
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
@@ -348,6 +363,7 @@ def API(text, screen, cursor, screen_offset):
     move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
     delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
     backspace = Backspace(cursor, move_cursor_left, delete_character)
+    insert_line = InsertLine(text, cursor, move_cursor_right)
     def api(signal):
         if signal == 'RESIZE':
             return resize
@@ -363,6 +379,8 @@ def API(text, screen, cursor, screen_offset):
             return delete_character
         elif signal == 'BACKSPACE':
             return backspace
+        elif signal == 'ENTER':
+            return insert_line
         else:
             return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
     return api

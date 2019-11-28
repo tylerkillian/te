@@ -335,9 +335,7 @@ def API(text, screen, cursor, screen_offset):
     delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
     backspace = Backspace(cursor, move_cursor_left, delete_character)
     def api(signal):
-        if signal == 'CHARACTER_q':
-            return
-        elif signal == 'RESIZE':
+        if signal == 'RESIZE':
             return resize
         elif signal == 'UP':
             return move_cursor_up

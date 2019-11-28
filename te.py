@@ -326,6 +326,20 @@ class Backspace:
         self.move_cursor_left.respond()
         self.delete_character.respond()
 
+class InsertCharacter:
+    def __init__(self, move_cursor_right, character):
+        self.move_cursor_right = move_cursor_right
+        self.character = character
+    def cursor_at_beginning_of_text(self):
+        if self.cursor.get_line_index() == 0 and self.cursor.get_column_index() == 0:
+            return True
+        return False
+    def respond(self):
+        if self.cursor_at_beginning_of_text():
+            return
+        self.move_cursor_left.respond()
+        self.delete_character.respond()
+
 def API(text, screen, cursor, screen_offset):
     resize = Resize(text, screen, cursor, screen_offset)
     move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
@@ -350,7 +364,7 @@ def API(text, screen, cursor, screen_offset):
         elif signal == 'BACKSPACE':
             return backspace
         else:
-            return
+            return InsertCharacter(text, move_cursor_right, signal[-1])
     return api
 
 def dispatch_signals(signal_stream, api, screen_refresher):

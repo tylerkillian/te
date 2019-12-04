@@ -387,15 +387,13 @@ class InsertLine:
         self.move_cursor_right.respond()
 
 def API(text, screen, cursor, screen_offset):
-    move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
-    insert_line = InsertLine(text, cursor, move_cursor_right)
     api_new = {
         'move_up': MoveCursorUp(text, screen, cursor, screen_offset),
         'move_down': MoveCursorDown(text, screen, cursor, screen_offset),
         'move_left': MoveCursorLeft(text, screen, cursor, screen_offset),
         'move_right': MoveCursorRight(text, screen, cursor, screen_offset),
-        'insert': Insert(text, cursor, move_cursor_right),
-        'newline': insert_line,
+        'insert': Insert(text, cursor, MoveCursorRight(text, screen, cursor, screen_offset)),
+        'newline': InsertLine(text, cursor, MoveCursorRight(text, screen, cursor, screen_offset)),
         'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset)),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
         'resize': Resize(text, screen, cursor, screen_offset),

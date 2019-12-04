@@ -387,6 +387,7 @@ def API(text, screen, cursor, screen_offset):
         else:
             return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
     api_new = {
+        'newline': insert_line,
         'backspace': backspace,
         'delete': delete_character,
         'resize': resize,
@@ -397,7 +398,9 @@ def dispatch_signals(signal_stream, api, api_new, screen_refresher):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
-        if next_signal == 'BACKSPACE':
+        if next_signal == 'ENTER':
+            signal_handler = api_new['newline']
+        elif next_signal == 'BACKSPACE':
             signal_handler = api_new['backspace']
         elif next_signal == 'DELETE':
             signal_handler = api_new['delete']

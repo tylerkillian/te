@@ -380,25 +380,6 @@ def API(text, screen, cursor, screen_offset):
     delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
     backspace = Backspace(cursor, move_cursor_left, delete_character)
     insert_line = InsertLine(text, cursor, move_cursor_right)
-    def api(signal):
-        if signal == 'RESIZE':
-            return resize
-        elif signal == 'UP':
-            return move_cursor_up
-        elif signal == 'DOWN':
-            return move_cursor_down
-        elif signal == 'RIGHT':
-            return move_cursor_right
-        elif signal == 'LEFT':
-            return move_cursor_left
-        elif signal == 'DELETE':
-            return delete_character
-        elif signal == 'BACKSPACE':
-            return backspace
-        elif signal == 'ENTER':
-            return insert_line
-        else:
-            return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
     api_new = {
         'move': move_cursor_up,
         'insert': Insert(text, cursor, move_cursor_right),
@@ -407,9 +388,9 @@ def API(text, screen, cursor, screen_offset):
         'delete': delete_character,
         'resize': resize,
     }
-    return api, api_new
+    return api_new
 
-def dispatch_signals(signal_stream, api, api_new, screen_refresher):
+def dispatch_signals(signal_stream, api_new, screen_refresher):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
@@ -439,9 +420,6 @@ def dispatch_signals(signal_stream, api, api_new, screen_refresher):
         elif next_signal == 'RESIZE':
             signal_handler = api_new['resize']
             signal_handler.respond()
-        else:
-            signal_handler = api(next_signal)
-            signal_handler.respond()
         screen_refresher.refresh()
 
 def curses_open():
@@ -462,9 +440,9 @@ def start_editor(screen, signal_stream):
     cursor = Cursor(text, 12, 5)
     screen_offset = ScreenOffset(text, 4, 3)
 
-    api, api_new = API(text, screen, cursor, screen_offset)
+    api = API(text, screen, cursor, screen_offset)
     screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, api, api_new, screen_refresher)
+    dispatch_signals(signal_stream, api, screen_refresher)
 
 def main():
     try:

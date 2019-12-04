@@ -402,14 +402,17 @@ def API_new(text, screen, cursor, screen_offset):
     }
 
 def dispatch_signals(signal_stream, api, api_new, screen_refresher):
-    screen_refresher.refresh()
-    next_signal = signal_stream.get_next_signal()
-    signal_handler = api(next_signal)
-    while signal_handler:
-        signal_handler.respond()
+    while True:
         screen_refresher.refresh()
         next_signal = signal_stream.get_next_signal()
         signal_handler = api(next_signal)
+        signal_handler.respond()
+        screen_refresher.refresh()
+        next_signal = signal_stream.get_next_signal()
+        if next_signal == 'RESIZE':
+            signal_handler = api_new['resize']
+        else:
+            signal_handler = api(next_signal)
 
 def curses_open():
     stdscr = curses.initscr()

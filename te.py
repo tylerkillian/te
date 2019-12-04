@@ -425,7 +425,7 @@ def start_editor(screen, signal_stream):
     screen_offset = ScreenOffset(text, 4, 3)
 
     api = API(text, screen, cursor, screen_offset)
-    api_new = API_new(text, screen, cursor, screen_offset)
+    #api_new = API_new(text, screen, cursor, screen_offset)
     screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
     dispatch_signals(signal_stream, api, screen_refresher)
 

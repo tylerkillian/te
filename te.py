@@ -396,7 +396,10 @@ def API(text, screen, cursor, screen_offset):
     backspace = Backspace(cursor, move_cursor_left, delete_character)
     insert_line = InsertLine(text, cursor, move_cursor_right)
     api_new = {
-        'move': Move(text, screen, cursor, screen_offset),
+        'move_up': MoveCursorUp(text, screen, cursor, screen_offset),
+        'move_down': MoveCursorDown(text, screen, cursor, screen_offset),
+        'move_left': MoveCursorLeft(text, screen, cursor, screen_offset),
+        'move_right': MoveCursorRight(text, screen, cursor, screen_offset),
         'insert': Insert(text, cursor, move_cursor_right),
         'newline': insert_line,
         'backspace': backspace,
@@ -410,13 +413,13 @@ def dispatch_signals(signal_stream, api_new, screen_refresher):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            api_new['move'].move_up()
+            api_new['move_up'].respond()
         elif next_signal == 'DOWN':
-            api_new['move'].move_down()
+            api_new['move_down'].respond()
         elif next_signal == 'LEFT':
-            api_new['move'].move_left()
+            api_new['move_left'].respond()
         elif next_signal == 'RIGHT':
-            api_new['move'].move_right()
+            api_new['move_right'].respond()
         elif next_signal[0:10] == 'CHARACTER_':
             api_new['insert'].insert(next_signal[-1])
         elif next_signal == 'ENTER':

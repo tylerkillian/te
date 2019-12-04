@@ -387,32 +387,23 @@ def API(text, screen, cursor, screen_offset):
         else:
             return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
     api_new = {
+        'delete': delete_character,
         'resize': resize,
     }
     return api, api_new
 
-def API_new(text, screen, cursor, screen_offset):
-    return {
-        'move': Move(text, screen, cursor, screen_offset),
-        'insert': Insert(text, screen, cursor, screen_offset),
-        'newline': Newline(text, screen, cursor, screen_offset),
-        'backspace': Backspace(text, screen, cursor, screen_offset),
-        'delete': Delete(text, screen, cursor, screen_offset),
-        'resize': Resize(text, screen, cursor, screen_offset)
-    }
-
 def dispatch_signals(signal_stream, api, api_new, screen_refresher):
+    screen_refresher.refresh()
     while True:
-        screen_refresher.refresh()
         next_signal = signal_stream.get_next_signal()
-        signal_handler = api(next_signal)
-        signal_handler.respond()
-        screen_refresher.refresh()
-        next_signal = signal_stream.get_next_signal()
-        if next_signal == 'RESIZE':
+        if next_signal == 'DELETE':
+            signal_handler = api_new['delete']
+        elif next_signal == 'RESIZE':
             signal_handler = api_new['resize']
         else:
             signal_handler = api(next_signal)
+        signal_handler.respond()
+        screen_refresher.refresh()
 
 def curses_open():
     stdscr = curses.initscr()

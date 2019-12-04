@@ -387,6 +387,7 @@ def API(text, screen, cursor, screen_offset):
         else:
             return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
     api_new = {
+        'move': move_cursor_up,
         'insert': InsertCharacter(text, cursor, move_cursor_right, 'q'),
         'newline': insert_line,
         'backspace': backspace,
@@ -399,7 +400,9 @@ def dispatch_signals(signal_stream, api, api_new, screen_refresher):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
-        if next_signal[0:10] == 'CHARACTER_':
+        if next_signal in ['UP', 'DOWN', 'LEFT', 'RIGHT']:
+            signal_handler = api_new['move']
+        elif next_signal[0:10] == 'CHARACTER_':
             signal_handler = api_new['insert']
         elif next_signal == 'ENTER':
             signal_handler = api_new['newline']
@@ -433,7 +436,6 @@ def start_editor(screen, signal_stream):
     screen_offset = ScreenOffset(text, 4, 3)
 
     api, api_new = API(text, screen, cursor, screen_offset)
-    #api_new = API_new(text, screen, cursor, screen_offset)
     screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
     dispatch_signals(signal_stream, api, api_new, screen_refresher)
 

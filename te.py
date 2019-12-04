@@ -400,7 +400,13 @@ def dispatch_signals(signal_stream, api, api_new, screen_refresher):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
-        if next_signal in ['UP', 'DOWN', 'LEFT', 'RIGHT']:
+        if next_signal == 'UP':
+            signal_handler = api_new['move']
+        elif next_signal == 'DOWN':
+            signal_handler = api_new['move']
+        elif next_signal == 'LEFT':
+            signal_handler = api_new['move']
+        elif next_signal == 'RIGHT':
             signal_handler = api_new['move']
         elif next_signal[0:10] == 'CHARACTER_':
             signal_handler = api_new['insert']

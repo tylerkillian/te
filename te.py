@@ -387,10 +387,7 @@ class InsertLine:
         self.move_cursor_right.respond()
 
 def API(text, screen, cursor, screen_offset):
-    move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
-    move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
     move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
-    move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
     insert_line = InsertLine(text, cursor, move_cursor_right)
     api_new = {
         'move_up': MoveCursorUp(text, screen, cursor, screen_offset),

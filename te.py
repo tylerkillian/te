@@ -415,17 +415,13 @@ def dispatch_signals(signal_stream, api_new, screen_refresher):
         elif next_signal[0:10] == 'CHARACTER_':
             api_new['insert'].insert(next_signal[-1])
         elif next_signal == 'ENTER':
-            signal_handler = api_new['newline']
-            signal_handler.respond()
+            api_new['newline'].respond()
         elif next_signal == 'BACKSPACE':
-            signal_handler = api_new['backspace']
-            signal_handler.respond()
+            api_new['backspace'].respond()
         elif next_signal == 'DELETE':
-            signal_handler = api_new['delete']
-            signal_handler.respond()
+            api_new['delete'].respond()
         elif next_signal == 'RESIZE':
-            signal_handler = api_new['resize']
-            signal_handler.respond()
+            api_new['resize'].respond()
         screen_refresher.refresh()
 
 def curses_open():

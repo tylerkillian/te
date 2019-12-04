@@ -386,7 +386,10 @@ def API(text, screen, cursor, screen_offset):
             return insert_line
         else:
             return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
-    return api
+    api_new = {
+        'resize': resize,
+    }
+    return api, api_new
 
 def API_new(text, screen, cursor, screen_offset):
     return {
@@ -398,13 +401,15 @@ def API_new(text, screen, cursor, screen_offset):
         'resize': Resize(text, screen, cursor, screen_offset)
     }
 
-def dispatch_signals(signal_stream, api, screen_refresher):
+def dispatch_signals(signal_stream, api, api_new, screen_refresher):
     screen_refresher.refresh()
-    signal_handler = api(signal_stream.get_next_signal())
+    next_signal = signal_stream.get_next_signal()
+    signal_handler = api(next_signal)
     while signal_handler:
         signal_handler.respond()
         screen_refresher.refresh()
-        signal_handler = api(signal_stream.get_next_signal())
+        next_signal = signal_stream.get_next_signal()
+        signal_handler = api(next_signal)
 
 def curses_open():
     stdscr = curses.initscr()
@@ -424,10 +429,10 @@ def start_editor(screen, signal_stream):
     cursor = Cursor(text, 12, 5)
     screen_offset = ScreenOffset(text, 4, 3)
 
-    api = API(text, screen, cursor, screen_offset)
+    api, api_new = API(text, screen, cursor, screen_offset)
     #api_new = API_new(text, screen, cursor, screen_offset)
     screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, api, screen_refresher)
+    dispatch_signals(signal_stream, api, api_new, screen_refresher)
 
 def main():
     try:

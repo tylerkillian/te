@@ -274,6 +274,21 @@ class MoveCursorRight:
         if cursor_moved:
             self.set_screen_offset()
 
+class Move:
+    def __init__(self, text, screen, cursor, screen_offset):
+        self.move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
+        self.move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
+        self.move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
+        self.move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
+    def move_up(self):
+        self.move_cursor_up()
+    def move_down(self):
+        self.move_cursor_down()
+    def move_left(self):
+        self.move_cursor_left()
+    def move_right(self):
+        self.move_cursor_right()
+
 class DeleteCharacter:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
@@ -381,7 +396,7 @@ def API(text, screen, cursor, screen_offset):
     backspace = Backspace(cursor, move_cursor_left, delete_character)
     insert_line = InsertLine(text, cursor, move_cursor_right)
     api_new = {
-        'move': move_cursor_up,
+        'move': Move(text, screen, cursor, screen_offset),
         'insert': Insert(text, cursor, move_cursor_right),
         'newline': insert_line,
         'backspace': backspace,
@@ -395,17 +410,13 @@ def dispatch_signals(signal_stream, api_new, screen_refresher):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            signal_handler = api_new['move']
-            signal_handler.respond()
+            api_new['move'].move_up()
         elif next_signal == 'DOWN':
-            signal_handler = api_new['move']
-            signal_handler.respond()
+            api_new['move'].move_down()
         elif next_signal == 'LEFT':
-            signal_handler = api_new['move']
-            signal_handler.respond()
+            api_new['move'].move_left()
         elif next_signal == 'RIGHT':
-            signal_handler = api_new['move']
-            signal_handler.respond()
+            api_new['move'].move_right()
         elif next_signal[0:10] == 'CHARACTER_':
             api_new['insert'].insert(next_signal[-1])
         elif next_signal == 'ENTER':

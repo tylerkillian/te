@@ -344,6 +344,19 @@ class InsertCharacter:
         self.text.set_line(line_index, line_before_cursor + self.character + line_after_cursor)
         self.move_cursor_right.respond()
 
+class Insert:
+    def __init__(self, text, cursor, move_cursor_right):
+        self.text = text
+        self.cursor = cursor
+        self.move_cursor_right = move_cursor_right
+    def insert(self, character):
+        line_index = self.cursor.get_line_index()
+        cursor_column = self.cursor.get_column_index()
+        line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
+        line_after_cursor = self.text.get_line(line_index)[cursor_column:]
+        self.text.set_line(line_index, line_before_cursor + character + line_after_cursor)
+        self.move_cursor_right.respond()
+
 class InsertLine:
     def __init__(self, text, cursor, move_cursor_right):
         self.text = text
@@ -388,7 +401,7 @@ def API(text, screen, cursor, screen_offset):
             return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
     api_new = {
         'move': move_cursor_up,
-        'insert': InsertCharacter(text, cursor, move_cursor_right, 'q'),
+        'insert': Insert(text, cursor, move_cursor_right),
         'newline': insert_line,
         'backspace': backspace,
         'delete': delete_character,
@@ -402,25 +415,33 @@ def dispatch_signals(signal_stream, api, api_new, screen_refresher):
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
             signal_handler = api_new['move']
+            signal_handler.respond()
         elif next_signal == 'DOWN':
             signal_handler = api_new['move']
+            signal_handler.respond()
         elif next_signal == 'LEFT':
             signal_handler = api_new['move']
+            signal_handler.respond()
         elif next_signal == 'RIGHT':
             signal_handler = api_new['move']
+            signal_handler.respond()
         elif next_signal[0:10] == 'CHARACTER_':
-            signal_handler = api_new['insert']
+            api_new['insert'].insert(next_signal[-1])
         elif next_signal == 'ENTER':
             signal_handler = api_new['newline']
+            signal_handler.respond()
         elif next_signal == 'BACKSPACE':
             signal_handler = api_new['backspace']
+            signal_handler.respond()
         elif next_signal == 'DELETE':
             signal_handler = api_new['delete']
+            signal_handler.respond()
         elif next_signal == 'RESIZE':
             signal_handler = api_new['resize']
+            signal_handler.respond()
         else:
             signal_handler = api(next_signal)
-        signal_handler.respond()
+            signal_handler.respond()
         screen_refresher.refresh()
 
 def curses_open():

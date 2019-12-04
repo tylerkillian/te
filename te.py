@@ -391,8 +391,6 @@ def API(text, screen, cursor, screen_offset):
     move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
     move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
     move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
-    delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
-    backspace = Backspace(cursor, move_cursor_left, delete_character)
     insert_line = InsertLine(text, cursor, move_cursor_right)
     api_new = {
         'move_up': MoveCursorUp(text, screen, cursor, screen_offset),
@@ -401,8 +399,8 @@ def API(text, screen, cursor, screen_offset):
         'move_right': MoveCursorRight(text, screen, cursor, screen_offset),
         'insert': Insert(text, cursor, move_cursor_right),
         'newline': insert_line,
-        'backspace': backspace,
-        'delete': delete_character,
+        'backspace': Backspace(cursor, move_cursor_left, DeleteCharacter(text, screen, cursor, screen_offset)),
+        'delete': DeleteCharacter(text, screen, cursor, screen_offset),
         'resize': Resize(text, screen, cursor, screen_offset),
     }
     return api_new

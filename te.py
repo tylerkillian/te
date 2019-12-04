@@ -390,15 +390,12 @@ def API(text, screen, cursor, screen_offset):
 
 def API_new(text, screen, cursor, screen_offset):
     return {
-    resize = Resize(text, screen, cursor, screen_offset)
-    move_cursor_up = MoveCursorUp(text, screen, cursor, screen_offset)
-    move_cursor_down = MoveCursorDown(text, screen, cursor, screen_offset)
-    move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
-    move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
-    delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
-    backspace = Backspace(cursor, move_cursor_left, delete_character)
-    insert_line = InsertLine(text, cursor, move_cursor_right)
-            return InsertCharacter(text, cursor, move_cursor_right, signal[-1])
+        'move': Move(text, screen, cursor, screen_offset)
+        'insert': Insert(text, cursor, move_cursor_right, signal[-1])
+        'newline': Newline(text, cursor, move_cursor_right)
+        'backspace': Backspace(cursor, move_cursor_left, delete_character)
+        'delete': DeleteCharacter(text, screen, cursor, screen_offset)
+        'resize': Resize(text, screen, cursor, screen_offset),
     }
 
 def dispatch_signals(signal_stream, api, screen_refresher):

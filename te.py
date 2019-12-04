@@ -281,13 +281,13 @@ class Move:
         self.move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
         self.move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
     def move_up(self):
-        self.move_cursor_up()
+        self.move_cursor_up.respond()
     def move_down(self):
-        self.move_cursor_down()
+        self.move_cursor_down.respond()
     def move_left(self):
-        self.move_cursor_left()
+        self.move_cursor_left.respond()
     def move_right(self):
-        self.move_cursor_right()
+        self.move_cursor_right.respond()
 
 class DeleteCharacter:
     def __init__(self, text, screen, cursor, screen_offset):

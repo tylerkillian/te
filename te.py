@@ -240,9 +240,9 @@ class MoveCursorRight:
         self.cursor = cursor
         self.screen_offset = screen_offset
     def respond(self):
-        if cursor_at_end_of_text(text, cursor):
+        if cursor_at_end_of_text(self.text, self.cursor):
             return
-        if cursor_at_end_of_line(text, cursor):
+        if cursor_at_end_of_line(self.text, self.cursor):
             self.cursor.set_column_index(0)
             self.cursor.set_line_index(self.cursor.get_line_index() + 1)
         else:

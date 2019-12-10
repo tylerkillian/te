@@ -284,12 +284,8 @@ class Backspace:
         self.cursor = cursor
         self.move_cursor_left = move_cursor_left
         self.delete_character = delete_character
-    def cursor_at_beginning_of_text(self):
-        if self.cursor.get_line_index() == 0 and self.cursor.get_column_index() == 0:
-            return True
-        return False
     def respond(self):
-        if self.cursor_at_beginning_of_text():
+        if cursor_at_beginning_of_text(cursor):
             return
         self.move_cursor_left.respond()
         self.delete_character.respond()

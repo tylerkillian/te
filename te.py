@@ -212,8 +212,7 @@ class MoveCursorDown:
         if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
             return
         self.cursor.set_line_index(self.cursor.get_line_index() + 1)
-        if self.cursor.get_column_index() > len(self.text.get_line(self.cursor.get_line_index())):
-            self.cursor.set_column_index(len(self.text.get_line(self.cursor.get_line_index())))
+        snap_cursor_to_text(self.text, self.cursor)
         capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 class MoveCursorLeft:

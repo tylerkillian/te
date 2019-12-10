@@ -321,10 +321,10 @@ class DeleteCharacter:
         self.delete_current_character()
 
 class Backspace:
-    def __init__(self, cursor, move_cursor_left, delete_character):
+    def __init__(self, text, screen, cursor, screen_offset):
         self.cursor = cursor
-        self.move_cursor_left = move_cursor_left
-        self.delete_character = delete_character
+        self.move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
+        self.delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
     def respond(self):
         if cursor_at_beginning_of_text(self.cursor):
             return
@@ -341,7 +341,7 @@ def API(text, screen, cursor, screen_offset):
         'insert': Insert(text, screen, cursor, screen_offset),
         'newline': InsertLine(text, screen, cursor, screen_offset),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
-        'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset))
+        'backspace': Backspace(text, screen, cursor, screen_offset)
     }
     return api_new
 

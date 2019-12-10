@@ -88,8 +88,6 @@ class Text:
         return len(self.text[line_index])
     def get_num_lines(self):
         return len(self.text)
-    def get_num_columns(self, line_index):
-        return len(self.text[line_index])
     def get_line(self, line_index):
         return self.text[line_index]
     def set_line(self, line_index, value):

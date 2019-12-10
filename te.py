@@ -333,6 +333,7 @@ class Backspace:
 
 def API(text, screen, cursor, screen_offset):
     api_new = {
+        'resize': Resize(text, screen, cursor, screen_offset),
         'move_up': MoveCursorUp(text, screen, cursor, screen_offset),
         'move_down': MoveCursorDown(text, screen, cursor, screen_offset),
         'move_left': MoveCursorLeft(text, screen, cursor, screen_offset),
@@ -340,8 +341,7 @@ def API(text, screen, cursor, screen_offset):
         'insert': Insert(text, screen, cursor, screen_offset),
         'newline': InsertLine(text, screen, cursor, screen_offset),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
-        'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset)),
-        'resize': Resize(text, screen, cursor, screen_offset),
+        'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset))
     }
     return api_new
 

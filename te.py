@@ -318,10 +318,10 @@ class Insert:
         self.move_cursor_right.respond()
 
 class InsertLine:
-    def __init__(self, text, cursor, move_cursor_right):
+    def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
         self.cursor = cursor
-        self.move_cursor_right = move_cursor_right
+        self.move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
     def respond(self):
         line_index = self.cursor.get_line_index()
         cursor_column = self.cursor.get_column_index()
@@ -338,7 +338,7 @@ def API(text, screen, cursor, screen_offset):
         'move_left': MoveCursorLeft(text, screen, cursor, screen_offset),
         'move_right': MoveCursorRight(text, screen, cursor, screen_offset),
         'insert': Insert(text, screen, cursor, screen_offset),
-        'newline': InsertLine(text, cursor, MoveCursorRight(text, screen, cursor, screen_offset)),
+        'newline': InsertLine(text, screen, cursor, screen_offset),
         'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset)),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
         'resize': Resize(text, screen, cursor, screen_offset),

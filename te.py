@@ -189,22 +189,13 @@ class MoveCursorDown:
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
-    def set_cursor_position(self):
+    def respond(self):
         if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
-            return False
+            return
         self.cursor.set_line_index(self.cursor.get_line_index() + 1)
         if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
             self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
-        return True
-    def set_screen_offset(self):
-        if self.screen_offset.get_line_index() + self.screen.get_num_lines() == self.cursor.get_line_index():
-            self.screen_offset.set_line_index(self.screen_offset.get_line_index() + 1)
-        if self.screen_offset.get_column_index() > self.cursor.get_column_index():
-            self.screen_offset.set_column_index(self.cursor.get_column_index())
-    def respond(self):
-        cursor_moved = self.set_cursor_position()
-        if cursor_moved:
-            self.set_screen_offset()
+        capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 class MoveCursorLeft:
     def __init__(self, text, screen, cursor, screen_offset):

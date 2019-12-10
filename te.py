@@ -337,7 +337,7 @@ def API(text, screen, cursor, screen_offset):
         'move_down': MoveCursorDown(text, screen, cursor, screen_offset),
         'move_left': MoveCursorLeft(text, screen, cursor, screen_offset),
         'move_right': MoveCursorRight(text, screen, cursor, screen_offset),
-        'insert': Insert(text, cursor, screen, screen_offset),
+        'insert': Insert(text, screen, cursor, screen_offset),
         'newline': InsertLine(text, cursor, MoveCursorRight(text, screen, cursor, screen_offset)),
         'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset)),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),

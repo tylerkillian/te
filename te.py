@@ -154,10 +154,10 @@ class ScreenRefresher:
             self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
 def capture_cursor(screen, cursor, screen_offset):
-    cursor_line_index = self.cursor.get_line_index()
-    cursor_column_index = self.cursor.get_column_index()
-    screen_num_lines = self.screen.get_num_lines()
-    screen_num_columns = self.screen.get_num_columns()
+    cursor_line_index = cursor.get_line_index()
+    cursor_column_index = cursor.get_column_index()
+    screen_num_lines = screen.get_num_lines()
+    screen_num_columns = screen.get_num_columns()
     screen_offset.capture(cursor_line_index, screen_num_lines, cursor_column_index, screen_num_columns)
 
 class Resize:

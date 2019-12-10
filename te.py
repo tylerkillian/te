@@ -250,46 +250,6 @@ class MoveCursorRight:
             self.cursor.set_column_index(self.cursor.get_column_index() + 1)
         capture_cursor(self.screen, self.cursor, self.screen_offset)
 
-class DeleteCharacter:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def append_next_line_to_current_line(self):
-        current_line_index = self.cursor.get_line_index()
-        current_line = self.text.get_line(current_line_index)
-        next_line = self.text.get_line(current_line_index + 1)
-        self.text.set_line(current_line_index, current_line + next_line)
-    def delete_next_line(self):
-        next_line_index = self.cursor.get_line_index() + 1
-        self.text.delete_line(next_line_index)
-    def delete_current_character(self):
-        current_line_index = self.cursor.get_line_index()
-        current_line = self.text.get_line(current_line_index)
-        current_character_index = self.cursor.get_column_index()
-        new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
-        self.text.set_line(current_line_index, new_line)
-    def respond(self):
-        if cursor_at_end_of_text(self.text, self.cursor):
-            return
-        if cursor_at_end_of_line(self.text, self.cursor):
-            self.append_next_line_to_current_line()
-            self.delete_next_line()
-            return
-        self.delete_current_character()
-
-class Backspace:
-    def __init__(self, cursor, move_cursor_left, delete_character):
-        self.cursor = cursor
-        self.move_cursor_left = move_cursor_left
-        self.delete_character = delete_character
-    def respond(self):
-        if cursor_at_beginning_of_text(self.cursor):
-            return
-        self.move_cursor_left.respond()
-        self.delete_character.respond()
-
 class InsertCharacter:
     def __init__(self, text, cursor, move_cursor_right, character):
         self.text = text
@@ -331,6 +291,46 @@ class InsertLine:
         self.text.insert_line(line_index + 1, line_after_cursor)
         self.move_cursor_right.respond()
 
+class DeleteCharacter:
+    def __init__(self, text, screen, cursor, screen_offset):
+        self.text = text
+        self.screen = screen
+        self.cursor = cursor
+        self.screen_offset = screen_offset
+    def append_next_line_to_current_line(self):
+        current_line_index = self.cursor.get_line_index()
+        current_line = self.text.get_line(current_line_index)
+        next_line = self.text.get_line(current_line_index + 1)
+        self.text.set_line(current_line_index, current_line + next_line)
+    def delete_next_line(self):
+        next_line_index = self.cursor.get_line_index() + 1
+        self.text.delete_line(next_line_index)
+    def delete_current_character(self):
+        current_line_index = self.cursor.get_line_index()
+        current_line = self.text.get_line(current_line_index)
+        current_character_index = self.cursor.get_column_index()
+        new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
+        self.text.set_line(current_line_index, new_line)
+    def respond(self):
+        if cursor_at_end_of_text(self.text, self.cursor):
+            return
+        if cursor_at_end_of_line(self.text, self.cursor):
+            self.append_next_line_to_current_line()
+            self.delete_next_line()
+            return
+        self.delete_current_character()
+
+class Backspace:
+    def __init__(self, cursor, move_cursor_left, delete_character):
+        self.cursor = cursor
+        self.move_cursor_left = move_cursor_left
+        self.delete_character = delete_character
+    def respond(self):
+        if cursor_at_beginning_of_text(self.cursor):
+            return
+        self.move_cursor_left.respond()
+        self.delete_character.respond()
+
 def API(text, screen, cursor, screen_offset):
     api_new = {
         'move_up': MoveCursorUp(text, screen, cursor, screen_offset),
@@ -339,8 +339,8 @@ def API(text, screen, cursor, screen_offset):
         'move_right': MoveCursorRight(text, screen, cursor, screen_offset),
         'insert': Insert(text, screen, cursor, screen_offset),
         'newline': InsertLine(text, screen, cursor, screen_offset),
-        'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset)),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
+        'backspace': Backspace(cursor, MoveCursorLeft(text, screen, cursor, screen_offset), DeleteCharacter(text, screen, cursor, screen_offset)),
         'resize': Resize(text, screen, cursor, screen_offset),
     }
     return api_new

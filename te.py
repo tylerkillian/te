@@ -285,7 +285,7 @@ class Backspace:
         self.move_cursor_left = move_cursor_left
         self.delete_character = delete_character
     def respond(self):
-        if cursor_at_beginning_of_text(cursor):
+        if cursor_at_beginning_of_text(self.cursor):
             return
         self.move_cursor_left.respond()
         self.delete_character.respond()

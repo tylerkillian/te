@@ -126,6 +126,15 @@ class ScreenOffset:
         return self.column_index
     def set_column_index(self, value):
         self.column_index = value
+    def capture(self, line_index, num_lines, column_index, num_columns):
+        if line_index < self.line_index:
+            self.line_index = line_index
+        if column_index < self.column_index:
+            self.column_index = column_index
+        if line_index >= self.line_index + num_lines:
+            self.line_index = line_index - num_lines + 1
+        if column_index >= self.column_index + num_columns:
+            self.column_index = column_index - num_columns + 1
 
 class ScreenRefresher:
     def __init__(self, text, screen, cursor, screen_offset):

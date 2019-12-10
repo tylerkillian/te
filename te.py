@@ -160,6 +160,21 @@ def capture_cursor(screen, cursor, screen_offset):
     screen_num_columns = screen.get_num_columns()
     screen_offset.capture(cursor_line_index, screen_num_lines, cursor_column_index, screen_num_columns)
 
+def cursor_at_last_line(text, cursor):
+    if cursor.get_line_index() == text.get_num_lines() - 1:
+        return True
+    return False
+
+def cursor_at_end_of_line(text, cursor):
+    if cursor.get_column_index() == text.get_line_length(cursor.get_line_index()):
+        return True
+    return False
+
+def cursor_at_end_of_text(text, cursor):
+    if cursor_at_last_line(text, cursor) and cursor_at_end_of_line(text, cursor):
+        return True
+    return False
+
 class Resize:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
@@ -224,22 +239,10 @@ class MoveCursorRight:
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
-    def cursor_at_last_line(self):
-        if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
-            return True
-        return False
-    def cursor_at_end_of_line(self):
-        if self.cursor.get_column_index() == self.text.get_line_length(self.cursor.get_line_index()):
-            return True
-        return False
-    def cursor_at_end_of_text(self):
-        if self.cursor_at_last_line() and self.cursor_at_end_of_line():
-            return True
-        return False
     def respond(self):
-        if self.cursor_at_end_of_text():
+        if cursor_at_end_of_text(text, cursor):
             return
-        if self.cursor_at_end_of_line():
+        if cursor_at_end_of_line(text, cursor):
             self.cursor.set_column_index(0)
             self.cursor.set_line_index(self.cursor.get_line_index() + 1)
         else:

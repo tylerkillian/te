@@ -330,7 +330,7 @@ class Backspace:
         self.delete_character.respond()
 
 def API(text, screen, cursor, screen_offset):
-    api_new = {
+    api = {
         'resize': Resize(text, screen, cursor, screen_offset),
         'move_up': MoveCursorUp(text, screen, cursor, screen_offset),
         'move_down': MoveCursorDown(text, screen, cursor, screen_offset),
@@ -341,30 +341,30 @@ def API(text, screen, cursor, screen_offset):
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
         'backspace': Backspace(text, screen, cursor, screen_offset)
     }
-    return api_new
+    return api
 
-def dispatch_signals(signal_stream, api_new, screen_refresher):
+def dispatch_signals(signal_stream, api, screen_refresher):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            api_new['move_up'].respond()
+            api['move_up'].respond()
         elif next_signal == 'DOWN':
-            api_new['move_down'].respond()
+            api['move_down'].respond()
         elif next_signal == 'LEFT':
-            api_new['move_left'].respond()
+            api['move_left'].respond()
         elif next_signal == 'RIGHT':
-            api_new['move_right'].respond()
+            api['move_right'].respond()
         elif next_signal[0:10] == 'CHARACTER_':
-            api_new['insert'].insert(next_signal[-1])
+            api['insert'].insert(next_signal[-1])
         elif next_signal == 'ENTER':
-            api_new['newline'].respond()
+            api['newline'].respond()
         elif next_signal == 'BACKSPACE':
-            api_new['backspace'].respond()
+            api['backspace'].respond()
         elif next_signal == 'DELETE':
-            api_new['delete'].respond()
+            api['delete'].respond()
         elif next_signal == 'RESIZE':
-            api_new['resize'].respond()
+            api['resize'].respond()
         screen_refresher.refresh()
 
 def curses_open():

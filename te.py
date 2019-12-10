@@ -216,7 +216,6 @@ class MoveCursorLeft:
             self.cursor.set_column_index(line_length)
         else:
             self.cursor.set_column_index(self.cursor.get_column_index() - 1)
-        self.set_cursor_position()
         capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 class MoveCursorRight:

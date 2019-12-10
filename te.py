@@ -201,6 +201,12 @@ class MoveCursorUp:
         self.cursor.set_line_index(self.cursor.get_line_index() - 1)
         snap_cursor_to_text(self.text, self.cursor)
         capture_cursor(self.screen, self.cursor, self.screen_offset)
+def move_cursor_up(text, screen, cursor, screen_offset):
+    if cursor.get_line_index() == 0:
+        return
+    cursor.set_line_index(cursor.get_line_index() - 1)
+    snap_cursor_to_text(text, cursor)
+    capture_cursor(screen, cursor, screen_offset)
 
 class MoveCursorDown:
     def __init__(self, text, screen, cursor, screen_offset):
@@ -343,12 +349,12 @@ def API(text, screen, cursor, screen_offset):
     }
     return api
 
-def dispatch_signals(signal_stream, api, screen_refresher):
+def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, screen_refresher):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            api['move_up'].respond()
+            move_cursor_up(text, screen, cursor, screen_offset)
         elif next_signal == 'DOWN':
             api['move_down'].respond()
         elif next_signal == 'LEFT':
@@ -387,7 +393,7 @@ def start_editor(screen, signal_stream):
 
     api = API(text, screen, cursor, screen_offset)
     screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, api, screen_refresher)
+    dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, screen_refresher)
 
 def main():
     try:

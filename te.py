@@ -161,7 +161,7 @@ def capture_cursor(screen, cursor, screen_offset):
     screen_offset.capture(cursor_line_index, screen_num_lines, cursor_column_index, screen_num_columns)
 
 def cursor_at_beginning_of_text(cursor):
-    if cursor.get_line_index() == 0 and self.cursor.get_column_index() == 0:
+    if cursor.get_line_index() == 0 and cursor.get_column_index() == 0:
         return True
     return False
 

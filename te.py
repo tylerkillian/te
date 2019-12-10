@@ -84,8 +84,6 @@ class Text:
         for line in self.text[line_index:line_index + num_lines]:
             result.append(line[column_index:column_index + num_columns])
         return result
-    def get_line_length(self, line_index):
-        return len(self.text[line_index])
     def get_num_lines(self):
         return len(self.text)
     def get_line(self, line_index):
@@ -169,7 +167,7 @@ def cursor_at_last_line(text, cursor):
     return False
 
 def cursor_at_end_of_line(text, cursor):
-    if cursor.get_column_index() == text.get_line_length(cursor.get_line_index()):
+    if cursor.get_column_index() == len(text.get_line(cursor.get_line_index())):
         return True
     return False
 
@@ -197,8 +195,8 @@ class MoveCursorUp:
         if self.cursor.get_line_index() == 0:
             return
         self.cursor.set_line_index(self.cursor.get_line_index() - 1)
-        if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
-            self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
+        if self.cursor.get_column_index() > len(self.text.get_line(self.cursor.get_line_index())):
+            self.cursor.set_column_index(len(self.text.get_line(self.cursor.get_line_index())))
         capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 class MoveCursorDown:
@@ -211,8 +209,8 @@ class MoveCursorDown:
         if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
             return
         self.cursor.set_line_index(self.cursor.get_line_index() + 1)
-        if self.cursor.get_column_index() > self.text.get_line_length(self.cursor.get_line_index()):
-            self.cursor.set_column_index(self.text.get_line_length(self.cursor.get_line_index()))
+        if self.cursor.get_column_index() > len(self.text.get_line(self.cursor.get_line_index())):
+            self.cursor.set_column_index(len(self.text.get_line(self.cursor.get_line_index())))
         capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 class MoveCursorLeft:
@@ -226,7 +224,7 @@ class MoveCursorLeft:
             return
         if self.cursor.get_column_index() == 0:
             self.cursor.set_line_index(self.cursor.get_line_index() - 1)
-            line_length = self.text.get_line_length(self.cursor.get_line_index())
+            line_length = len(self.text.get_line(self.cursor.get_line_index()))
             self.cursor.set_column_index(line_length)
         else:
             self.cursor.set_column_index(self.cursor.get_column_index() - 1)

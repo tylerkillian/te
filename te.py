@@ -256,18 +256,6 @@ class DeleteCharacter:
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
-    def cursor_at_last_line(self):
-        if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
-            return True
-        return False
-    def cursor_at_end_of_line(self):
-        if self.cursor.get_column_index() == self.text.get_line_length(self.cursor.get_line_index()):
-            return True
-        return False
-    def cursor_at_end_of_text(self):
-        if self.cursor_at_last_line() and self.cursor_at_end_of_line():
-            return True
-        return False
     def append_next_line_to_current_line(self):
         current_line_index = self.cursor.get_line_index()
         current_line = self.text.get_line(current_line_index)
@@ -283,9 +271,9 @@ class DeleteCharacter:
         new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
         self.text.set_line(current_line_index, new_line)
     def respond(self):
-        if self.cursor_at_end_of_text():
+        if cursor_at_end_of_text(self.text, self.cursor):
             return
-        if self.cursor_at_end_of_line():
+        if cursor_at_end_of_line(self.text, self.cursor):
             self.append_next_line_to_current_line()
             self.delete_next_line()
             return

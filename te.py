@@ -156,6 +156,10 @@ def capture_cursor(screen, cursor, screen_offset):
     screen_num_columns = screen.get_num_columns()
     screen_offset.capture(cursor_line_index, screen_num_lines, cursor_column_index, screen_num_columns)
 
+def snap_cursor_to_text(text, cursor):
+    if cursor.get_column_index() > len(text.get_line(cursor.get_line_index())):
+        cursor.set_column_index(len(text.get_line(cursor.get_line_index())))
+
 def cursor_at_beginning_of_text(cursor):
     if cursor.get_line_index() == 0 and cursor.get_column_index() == 0:
         return True
@@ -195,8 +199,7 @@ class MoveCursorUp:
         if self.cursor.get_line_index() == 0:
             return
         self.cursor.set_line_index(self.cursor.get_line_index() - 1)
-        if self.cursor.get_column_index() > len(self.text.get_line(self.cursor.get_line_index())):
-            self.cursor.set_column_index(len(self.text.get_line(self.cursor.get_line_index())))
+        snap_cursor_to_text(self.text, self.cursor)
         capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 class MoveCursorDown:

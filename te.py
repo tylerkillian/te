@@ -153,6 +153,13 @@ class ScreenRefresher:
             self.cursor.get_line_index() - self.screen_offset.get_line_index(),
             self.cursor.get_column_index() - self.screen_offset.get_column_index())
 
+def capture_cursor(screen, cursor, screen_offset):
+    cursor_line_index = self.cursor.get_line_index()
+    cursor_column_index = self.cursor.get_column_index()
+    screen_num_lines = self.screen.get_num_lines()
+    screen_num_columns = self.screen.get_num_columns()
+    screen_offset.capture(cursor_line_index, screen_num_lines, cursor_column_index, screen_num_columns)
+
 class Resize:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
@@ -160,10 +167,7 @@ class Resize:
         self.cursor = cursor
         self.screen_offset = screen_offset
     def respond(self):
-        if self.cursor.get_line_index() - self.screen_offset.get_line_index() >=  self.screen.get_num_lines():
-            self.screen_offset.set_line_index(self.cursor.get_line_index() - self.screen.get_num_lines() + 1)
-        if self.cursor.get_column_index() - self.screen_offset.get_column_index() >=  self.screen.get_num_columns():
-            self.screen_offset.set_column_index(self.cursor.get_column_index() - self.screen.get_num_columns() + 1)
+        capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 class MoveCursorUp:
     def __init__(self, text, screen, cursor, screen_offset):

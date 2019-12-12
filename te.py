@@ -356,7 +356,7 @@ def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, sc
         if next_signal == 'UP':
             move_cursor_up(text, screen, cursor, screen_offset)
         elif next_signal == 'DOWN':
-            api['move_down'].respond()
+            move_cursor_down(text, screen, cursor, screen_offset)
         elif next_signal == 'LEFT':
             api['move_left'].respond()
         elif next_signal == 'RIGHT':

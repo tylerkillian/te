@@ -284,7 +284,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, screen_
         elif next_signal == 'ENTER':
             insert_line(text, screen, cursor, screen_offset)
         elif next_signal == 'BACKSPACE':
-            api['backspace'].respond()
+            backspace(text, screen, cursor, screen_offset)
         elif next_signal == 'DELETE':
             delete_character(text, screen, cursor, screen_offset)
         elif next_signal == 'RESIZE':

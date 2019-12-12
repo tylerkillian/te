@@ -262,7 +262,6 @@ def backspace(text, screen, cursor, screen_offset):
     delete_character(text, screen, cursor, screen_offset)
 
 def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
-    refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
@@ -283,7 +282,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
             delete_character(text, screen, cursor, screen_offset)
         elif next_signal == 'RESIZE':
             resize(text, screen, cursor, screen_offset)
-        refresh()
+        refresh(text, screen, cursor, screen_offset)
 
 def curses_open():
     stdscr = curses.initscr()
@@ -302,6 +301,7 @@ def start_editor(screen, signal_stream):
     text = Text(POEM)
     cursor = Cursor(text, 0, 0)
     screen_offset = ScreenOffset(text, 0, 0)
+    refresh(text, screen, cursor, screen_offset)
     dispatch_signals(signal_stream, text, screen, cursor, screen_offset)
 
 def main():

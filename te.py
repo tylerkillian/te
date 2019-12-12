@@ -189,18 +189,6 @@ class Resize:
     def respond(self):
         capture_cursor(self.screen, self.cursor, self.screen_offset)
 
-class MoveCursorUp:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def respond(self):
-        if self.cursor.get_line_index() == 0:
-            return
-        self.cursor.set_line_index(self.cursor.get_line_index() - 1)
-        snap_cursor_to_text(self.text, self.cursor)
-        capture_cursor(self.screen, self.cursor, self.screen_offset)
 def move_cursor_up(text, screen, cursor, screen_offset):
     if cursor.get_line_index() == 0:
         return
@@ -208,30 +196,12 @@ def move_cursor_up(text, screen, cursor, screen_offset):
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)
 
-class MoveCursorDown:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def respond(self):
-        pass
-
 def move_cursor_down(text, screen, cursor, screen_offset):
     if cursor.get_line_index() == text.get_num_lines() - 1:
         return
     cursor.set_line_index(cursor.get_line_index() + 1)
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)
-
-class MoveCursorLeft:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def respond(self):
-        pass
 
 def move_cursor_left(text, screen, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
@@ -244,14 +214,6 @@ def move_cursor_left(text, screen, cursor, screen_offset):
         cursor.set_column_index(cursor.get_column_index() - 1)
     capture_cursor(screen, cursor, screen_offset)
 
-class MoveCursorRight:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def respond(self):
-        pass
 def move_cursor_right(text, screen, cursor, screen_offset):
     if cursor_at_end_of_text(text, cursor):
         return
@@ -336,10 +298,6 @@ class Backspace:
 def API(text, screen, cursor, screen_offset):
     api = {
         'resize': Resize(text, screen, cursor, screen_offset),
-        'move_up': MoveCursorUp(text, screen, cursor, screen_offset),
-        'move_down': MoveCursorDown(text, screen, cursor, screen_offset),
-        'move_left': MoveCursorLeft(text, screen, cursor, screen_offset),
-        'move_right': MoveCursorRight(text, screen, cursor, screen_offset),
         'insert': Insert(text, screen, cursor, screen_offset),
         'newline': InsertLine(text, screen, cursor, screen_offset),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),

@@ -215,6 +215,9 @@ class MoveCursorDown:
         self.cursor = cursor
         self.screen_offset = screen_offset
     def respond(self):
+        pass
+
+def move_cursor_down(text, screen, cursor, screen_offset):
         if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
             return
         self.cursor.set_line_index(self.cursor.get_line_index() + 1)

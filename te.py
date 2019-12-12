@@ -180,14 +180,8 @@ def cursor_at_end_of_text(text, cursor):
         return True
     return False
 
-class Resize:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def respond(self):
-        capture_cursor(self.screen, self.cursor, self.screen_offset)
+def resize(text, screen, cursor, screen_offset):
+    capture_cursor(self.screen, self.cursor, self.screen_offset)
 
 def move_cursor_up(text, screen, cursor, screen_offset):
     if cursor.get_line_index() == 0:
@@ -297,7 +291,6 @@ class Backspace:
 
 def API(text, screen, cursor, screen_offset):
     api = {
-        'resize': Resize(text, screen, cursor, screen_offset),
         'insert': Insert(text, screen, cursor, screen_offset),
         'newline': InsertLine(text, screen, cursor, screen_offset),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
@@ -326,7 +319,7 @@ def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, sc
         elif next_signal == 'DELETE':
             api['delete'].respond()
         elif next_signal == 'RESIZE':
-            api['resize'].respond()
+            resize(text, screen, cursor, screen_offset)
         screen_refresher.refresh()
 
 def curses_open():

@@ -261,25 +261,13 @@ def delete_character(text, screen, cursor, screen_offset):
         return
     delete_current_character(text, cursor)
 
-class Backspace:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def respond(self):
-        if cursor_at_beginning_of_text(self.cursor):
-            return
-        move_cursor_left(self.text, self.screen, self.cursor, self.screen_offset)
-        delete_character(self.text, self.screen, self.cursor, self.screen_offset)
+def backspace(text, screen, cursor, screen_offset):
+    if cursor_at_beginning_of_text(cursor):
+        return
+    move_cursor_left(text, screen, cursor, screen_offset)
+    delete_character(text, screen, cursor, screen_offset)
 
-def API(text, screen, cursor, screen_offset):
-    api = {
-        'backspace': Backspace(text, screen, cursor, screen_offset)
-    }
-    return api
-
-def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, screen_refresher):
+def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, screen_refresher):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()

@@ -306,12 +306,10 @@ def curses_close(stdscr):
 
 def start_editor(screen, signal_stream):
     text = Text(POEM)
-    cursor = Cursor(text, 12, 5)
-    screen_offset = ScreenOffset(text, 4, 3)
-
-    api = API(text, screen, cursor, screen_offset)
+    cursor = Cursor(text, 0, 0)
+    screen_offset = ScreenOffset(text, 0, 0)
     screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, screen_refresher)
+    dispatch_signals(signal_stream, text, screen, cursor, screen_offset, screen_refresher)
 
 def main():
     try:

@@ -262,7 +262,7 @@ def backspace(text, screen, cursor, screen_offset):
     delete_character(text, screen, cursor, screen_offset)
 
 def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
-    screen_refresher.refresh()
+    refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
@@ -283,7 +283,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
             delete_character(text, screen, cursor, screen_offset)
         elif next_signal == 'RESIZE':
             resize(text, screen, cursor, screen_offset)
-        screen_refresher.refresh()
+        refresh()
 
 def curses_open():
     stdscr = curses.initscr()

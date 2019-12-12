@@ -265,7 +265,9 @@ def move_cursor_right(text, screen, cursor, screen_offset):
 class InsertCharacter:
     def __init__(self, text, cursor, move_cursor_right, character):
         self.text = text
+        self.screen = screen
         self.cursor = cursor
+        self.screen_offset = screen_offset
         self.move_cursor_right = move_cursor_right
         self.character = character
     def respond(self):
@@ -279,8 +281,9 @@ class InsertCharacter:
 class Insert:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
+        self.screen = screen
         self.cursor = cursor
-        self.move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
+        self.screen_offset = screen_offset
     def insert(self, character):
         line_index = self.cursor.get_line_index()
         cursor_column = self.cursor.get_column_index()
@@ -288,6 +291,7 @@ class Insert:
         line_after_cursor = self.text.get_line(line_index)[cursor_column:]
         self.text.set_line(line_index, line_before_cursor + character + line_after_cursor)
         self.move_cursor_right.respond()
+        move_cursor_right(self.text, self.screen, self.cursor, self.screen_offset)
 
 class InsertLine:
     def __init__(self, text, screen, cursor, screen_offset):

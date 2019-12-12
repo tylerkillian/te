@@ -218,13 +218,13 @@ def move_cursor_right(text, screen, cursor, screen_offset):
         cursor.set_column_index(cursor.get_column_index() + 1)
     capture_cursor(screen, cursor, screen_offset)
 
-def insert(self, text, screen, cursor, screen_offset, character):
-    line_index = self.cursor.get_line_index()
-    cursor_column = self.cursor.get_column_index()
-    line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
-    line_after_cursor = self.text.get_line(line_index)[cursor_column:]
-    self.text.set_line(line_index, line_before_cursor + character + line_after_cursor)
-    move_cursor_right(self.text, self.screen, self.cursor, self.screen_offset)
+def insert(text, screen, cursor, screen_offset, character):
+    line_index = cursor.get_line_index()
+    cursor_column = cursor.get_column_index()
+    line_before_cursor = text.get_line(line_index)[0:cursor_column]
+    line_after_cursor = text.get_line(line_index)[cursor_column:]
+    text.set_line(line_index, line_before_cursor + character + line_after_cursor)
+    move_cursor_right(text, screen, cursor, screen_offset)
 
 class InsertLine:
     def __init__(self, text, screen, cursor, screen_offset):

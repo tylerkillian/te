@@ -251,14 +251,16 @@ class MoveCursorRight:
         self.cursor = cursor
         self.screen_offset = screen_offset
     def respond(self):
-        if cursor_at_end_of_text(self.text, self.cursor):
-            return
-        if cursor_at_end_of_line(self.text, self.cursor):
-            self.cursor.set_column_index(0)
-            self.cursor.set_line_index(self.cursor.get_line_index() + 1)
-        else:
-            self.cursor.set_column_index(self.cursor.get_column_index() + 1)
-        capture_cursor(self.screen, self.cursor, self.screen_offset)
+        pass
+def move_cursor_right(text, screen, cursor, screen_offset):
+    if cursor_at_end_of_text(text, cursor):
+        return
+    if cursor_at_end_of_line(text, cursor):
+        cursor.set_column_index(0)
+        cursor.set_line_index(cursor.get_line_index() + 1)
+    else:
+        cursor.set_column_index(cursor.get_column_index() + 1)
+    capture_cursor(screen, cursor, screen_offset)
 
 class InsertCharacter:
     def __init__(self, text, cursor, move_cursor_right, character):

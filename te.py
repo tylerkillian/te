@@ -218,19 +218,13 @@ def move_cursor_right(text, screen, cursor, screen_offset):
         cursor.set_column_index(cursor.get_column_index() + 1)
     capture_cursor(screen, cursor, screen_offset)
 
-class Insert:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def insert(self, character):
-        line_index = self.cursor.get_line_index()
-        cursor_column = self.cursor.get_column_index()
-        line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
-        line_after_cursor = self.text.get_line(line_index)[cursor_column:]
-        self.text.set_line(line_index, line_before_cursor + character + line_after_cursor)
-        move_cursor_right(self.text, self.screen, self.cursor, self.screen_offset)
+def insert(self, text, screen, cursor, screen_offset, character):
+    line_index = self.cursor.get_line_index()
+    cursor_column = self.cursor.get_column_index()
+    line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
+    line_after_cursor = self.text.get_line(line_index)[cursor_column:]
+    self.text.set_line(line_index, line_before_cursor + character + line_after_cursor)
+    move_cursor_right(self.text, self.screen, self.cursor, self.screen_offset)
 
 class InsertLine:
     def __init__(self, text, screen, cursor, screen_offset):
@@ -291,7 +285,6 @@ class Backspace:
 
 def API(text, screen, cursor, screen_offset):
     api = {
-        'insert': Insert(text, screen, cursor, screen_offset),
         'newline': InsertLine(text, screen, cursor, screen_offset),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
         'backspace': Backspace(text, screen, cursor, screen_offset)
@@ -311,7 +304,7 @@ def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, sc
         elif next_signal == 'RIGHT':
             move_cursor_right(text, screen, cursor, screen_offset)
         elif next_signal[0:10] == 'CHARACTER_':
-            api['insert'].insert(next_signal[-1])
+            insert(text, screen, cursor, screen_offset, next_signal[-1])
         elif next_signal == 'ENTER':
             api['newline'].respond()
         elif next_signal == 'BACKSPACE':

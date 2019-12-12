@@ -332,7 +332,10 @@ class DeleteCharacter:
 
 class Backspace:
     def __init__(self, text, screen, cursor, screen_offset):
+        self.text = text
+        self.screen = screen
         self.cursor = cursor
+        self.screen_offset = screen_offset
         self.delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
     def respond(self):
         if cursor_at_beginning_of_text(self.cursor):

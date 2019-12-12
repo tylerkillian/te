@@ -132,22 +132,16 @@ class ScreenOffset:
         if column_index >= self.column_index + num_columns:
             self.column_index = column_index - num_columns + 1
 
-class ScreenRefresher:
-    def __init__(self, text, screen, cursor, screen_offset):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-    def refresh(self):
-        text_to_draw = self.text.get_text(
-            self.screen_offset.get_line_index(),
-            self.screen.get_num_lines(),
-            self.screen_offset.get_column_index(),
-            self.screen.get_num_columns())
-        self.screen.draw(text_to_draw)
-        self.screen.set_cursor_position(
-            self.cursor.get_line_index() - self.screen_offset.get_line_index(),
-            self.cursor.get_column_index() - self.screen_offset.get_column_index())
+def refresh(text, screen, cursor, screen_offset):
+    text_to_draw = text.get_text(
+        screen_offset.get_line_index(),
+        screen.get_num_lines(),
+        screen_offset.get_column_index(),
+        screen.get_num_columns())
+    screen.draw(text_to_draw)
+    screen.set_cursor_position(
+        cursor.get_line_index() - screen_offset.get_line_index(),
+        cursor.get_column_index() - screen_offset.get_column_index())
 
 def capture_cursor(screen, cursor, screen_offset):
     cursor_line_index = cursor.get_line_index()

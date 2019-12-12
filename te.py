@@ -370,7 +370,7 @@ def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, sc
         elif next_signal == 'LEFT':
             move_cursor_left(text, screen, cursor, screen_offset)
         elif next_signal == 'RIGHT':
-            api['move_right'].respond()
+            move_cursor_right(text, screen, cursor, screen_offset)
         elif next_signal[0:10] == 'CHARACTER_':
             api['insert'].insert(next_signal[-1])
         elif next_signal == 'ENTER':

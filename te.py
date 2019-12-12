@@ -262,22 +262,6 @@ def move_cursor_right(text, screen, cursor, screen_offset):
         cursor.set_column_index(cursor.get_column_index() + 1)
     capture_cursor(screen, cursor, screen_offset)
 
-class InsertCharacter:
-    def __init__(self, text, cursor, move_cursor_right, character):
-        self.text = text
-        self.screen = screen
-        self.cursor = cursor
-        self.screen_offset = screen_offset
-        self.move_cursor_right = move_cursor_right
-        self.character = character
-    def respond(self):
-        line_index = self.cursor.get_line_index()
-        cursor_column = self.cursor.get_column_index()
-        line_before_cursor = self.text.get_line(line_index)[0:cursor_column]
-        line_after_cursor = self.text.get_line(line_index)[cursor_column:]
-        self.text.set_line(line_index, line_before_cursor + self.character + line_after_cursor)
-        self.move_cursor_right.respond()
-
 class Insert:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
@@ -296,8 +280,9 @@ class Insert:
 class InsertLine:
     def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
+        self.screen = screen
         self.cursor = cursor
-        self.move_cursor_right = MoveCursorRight(text, screen, cursor, screen_offset)
+        self.screen_offset = screen_offset
     def respond(self):
         line_index = self.cursor.get_line_index()
         cursor_column = self.cursor.get_column_index()
@@ -305,7 +290,7 @@ class InsertLine:
         line_after_cursor = self.text.get_line(line_index)[cursor_column:]
         self.text.set_line(line_index, line_before_cursor)
         self.text.insert_line(line_index + 1, line_after_cursor)
-        self.move_cursor_right.respond()
+        move_cursor_right(self.text, self.screen, self.cursor, self.screen_offset)
 
 class DeleteCharacter:
     def __init__(self, text, screen, cursor, screen_offset):

@@ -231,15 +231,18 @@ class MoveCursorLeft:
         self.cursor = cursor
         self.screen_offset = screen_offset
     def respond(self):
-        if cursor_at_beginning_of_text(self.cursor):
-            return
-        if self.cursor.get_column_index() == 0:
-            self.cursor.set_line_index(self.cursor.get_line_index() - 1)
-            line_length = len(self.text.get_line(self.cursor.get_line_index()))
-            self.cursor.set_column_index(line_length)
-        else:
-            self.cursor.set_column_index(self.cursor.get_column_index() - 1)
-        capture_cursor(self.screen, self.cursor, self.screen_offset)
+        pass
+
+def move_cursor_left(text, screen, cursor, screen_offset):
+    if cursor_at_beginning_of_text(cursor):
+        return
+    if cursor.get_column_index() == 0:
+        cursor.set_line_index(cursor.get_line_index() - 1)
+        line_length = len(text.get_line(cursor.get_line_index()))
+        cursor.set_column_index(line_length)
+    else:
+        cursor.set_column_index(cursor.get_column_index() - 1)
+    capture_cursor(screen, cursor, screen_offset)
 
 class MoveCursorRight:
     def __init__(self, text, screen, cursor, screen_offset):
@@ -330,12 +333,11 @@ class DeleteCharacter:
 class Backspace:
     def __init__(self, text, screen, cursor, screen_offset):
         self.cursor = cursor
-        self.move_cursor_left = MoveCursorLeft(text, screen, cursor, screen_offset)
         self.delete_character = DeleteCharacter(text, screen, cursor, screen_offset)
     def respond(self):
         if cursor_at_beginning_of_text(self.cursor):
             return
-        self.move_cursor_left.respond()
+        move_cursor_left(self.text, self.screen, self.cursor, self.screen_offset)
         self.delete_character.respond()
 
 def API(text, screen, cursor, screen_offset):
@@ -361,7 +363,7 @@ def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, sc
         elif next_signal == 'DOWN':
             move_cursor_down(text, screen, cursor, screen_offset)
         elif next_signal == 'LEFT':
-            api['move_left'].respond()
+            move_cursor_left(text, screen, cursor, screen_offset)
         elif next_signal == 'RIGHT':
             api['move_right'].respond()
         elif next_signal[0:10] == 'CHARACTER_':

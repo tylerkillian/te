@@ -279,7 +279,6 @@ class Backspace:
 
 def API(text, screen, cursor, screen_offset):
     api = {
-        'newline': InsertLine(text, screen, cursor, screen_offset),
         'delete': DeleteCharacter(text, screen, cursor, screen_offset),
         'backspace': Backspace(text, screen, cursor, screen_offset)
     }
@@ -300,7 +299,7 @@ def dispatch_signals(signal_stream, api, text, screen, cursor, screen_offset, sc
         elif next_signal[0:10] == 'CHARACTER_':
             insert(text, screen, cursor, screen_offset, next_signal[-1])
         elif next_signal == 'ENTER':
-            api['newline'].respond()
+            insert_line(text, screen, cursor, screen_offset)
         elif next_signal == 'BACKSPACE':
             api['backspace'].respond()
         elif next_signal == 'DELETE':

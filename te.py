@@ -218,11 +218,11 @@ class MoveCursorDown:
         pass
 
 def move_cursor_down(text, screen, cursor, screen_offset):
-        if self.cursor.get_line_index() == self.text.get_num_lines() - 1:
-            return
-        self.cursor.set_line_index(self.cursor.get_line_index() + 1)
-        snap_cursor_to_text(self.text, self.cursor)
-        capture_cursor(self.screen, self.cursor, self.screen_offset)
+    if cursor.get_line_index() == text.get_num_lines() - 1:
+        return
+    cursor.set_line_index(cursor.get_line_index() + 1)
+    snap_cursor_to_text(text, cursor)
+    capture_cursor(screen, cursor, screen_offset)
 
 class MoveCursorLeft:
     def __init__(self, text, screen, cursor, screen_offset):

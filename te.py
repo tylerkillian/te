@@ -261,7 +261,7 @@ def backspace(text, screen, cursor, screen_offset):
     move_cursor_left(text, screen, cursor, screen_offset)
     delete_character(text, screen, cursor, screen_offset)
 
-def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, screen_refresher):
+def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
     screen_refresher.refresh()
     while True:
         next_signal = signal_stream.get_next_signal()
@@ -302,8 +302,7 @@ def start_editor(screen, signal_stream):
     text = Text(POEM)
     cursor = Cursor(text, 0, 0)
     screen_offset = ScreenOffset(text, 0, 0)
-    screen_refresher = ScreenRefresher(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, text, screen, cursor, screen_offset, screen_refresher)
+    dispatch_signals(signal_stream, text, screen, cursor, screen_offset)
 
 def main():
     try:

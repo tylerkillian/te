@@ -232,12 +232,13 @@ def delete_character(text, screen, cursor, screen_offset):
         delete_next_line(text, cursor)
         return
     delete_current_character(text, cursor)
+    return cursor.get_column_index()
 
 def backspace(text, screen, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
         return
     move_cursor_left(text, screen, cursor, screen_offset)
-    delete_character(text, screen, cursor, screen_offset)
+    return delete_character(text, screen, cursor, screen_offset)
 
 def dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_column, screen_offset):
     while True:

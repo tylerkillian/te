@@ -51,7 +51,7 @@ class CursesSignalStream:
             return 'UNKNOWN'
 
 class Text:
-    def __init__(self, text=''):
+    def __init__(self, text=['']):
         self.text = text
     def get_text(self, line_index, num_lines, column_index, num_columns):
         result = []

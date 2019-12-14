@@ -248,17 +248,17 @@ def dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_colum
         elif next_signal == 'DOWN':
             move_cursor_down(text, screen, cursor, cursor_preferred_column, screen_offset)
         elif next_signal == 'LEFT':
-            move_cursor_left(text, screen, cursor, screen_offset)
+            cursor_preferred_column = move_cursor_left(text, screen, cursor, screen_offset)
         elif next_signal == 'RIGHT':
-            move_cursor_right(text, screen, cursor, screen_offset)
+            cursor_preferred_column = move_cursor_right(text, screen, cursor, screen_offset)
         elif next_signal[0:10] == 'CHARACTER_':
-            insert(text, screen, cursor, screen_offset, next_signal[-1])
+            cursor_preferred_column = insert(text, screen, cursor, screen_offset, next_signal[-1])
         elif next_signal == 'ENTER':
-            insert_line(text, screen, cursor, screen_offset)
+            cursor_preferred_column = insert_line(text, screen, cursor, screen_offset)
         elif next_signal == 'BACKSPACE':
-            backspace(text, screen, cursor, screen_offset)
+            cursor_preferred_column = backspace(text, screen, cursor, screen_offset)
         elif next_signal == 'DELETE':
-            delete_character(text, screen, cursor, screen_offset)
+            cursor_preferred_column = delete_character(text, screen, cursor, screen_offset)
         elif next_signal == 'RESIZE':
             resize(text, screen, cursor, screen_offset)
         refresh(text, screen, cursor, screen_offset)

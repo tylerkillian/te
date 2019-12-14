@@ -196,7 +196,7 @@ def insert(text, screen, cursor, screen_offset, character):
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
-    move_cursor_right(text, screen, cursor, screen_offset)
+    return move_cursor_right(text, screen, cursor, screen_offset)
 
 def insert_line(text, screen, cursor, screen_offset):
     line_index = cursor.get_line_index()
@@ -205,7 +205,7 @@ def insert_line(text, screen, cursor, screen_offset):
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
-    move_cursor_right(text, screen, cursor, screen_offset)
+    return move_cursor_right(text, screen, cursor, screen_offset)
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor.get_line_index()

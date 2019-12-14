@@ -188,6 +188,7 @@ def move_cursor_right(text, screen, cursor, screen_offset):
     else:
         cursor.set_column_index(cursor.get_column_index() + 1)
     capture_cursor(screen, cursor, screen_offset)
+    return cursor.get_column_index()
 
 def insert(text, screen, cursor, screen_offset, character):
     line_index = cursor.get_line_index()

@@ -155,7 +155,7 @@ def move_cursor_up(text, screen, cursor, cursor_preferred_column, screen_offset)
     if cursor.get_line_index() == 0:
         return
     cursor.set_line_index(cursor.get_line_index() - 1)
-    cursor.set_column_index(cusor_preferred_column)
+    cursor.set_column_index(cursor_preferred_column)
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)
 
@@ -163,7 +163,7 @@ def move_cursor_down(text, screen, cursor, cursor_preferred_column, screen_offse
     if cursor.get_line_index() == text.get_num_lines() - 1:
         return
     cursor.set_line_index(cursor.get_line_index() + 1)
-    cursor.set_column_index(cusor_preferred_column)
+    cursor.set_column_index(cursor_preferred_column)
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)
 

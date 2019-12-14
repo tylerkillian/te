@@ -235,13 +235,13 @@ def backspace(text, screen, cursor, screen_offset):
     move_cursor_left(text, screen, cursor, screen_offset)
     delete_character(text, screen, cursor, screen_offset)
 
-def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
+def dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_column, screen_offset):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            move_cursor_up(text, screen, cursor, screen_offset)
+            move_cursor_up(text, screen, cursor, cursor_preferred_column, screen_offset)
         elif next_signal == 'DOWN':
-            move_cursor_down(text, screen, cursor, screen_offset)
+            move_cursor_down(text, screen, cursor, cursor_preferred_column, screen_offset)
         elif next_signal == 'LEFT':
             move_cursor_left(text, screen, cursor, screen_offset)
         elif next_signal == 'RIGHT':
@@ -274,9 +274,10 @@ def curses_close(stdscr):
 def start_editor(screen, signal_stream):
     text = Text()
     cursor = Cursor(text, 0, 0)
+    cursor_preferred_column = 0
     screen_offset = ScreenOffset(text, 0, 0)
     refresh(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, text, screen, cursor, screen_offset)
+    dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_column, screen_offset)
 
 def main():
     try:

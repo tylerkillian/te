@@ -272,7 +272,7 @@ def curses_close(stdscr):
     curses.endwin()
 
 def start_editor(screen, signal_stream):
-    text = Text(POEM)
+    text = Text()
     cursor = Cursor(text, 0, 0)
     screen_offset = ScreenOffset(text, 0, 0)
     refresh(text, screen, cursor, screen_offset)

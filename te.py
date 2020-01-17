@@ -232,6 +232,9 @@ def curses_close(stdscr):
 def start_editor(screen, signal_stream):
     text = Text()
     state = {
+        'cursor': {
+            'preferred_position': 0,
+        }
     }
     cursor = Cursor(text, 0, 0)
     cursor_preferred_column = 0

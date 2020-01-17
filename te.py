@@ -120,7 +120,7 @@ def move_cursor_down(text, screen, cursor, cursor_preferred_column, screen_offse
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)
 
-def move_cursor_left(text, screen, cursor, screen_offset):
+def move_cursor_left(text, screen, state, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
         return
     if cursor.get_column_index() == 0:

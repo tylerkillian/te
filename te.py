@@ -187,13 +187,13 @@ def delete_character(text, screen, cursor, screen_offset):
     delete_current_character(text, cursor)
     return cursor.get_column_index()
 
-def backspace(text, screen, cursor, screen_offset):
+def backspace(text, screen, state, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
         return
-    move_cursor_left(text, screen, cursor, screen_offset)
+    move_cursor_left(text, screen, state, cursor, screen_offset)
     return delete_character(text, screen, cursor, screen_offset)
 
-def dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_column, screen_offset):
+def dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferred_column, screen_offset):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
@@ -201,7 +201,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_colum
         elif next_signal == 'DOWN':
             move_cursor_down(text, screen, cursor, cursor_preferred_column, screen_offset)
         elif next_signal == 'LEFT':
-            cursor_preferred_column = move_cursor_left(text, screen, cursor, screen_offset)
+            cursor_preferred_column = move_cursor_left(text, screen, state, cursor, screen_offset)
         elif next_signal == 'RIGHT':
             cursor_preferred_column = move_cursor_right(text, screen, cursor, screen_offset)
         elif next_signal[0:10] == 'CHARACTER_':
@@ -209,7 +209,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_colum
         elif next_signal == 'ENTER':
             cursor_preferred_column = insert_line(text, screen, cursor, screen_offset)
         elif next_signal == 'BACKSPACE':
-            cursor_preferred_column = backspace(text, screen, cursor, screen_offset)
+            cursor_preferred_column = backspace(text, screen, state, cursor, screen_offset)
         elif next_signal == 'DELETE':
             cursor_preferred_column = delete_character(text, screen, cursor, screen_offset)
         elif next_signal == 'RESIZE':
@@ -240,7 +240,7 @@ def start_editor(screen, signal_stream):
     cursor_preferred_column = 0
     screen_offset = ScreenOffset(text, 0, 0)
     refresh(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, text, screen, cursor, cursor_preferred_column, screen_offset)
+    dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferred_column, screen_offset)
 
 def main():
     try:

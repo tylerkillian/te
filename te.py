@@ -201,7 +201,10 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferre
         elif next_signal == 'DOWN':
             move_cursor_down(text, screen, cursor, cursor_preferred_column, screen_offset)
         elif next_signal == 'LEFT':
+            cursor_preferred_column = state['cursor']['preferred_column']
+            cursor_preferred_column = state['cursor']['preferred_column']
             cursor_preferred_column = move_cursor_left(text, screen, state, cursor, screen_offset)
+            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'RIGHT':
             cursor_preferred_column = move_cursor_right(text, screen, cursor, screen_offset)
         elif next_signal[0:10] == 'CHARACTER_':

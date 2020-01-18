@@ -217,9 +217,13 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferre
             insert_line(text, screen, state, cursor, screen_offset)
             cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'BACKSPACE':
-            cursor_preferred_column = backspace(text, screen, state, cursor, screen_offset)
+            state['cursor']['preferred_column'] = cursor_preferred_column
+            backspace(text, screen, state, cursor, screen_offset)
+            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'DELETE':
-            cursor_preferred_column = delete_character(text, screen, cursor, screen_offset)
+            state['cursor']['preferred_column'] = cursor_preferred_column
+            delete_character(text, screen, cursor, screen_offset)
+            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'RESIZE':
             resize(text, screen, cursor, screen_offset)
         refresh(text, screen, cursor, screen_offset)

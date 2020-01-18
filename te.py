@@ -193,37 +193,25 @@ def backspace(text, screen, state, cursor, screen_offset):
     move_cursor_left(text, screen, state, cursor, screen_offset)
     delete_character(text, screen, state, cursor, screen_offset)
 
-def dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferred_column, screen_offset):
+def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            move_cursor_up(text, screen, state, cursor, cursor_preferred_column, screen_offset)
+            move_cursor_up(text, screen, state, cursor, screen_offset)
         elif next_signal == 'DOWN':
-            move_cursor_down(text, screen, state, cursor, cursor_preferred_column, screen_offset)
+            move_cursor_down(text, screen, state, cursor, screen_offset)
         elif next_signal == 'LEFT':
-            state['cursor']['preferred_column'] = cursor_preferred_column
             move_cursor_left(text, screen, state, cursor, screen_offset)
-            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'RIGHT':
-            state['cursor']['preferred_column'] = cursor_preferred_column
             move_cursor_right(text, screen, state, cursor, screen_offset)
-            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal[0:10] == 'CHARACTER_':
-            state['cursor']['preferred_column'] = cursor_preferred_column
             insert(text, screen, state, cursor, screen_offset, next_signal[-1])
-            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'ENTER':
-            state['cursor']['preferred_column'] = cursor_preferred_column
             insert_line(text, screen, state, cursor, screen_offset)
-            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'BACKSPACE':
-            state['cursor']['preferred_column'] = cursor_preferred_column
             backspace(text, screen, state, cursor, screen_offset)
-            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'DELETE':
-            state['cursor']['preferred_column'] = cursor_preferred_column
             delete_character(text, screen, state, cursor, screen_offset)
-            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'RESIZE':
             resize(text, screen, state, cursor, screen_offset)
         refresh(text, screen, state, cursor, screen_offset)

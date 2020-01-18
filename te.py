@@ -132,7 +132,7 @@ def move_cursor_left(text, screen, state, cursor, screen_offset):
     capture_cursor(screen, cursor, screen_offset)
     state['cursor']['preferred_column'] = cursor.get_column_index()
 
-def move_cursor_right(text, screen, cursor, screen_offset):
+def move_cursor_right(text, screen, state, cursor, screen_offset):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
@@ -141,7 +141,7 @@ def move_cursor_right(text, screen, cursor, screen_offset):
     else:
         cursor.set_column_index(cursor.get_column_index() + 1)
     capture_cursor(screen, cursor, screen_offset)
-    return cursor.get_column_index()
+    state['cursor']['preferred_column'] = cursor.get_column_index()
 
 def insert(text, screen, cursor, screen_offset, character):
     line_index = cursor.get_line_index()
@@ -149,7 +149,7 @@ def insert(text, screen, cursor, screen_offset, character):
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
-    return move_cursor_right(text, screen, cursor, screen_offset)
+    move_cursor_right(text, screen, state, cursor, screen_offset)
 
 def insert_line(text, screen, cursor, screen_offset):
     line_index = cursor.get_line_index()
@@ -158,7 +158,7 @@ def insert_line(text, screen, cursor, screen_offset):
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
-    return move_cursor_right(text, screen, cursor, screen_offset)
+    move_cursor_right(text, screen, state, cursor, screen_offset)
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor.get_line_index()
@@ -205,7 +205,9 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferre
             move_cursor_left(text, screen, state, cursor, screen_offset)
             cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'RIGHT':
-            cursor_preferred_column = move_cursor_right(text, screen, cursor, screen_offset)
+            state['cursor']['preferred_column'] = cursor_preferred_column
+            move_cursor_right(text, screen, state, cursor, screen_offset)
+            cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal[0:10] == 'CHARACTER_':
             cursor_preferred_column = insert(text, screen, cursor, screen_offset, next_signal[-1])
         elif next_signal == 'ENTER':

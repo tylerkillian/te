@@ -59,7 +59,7 @@ class ScreenOffset:
         if column_index >= self.column_index + num_columns:
             self.column_index = column_index - num_columns + 1
 
-def refresh(text, screen, cursor, screen_offset):
+def refresh(text, screen, state, cursor, screen_offset):
     text_to_draw = text.get_text(
         screen_offset.get_line_index(),
         screen.get_num_lines(),

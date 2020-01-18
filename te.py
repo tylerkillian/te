@@ -251,7 +251,7 @@ def start_editor(screen, signal_stream):
     cursor = Cursor(text, 0, 0)
     cursor_preferred_column = 0
     screen_offset = ScreenOffset(text, 0, 0)
-    refresh(text, screen, cursor, screen_offset)
+    refresh(text, screen, state, cursor, screen_offset)
     dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferred_column, screen_offset)
 
 def main():

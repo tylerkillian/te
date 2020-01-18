@@ -210,11 +210,11 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferre
             cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal[0:10] == 'CHARACTER_':
             state['cursor']['preferred_column'] = cursor_preferred_column
-            cursor_preferred_column = insert(text, screen, cursor, screen_offset, next_signal[-1])
+            insert(text, screen, state, cursor, screen_offset, next_signal[-1])
             cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'ENTER':
             state['cursor']['preferred_column'] = cursor_preferred_column
-            cursor_preferred_column = insert_line(text, screen, cursor, screen_offset)
+            insert_line(text, screen, state, cursor, screen_offset)
             cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'BACKSPACE':
             cursor_preferred_column = backspace(text, screen, state, cursor, screen_offset)

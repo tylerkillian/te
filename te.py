@@ -225,7 +225,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, cursor_preferre
             delete_character(text, screen, state, cursor, screen_offset)
             cursor_preferred_column = state['cursor']['preferred_column']
         elif next_signal == 'RESIZE':
-            resize(text, screen, cursor, screen_offset)
+            resize(text, screen, state, cursor, screen_offset)
         refresh(text, screen, state, cursor, screen_offset)
 
 def curses_open():

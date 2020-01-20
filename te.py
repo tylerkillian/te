@@ -85,6 +85,8 @@ def capture_cursor(screen, cursor, screen_offset):
     screen_offset.capture(cursor_line_index, screen_num_lines, cursor_column_index, screen_num_columns)
     {
         'line_index': capture_index(screen_offset.get_line_index(), screen_num_lines, cursor_line_index),
+        'column_index': capture_index(screen_offset.get_column_index(), screen_num_columns, cursor_column_index)
+    }
 
 def snap_cursor_to_text(text, cursor):
     if cursor.get_column_index() > len(text.get_line(cursor.get_line_index())):

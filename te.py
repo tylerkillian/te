@@ -70,8 +70,8 @@ def refresh(text, screen, state, cursor, screen_offset):
         cursor.get_line_index() - screen_offset.get_line_index(),
         cursor.get_column_index() - screen_offset.get_column_index())
 
-def capture_index(self, index_to_capture, num_lines):
-    if line_index < self.line_index:
+def capture_index(interval_start, interval_width, index_to_capture):
+    if index_to_capture < interval_starat:
         self.line_index = line_index
     if line_index >= self.line_index + num_lines:
         self.line_index = line_index - num_lines + 1

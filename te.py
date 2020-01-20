@@ -214,7 +214,7 @@ def backspace(text, screen, state, cursor):
     move_cursor_left(text, screen, state, cursor)
     delete_character(text, screen, state, cursor)
 
-def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
+def dispatch_signals(signal_stream, text, screen, state, cursor):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
@@ -302,13 +302,8 @@ def start_editor(screen, signal_stream):
         }
     }
     cursor = Cursor(text, 0, 0)
-    screen_offset = ScreenOffset(text, 0, 0)
-    state['screen_offset']['line_index'] = screen_offset.get_line_index()
-    state['screen_offset']['column_index'] = screen_offset.get_column_index()
     refresh(text, screen, state, cursor)
-    screen_offset.set_line_index(state['screen_offset']['line_index'])
-    screen_offset.set_column_index(state['screen_offset']['column_index'])
-    dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset)
+    dispatch_signals(signal_stream, text, screen, state, cursor)
 
 def main():
     try:

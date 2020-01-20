@@ -244,25 +244,25 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
         elif next_signal[0:10] == 'CHARACTER_':
             state['screen_offset']['line_index'] = screen_offset.get_line_index()
             state['screen_offset']['column_index'] = screen_offset.get_column_index()
-            insert(text, screen, state, cursor, screen_offset, next_signal[-1])
+            insert(text, screen, state, cursor, next_signal[-1])
             screen_offset.set_line_index(state['screen_offset']['line_index'])
             screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'ENTER':
             state['screen_offset']['line_index'] = screen_offset.get_line_index()
             state['screen_offset']['column_index'] = screen_offset.get_column_index()
-            insert_line(text, screen, state, cursor, screen_offset)
+            insert_line(text, screen, state, cursor)
             screen_offset.set_line_index(state['screen_offset']['line_index'])
             screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'BACKSPACE':
             state['screen_offset']['line_index'] = screen_offset.get_line_index()
             state['screen_offset']['column_index'] = screen_offset.get_column_index()
-            backspace(text, screen, state, cursor, screen_offset)
+            backspace(text, screen, state, cursor)
             screen_offset.set_line_index(state['screen_offset']['line_index'])
             screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'DELETE':
             state['screen_offset']['line_index'] = screen_offset.get_line_index()
             state['screen_offset']['column_index'] = screen_offset.get_column_index()
-            delete_character(text, screen, state, cursor, screen_offset)
+            delete_character(text, screen, state, cursor)
             screen_offset.set_line_index(state['screen_offset']['line_index'])
             screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'RESIZE':

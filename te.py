@@ -230,9 +230,17 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
             screen_offset.set_line_index(state['screen_offset']['line_index'])
             screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'LEFT':
-            move_cursor_left(text, screen, state, cursor, screen_offset)
+            state['screen_offset']['line_index'] = screen_offset.get_line_index()
+            state['screen_offset']['column_index'] = screen_offset.get_column_index()
+            move_cursor_left(text, screen, state, cursor)
+            screen_offset.set_line_index(state['screen_offset']['line_index'])
+            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'RIGHT':
-            move_cursor_right(text, screen, state, cursor, screen_offset)
+            state['screen_offset']['line_index'] = screen_offset.get_line_index()
+            state['screen_offset']['column_index'] = screen_offset.get_column_index()
+            move_cursor_right(text, screen, state, cursor)
+            screen_offset.set_line_index(state['screen_offset']['line_index'])
+            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal[0:10] == 'CHARACTER_':
             insert(text, screen, state, cursor, screen_offset, next_signal[-1])
         elif next_signal == 'ENTER':

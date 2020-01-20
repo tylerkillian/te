@@ -88,14 +88,14 @@ def capture_cursor(screen, cursor, screen_offset):
         'column_index': capture_index(screen_offset.get_column_index(), screen_num_columns, cursor_column_index)
     }
 
-def capture_cursor2(screen, cursor):
+def capture_cursor2(screen, cursor, screen_offset):
     cursor_line_index = cursor.get_line_index()
     cursor_column_index = cursor.get_column_index()
     screen_num_lines = screen.get_num_lines()
     screen_num_columns = screen.get_num_columns()
     return {
-        'line_index': capture_index(screen_offset.get_line_index(), screen_num_lines, cursor_line_index),
-        'column_index': capture_index(screen_offset.get_column_index(), screen_num_columns, cursor_column_index)
+        'line_index': capture_index(screen_offset['line_index'], screen_num_lines, cursor_line_index),
+        'column_index': capture_index(screen_offset['column_index'], screen_num_columns, cursor_column_index)
     }
 
 def snap_cursor_to_text(text, cursor):
@@ -123,7 +123,8 @@ def cursor_at_end_of_text(text, cursor):
     return False
 
 def resize(text, screen, state, cursor, screen_offset):
-    state['screen_offset'] = capture_cursor2(screen, cursor)
+    state['screen_offset']['line_index
+    state['screen_offset'] = capture_cursor2(screen, cursor, state['screen_offset'])
     screen_offset.set_line_index(state['screen_offset']['line_index'])
     screen_offset.set_column_index(state['screen_offset']['column_index'])
 

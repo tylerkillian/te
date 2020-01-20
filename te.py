@@ -123,11 +123,7 @@ def cursor_at_end_of_text(text, cursor):
     return False
 
 def resize(text, screen, state, cursor):
-    state['screen_offset']['line_index'] = screen_offset.get_line_index()
-    state['screen_offset']['column_index'] = screen_offset.get_column_index()
     state['screen_offset'] = capture_cursor2(screen, cursor, state['screen_offset'])
-    screen_offset.set_line_index(state['screen_offset']['line_index'])
-    screen_offset.set_column_index(state['screen_offset']['column_index'])
 
 def move_cursor_up(text, screen, state, cursor, screen_offset):
     if cursor.get_line_index() == 0:
@@ -238,7 +234,11 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
         elif next_signal == 'DELETE':
             delete_character(text, screen, state, cursor, screen_offset)
         elif next_signal == 'RESIZE':
-            resize(text, screen, state, cursor, screen_offset)
+            state['screen_offset']['line_index'] = screen_offset.get_line_index()
+            state['screen_offset']['column_index'] = screen_offset.get_column_index()
+            resize(text, screen, state, cursor)
+            screen_offset.set_line_index(state['screen_offset']['line_index'])
+            screen_offset.set_column_index(state['screen_offset']['column_index'])
         refresh(text, screen, state, cursor, screen_offset)
 
 def curses_open():

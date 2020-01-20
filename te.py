@@ -271,7 +271,11 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
             resize(text, screen, state, cursor)
             screen_offset.set_line_index(state['screen_offset']['line_index'])
             screen_offset.set_column_index(state['screen_offset']['column_index'])
+        state['screen_offset']['line_index'] = screen_offset.get_line_index()
+        state['screen_offset']['column_index'] = screen_offset.get_column_index()
         refresh(text, screen, state, cursor, screen_offset)
+        screen_offset.set_line_index(state['screen_offset']['line_index'])
+        screen_offset.set_column_index(state['screen_offset']['column_index'])
 
 def curses_open():
     stdscr = curses.initscr()
@@ -299,7 +303,11 @@ def start_editor(screen, signal_stream):
     }
     cursor = Cursor(text, 0, 0)
     screen_offset = ScreenOffset(text, 0, 0)
+    state['screen_offset']['line_index'] = screen_offset.get_line_index()
+    state['screen_offset']['column_index'] = screen_offset.get_column_index()
     refresh(text, screen, state, cursor, screen_offset)
+    screen_offset.set_line_index(state['screen_offset']['line_index'])
+    screen_offset.set_column_index(state['screen_offset']['column_index'])
     dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset)
 
 def main():

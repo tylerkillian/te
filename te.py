@@ -218,64 +218,24 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             move_cursor_up(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'DOWN':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             move_cursor_down(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'LEFT':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             move_cursor_left(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'RIGHT':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             move_cursor_right(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal[0:10] == 'CHARACTER_':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             insert(text, screen, state, cursor, next_signal[-1])
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'ENTER':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             insert_line(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'BACKSPACE':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             backspace(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'DELETE':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             delete_character(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'RESIZE':
-            state['screen_offset']['line_index'] = screen_offset.get_line_index()
-            state['screen_offset']['column_index'] = screen_offset.get_column_index()
             resize(text, screen, state, cursor)
-            screen_offset.set_line_index(state['screen_offset']['line_index'])
-            screen_offset.set_column_index(state['screen_offset']['column_index'])
-        state['screen_offset']['line_index'] = screen_offset.get_line_index()
-        state['screen_offset']['column_index'] = screen_offset.get_column_index()
         refresh(text, screen, state, cursor)
-        screen_offset.set_line_index(state['screen_offset']['line_index'])
-        screen_offset.set_column_index(state['screen_offset']['column_index'])
 
 def curses_open():
     stdscr = curses.initscr()

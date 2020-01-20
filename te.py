@@ -83,7 +83,7 @@ def capture_cursor(screen, cursor, screen_offset):
     screen_num_lines = screen.get_num_lines()
     screen_num_columns = screen.get_num_columns()
     screen_offset.capture(cursor_line_index, screen_num_lines, cursor_column_index, screen_num_columns)
-    {
+    return {
         'line_index': capture_index(screen_offset.get_line_index(), screen_num_lines, cursor_line_index),
         'column_index': capture_index(screen_offset.get_column_index(), screen_num_columns, cursor_column_index)
     }

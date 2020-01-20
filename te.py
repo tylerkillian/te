@@ -125,13 +125,13 @@ def cursor_at_end_of_text(text, cursor):
 def resize(text, screen, state, cursor):
     state['screen_offset'] = capture_cursor2(screen, cursor, state['screen_offset'])
 
-def move_cursor_up(text, screen, state, cursor, screen_offset):
+def move_cursor_up(text, screen, state, cursor):
     if cursor.get_line_index() == 0:
         return
     cursor.set_line_index(cursor.get_line_index() - 1)
     cursor.set_column_index(state['cursor']['preferred_column'])
     snap_cursor_to_text(text, cursor)
-    capture_cursor(screen, cursor, screen_offset)
+    state['screen_offset'] = capture_cursor2(screen, cursor, state['screen_offset'])
 
 def move_cursor_down(text, screen, state, cursor, screen_offset):
     if cursor.get_line_index() == text.get_num_lines() - 1:
@@ -218,7 +218,11 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            move_cursor_up(text, screen, state, cursor, screen_offset)
+            state['screen_offset']['line_index'] = screen_offset.get_line_index()
+            state['screen_offset']['column_index'] = screen_offset.get_column_index()
+            move_cursor_up(text, screen, state, cursor)
+            screen_offset.set_line_index(state['screen_offset']['line_index'])
+            screen_offset.set_column_index(state['screen_offset']['column_index'])
         elif next_signal == 'DOWN':
             move_cursor_down(text, screen, state, cursor, screen_offset)
         elif next_signal == 'LEFT':

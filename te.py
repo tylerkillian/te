@@ -164,22 +164,22 @@ def move_cursor_right(text, screen, state, cursor):
     state['screen_offset'] = capture_cursor2(screen, cursor, state['screen_offset'])
     state['cursor']['preferred_column'] = cursor.get_column_index()
 
-def insert(text, screen, state, cursor, screen_offset, character):
+def insert(text, screen, state, cursor, character):
     line_index = cursor.get_line_index()
     cursor_column = cursor.get_column_index()
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
-    move_cursor_right(text, screen, state, cursor, screen_offset)
+    move_cursor_right(text, screen, state, cursor)
 
-def insert_line(text, screen, state, cursor, screen_offset):
+def insert_line(text, screen, state, cursor):
     line_index = cursor.get_line_index()
     cursor_column = cursor.get_column_index()
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
-    move_cursor_right(text, screen, state, cursor, screen_offset)
+    move_cursor_right(text, screen, state, cursor)
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor.get_line_index()
@@ -198,7 +198,7 @@ def delete_current_character(text, cursor):
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
     text.set_line(current_line_index, new_line)
 
-def delete_character(text, screen, state, cursor, screen_offset):
+def delete_character(text, screen, state, cursor):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
@@ -208,11 +208,11 @@ def delete_character(text, screen, state, cursor, screen_offset):
     delete_current_character(text, cursor)
     state['cursor']['preferred_column'] = cursor.get_column_index()
 
-def backspace(text, screen, state, cursor, screen_offset):
+def backspace(text, screen, state, cursor):
     if cursor_at_beginning_of_text(cursor):
         return
-    move_cursor_left(text, screen, state, cursor, screen_offset)
-    delete_character(text, screen, state, cursor, screen_offset)
+    move_cursor_left(text, screen, state, cursor)
+    delete_character(text, screen, state, cursor)
 
 def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
     while True:

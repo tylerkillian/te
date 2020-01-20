@@ -59,7 +59,7 @@ class ScreenOffset:
         if column_index >= self.column_index + num_columns:
             self.column_index = column_index - num_columns + 1
 
-def refresh(text, screen, state, cursor, screen_offset):
+def refresh(text, screen, state, cursor):
     text_to_draw = text.get_text(
         state['screen_offset']['line_index'],
         screen.get_num_lines(),
@@ -273,7 +273,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset):
             screen_offset.set_column_index(state['screen_offset']['column_index'])
         state['screen_offset']['line_index'] = screen_offset.get_line_index()
         state['screen_offset']['column_index'] = screen_offset.get_column_index()
-        refresh(text, screen, state, cursor, screen_offset)
+        refresh(text, screen, state, cursor)
         screen_offset.set_line_index(state['screen_offset']['line_index'])
         screen_offset.set_column_index(state['screen_offset']['column_index'])
 
@@ -305,7 +305,7 @@ def start_editor(screen, signal_stream):
     screen_offset = ScreenOffset(text, 0, 0)
     state['screen_offset']['line_index'] = screen_offset.get_line_index()
     state['screen_offset']['column_index'] = screen_offset.get_column_index()
-    refresh(text, screen, state, cursor, screen_offset)
+    refresh(text, screen, state, cursor)
     screen_offset.set_line_index(state['screen_offset']['line_index'])
     screen_offset.set_column_index(state['screen_offset']['column_index'])
     dispatch_signals(signal_stream, text, screen, state, cursor, screen_offset)

@@ -123,7 +123,8 @@ def cursor_at_end_of_text(text, cursor):
     return False
 
 def resize(text, screen, state, cursor, screen_offset):
-    state['screen_offset']['line_index
+    state['screen_offset']['line_index'] = screen_offset.get_line_index()
+    state['screen_offset']['column_index'] = screen_offset.get_column_index()
     state['screen_offset'] = capture_cursor2(screen, cursor, state['screen_offset'])
     screen_offset.set_line_index(state['screen_offset']['line_index'])
     screen_offset.set_column_index(state['screen_offset']['column_index'])

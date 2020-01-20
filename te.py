@@ -70,15 +70,11 @@ def refresh(text, screen, state, cursor, screen_offset):
         cursor.get_line_index() - screen_offset.get_line_index(),
         cursor.get_column_index() - screen_offset.get_column_index())
 
-    def capture_index(self, line_index, num_lines, column_index, num_columns):
-        if line_index < self.line_index:
-            self.line_index = line_index
-        if column_index < self.column_index:
-            self.column_index = column_index
-        if line_index >= self.line_index + num_lines:
-            self.line_index = line_index - num_lines + 1
-        if column_index >= self.column_index + num_columns:
-            self.column_index = column_index - num_columns + 1
+def capture_index(self, line_index, num_lines):
+    if line_index < self.line_index:
+        self.line_index = line_index
+    if line_index >= self.line_index + num_lines:
+        self.line_index = line_index - num_lines + 1
 
 def capture_cursor(screen, cursor, screen_offset):
     cursor_line_index = cursor.get_line_index()

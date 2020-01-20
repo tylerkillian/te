@@ -71,7 +71,7 @@ def refresh(text, screen, state, cursor, screen_offset):
         cursor.get_column_index() - screen_offset.get_column_index())
 
 def capture_index(interval_start, interval_width, index_to_capture):
-    if index_to_capture < interval_starat:
+    if index_to_capture < interval_start:
         return index_to_capture
     if index_to_capture >= interval_start + interval_width:
         return index_to_capture - interval_width + 1

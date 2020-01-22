@@ -55,8 +55,6 @@ def capture_index(interval_start, interval_width, index_to_capture):
     return interval_start
 
 def capture_cursor(screen, cursor, screen_offset):
-    cursor_line_index = cursor.get_line_index(),
-    cursor_column_index = cursor.get_column_index()
     screen_num_lines = screen.get_num_lines()
     screen_num_columns = screen.get_num_columns()
     return {
@@ -200,6 +198,9 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'DELETE':
             delete_character(text, screen, state, cursor)
         elif next_signal == 'RESIZE':
+    cursor = [
+    cursor_line_index = cursor.get_line_index(),
+    cursor_column_index = cursor.get_column_index()
             resize(text, screen, state, cursor)
         refresh(text, screen, state, cursor)
 

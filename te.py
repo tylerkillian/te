@@ -89,7 +89,6 @@ def cursor_at_end_of_text(text, cursor):
 def resize(text, screen, state):
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 
-
 def move_cursor_up(text, screen, state, cursor):
     if cursor.get_line_index() == 0:
         return

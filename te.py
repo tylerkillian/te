@@ -198,9 +198,10 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'DELETE':
             delete_character(text, screen, state, cursor)
         elif next_signal == 'RESIZE':
-    cursor = [
-    cursor_line_index = cursor.get_line_index(),
-    cursor_column_index = cursor.get_column_index()
+            state['cursor'] = {
+                'line_index': cursor.get_line_index(),
+                'column_index': cursor.get_column_index()
+            }
             resize(text, screen, state, cursor)
         refresh(text, screen, state, cursor)
 

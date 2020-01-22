@@ -118,10 +118,8 @@ def move_cursor_left(text, screen, state, cursor):
         cursor.set_column_index(line_length)
     else:
         cursor.set_column_index(cursor.get_column_index() - 1)
-    state['cursor'] = {
-        'line_index': cursor.get_line_index(),
-        'column_index': cursor.get_column_index()
-    }
+    state['cursor']['line_index'] = cursor.get_line_index() #temp
+    state['cursor']['column_index'] = cursor.get_column_index() #temp
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = cursor.get_column_index()
 
@@ -133,10 +131,8 @@ def move_cursor_right(text, screen, state, cursor):
         cursor.set_line_index(cursor.get_line_index() + 1)
     else:
         cursor.set_column_index(cursor.get_column_index() + 1)
-    state['cursor'] = {
-        'line_index': cursor.get_line_index(),
-        'column_index': cursor.get_column_index()
-    }
+    state['cursor']['line_index'] = cursor.get_line_index() #temp
+    state['cursor']['column_index'] = cursor.get_column_index() #temp
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = cursor.get_column_index()
 

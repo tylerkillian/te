@@ -95,7 +95,7 @@ def move_cursor_up(text, screen, state, cursor):
     cursor.set_line_index(cursor.get_line_index() - 1)
     cursor.set_column_index(state['cursor']['preferred_column'])
     snap_cursor_to_text(text, cursor)
-    state['screen_offset'] = capture_cursor(screen, cursor, state['screen_offset'])
+    state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 
 def move_cursor_down(text, screen, state, cursor):
     if cursor.get_line_index() == text.get_num_lines() - 1:

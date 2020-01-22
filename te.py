@@ -55,13 +55,13 @@ def capture_index(interval_start, interval_width, index_to_capture):
     return interval_start
 
 def capture_cursor(screen, cursor, screen_offset):
-    cursor_line_index = cursor.get_line_index()
+    cursor_line_index = cursor.get_line_index(),
     cursor_column_index = cursor.get_column_index()
     screen_num_lines = screen.get_num_lines()
     screen_num_columns = screen.get_num_columns()
     return {
-        'line_index': capture_index(screen_offset['line_index'], screen_num_lines, cursor_line_index),
-        'column_index': capture_index(screen_offset['column_index'], screen_num_columns, cursor_column_index)
+        'line_index': capture_index(screen_offset['line_index'], screen_num_lines, cursor['line_index']),
+        'column_index': capture_index(screen_offset['column_index'], screen_num_columns, cursor['column_index'])
     }
 
 def snap_cursor_to_text(text, cursor):

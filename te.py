@@ -86,7 +86,7 @@ def cursor_at_end_of_text(text, cursor):
         return True
     return False
 
-def resize(text, screen, state, cursor):
+def resize(text, screen, state):
     state['screen_offset'] = capture_cursor(screen, cursor, state['screen_offset'])
 
 def move_cursor_up(text, screen, state, cursor):
@@ -202,7 +202,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
                 'line_index': cursor.get_line_index(),
                 'column_index': cursor.get_column_index()
             }
-            resize(text, screen, state, cursor)
+            resize(text, screen, state)
         refresh(text, screen, state, cursor)
 
 def curses_open():

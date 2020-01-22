@@ -97,7 +97,8 @@ def move_cursor_up(text, screen, state, cursor):
     snap_cursor_to_text(text, cursor)
     state['cursor'] = {
         'line_index': cursor.get_line_index(),
-        'column_index': cursor.get_column_index()
+        'column_index': cursor.get_column_index(),
+        'preferred_column': state['cursor']['preferred_column']
     }
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 

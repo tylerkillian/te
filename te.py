@@ -228,6 +228,8 @@ def start_editor(screen, signal_stream):
     text = Text()
     state = {
         'cursor': {
+            'line_index': 0,
+            'column_index': 0
             'preferred_position': 0,
         },
         'screen_offset': {

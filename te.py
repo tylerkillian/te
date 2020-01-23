@@ -64,7 +64,7 @@ def capture_cursor(screen, cursor, screen_offset):
 
 def snap_cursor_to_text(text, cursor):
     if cursor['column_index'] > len(text.get_line(cursor['line_index'])):
-        cursor['column_index'] = len(text.get_line(cursor.['line_index']))
+        cursor['column_index'] = len(text.get_line(cursor['line_index']))
 
 def cursor_at_beginning_of_text(cursor):
     if cursor.get_line_index() == 0 and cursor.get_column_index() == 0:

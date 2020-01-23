@@ -96,7 +96,7 @@ def move_cursor_up(text, screen, state, cursor):
     cursor.set_column_index(state['cursor']['preferred_column'])
     state['cursor']['line_index'] = cursor.get_line_index() #temp
     state['cursor']['column_index'] = cursor.get_column_index() #temp
-    snap_cursor_to_text(text, cursor)
+    snap_cursor_to_text(text, state['cursor'])
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 
 def move_cursor_down(text, screen, state, cursor):
@@ -104,9 +104,9 @@ def move_cursor_down(text, screen, state, cursor):
         return
     cursor.set_line_index(cursor.get_line_index() + 1)
     cursor.set_column_index(state['cursor']['preferred_column'])
-    snap_cursor_to_text(text, cursor)
     state['cursor']['line_index'] = cursor.get_line_index() #temp
     state['cursor']['column_index'] = cursor.get_column_index() #temp
+    snap_cursor_to_text(text, state['cursor'])
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 
 def move_cursor_left(text, screen, state, cursor):

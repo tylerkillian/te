@@ -32,16 +32,27 @@ def test_move_cursor_up_normal():
     screen = FakeScreen(20, 20)
     state = {
         'cursor': {
-            'line_index': 0,
-            'column_index': 0,
-            'preferred_position': 0
+            'line_index': 1,
+            'column_index': 1,
+            'preferred_position': 1
         },
         'screen_offset': {
             'line_index': 0,
             'column_index': 0
         }
     }
-    cursor = te.Cursor(text, 0, 0)
+    cursor = te.Cursor(text, 1, 1)
     te.move_cursor_up(text, screen, state, cursor) 
+    state = {
+        'cursor': {
+            'line_index': 1,
+            'column_index': 1,
+            'preferred_position': 1
+        },
+        'screen_offset': {
+            'line_index': 0,
+            'column_index': 0
+        }
+    }
 
 test_move_cursor_up_normal()

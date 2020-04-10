@@ -2,7 +2,9 @@ import te
 
 class FakeScreen:
     def __init__(self, num_lines, num_columns):
-        self.erase()
+        self.data = []
+        for line_index in range(0, num_lines):
+            self.data.append(' ' * num_columns)
     def erase(self):
         self.data = []
         for line_index in range(0, num_lines):

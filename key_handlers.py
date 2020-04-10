@@ -8,6 +8,7 @@ def capture_index(interval_start, interval_width, index_to_capture):
 def capture_cursor(screen, cursor, screen_offset):
     screen_num_lines = screen.get_num_lines()
     screen_num_columns = screen.get_num_columns()
+    screen_offset.set_line_offset(
     return {
         'line_index': capture_index(screen_offset['line_index'], screen_num_lines, cursor['line_index']),
         'column_index': capture_index(screen_offset['column_index'], screen_num_columns, cursor['column_index'])
@@ -18,7 +19,7 @@ def snap_cursor_to_text(text, cursor):
         cursor.set_column_index(len(text.get_line(cursor.get_line_index())))
 
 class PressUpArrow:
-    def __init__(self, text, screen, cursor, screen_offset):
+    def __init__(self, text, screen, cursor, screen_offset, redrawer):
         self.text = text
         self.screen = screen
         self.cursor = cursor
@@ -30,3 +31,4 @@ class PressUpArrow:
         self.cursor.set_column_index(self.cursor.get_preferred_column())
         snap_cursor_to_text(self.text, self.cursor)
         capture_cursor(self.screen, self.cursor, self.screen_offset)
+        self.redrawer.redraw()

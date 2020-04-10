@@ -51,7 +51,6 @@ def test_move_cursor_up_normal():
     cursor = te.Cursor(text, 1, 1)
     initialize(text, screen, state, cursor)
     te.move_cursor_up(text, screen, state, cursor) 
-    print(screen.get_data())
     assert screen.get_data() == [
         'line1          ',
         'this is line2  ',

@@ -4,7 +4,7 @@ class FakeScreen:
     def __init__(self, num_lines, num_columns):
         self.data = []
         for line_index in range(0, num_lines):
-            self.data.append(' ' * num_columns)
+            self.data.append([' '] * num_columns)
     def erase(self):
         for line_index, line in enumerate(self.data):
             for column_index in range(0, len(line)):

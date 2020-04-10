@@ -38,6 +38,7 @@ def test_move_cursor_up_normal():
             'column_index': 0
         }
     }
+    cursor = te.Cursor(text, 0, 0)
     te.move_cursor_up(text, screen, state, cursor) 
 
 test_move_cursor_up_normal()

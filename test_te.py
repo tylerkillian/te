@@ -50,7 +50,7 @@ def test_move_cursor_up_normal():
         'this is line2  ',
         'line3          ',
         '               ',
-        '               ',
+        '               '
     ]
     assert state == {
         'cursor': {

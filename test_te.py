@@ -45,7 +45,12 @@ def test_move_cursor_up_normal():
     }
     cursor = te.Cursor(text, 1, 1)
     te.move_cursor_up(text, screen, state, cursor) 
-    assert screen.get_data == [
+    assert screen.get_data() == [
+        'line1          ',
+        'this is line2  ',
+        'line3          ',
+        '               ',
+        '               ',
     ]
     assert state == {
         'cursor': {

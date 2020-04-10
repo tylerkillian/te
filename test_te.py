@@ -31,7 +31,7 @@ def test_move_cursor_up_normal():
         'this is line2',
         'line 3'
     ])
-    screen = FakeScreen(20, 20)
+    screen = FakeScreen(15, 15)
     state = {
         'cursor': {
             'line_index': 1,

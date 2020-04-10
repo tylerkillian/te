@@ -22,7 +22,10 @@ class FakeScreen:
     def get_num_columns(self):
         return len(self.data[0])
     def get_data(self):
-        return self.data
+        result = []
+        for line in self.data:
+            result.append(''.join(line))
+        return result
 
 def initialize(text, screen, state, cursor):
     te.refresh(text, screen, state, cursor)

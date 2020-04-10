@@ -25,8 +25,8 @@ class FakeScreen:
     def get_data(self):
         return self.data
 
-def initialize(text, screen):
-    te.refresh()
+def initialize(text, screen, state, cursor):
+    te.refresh(text, screen, state, cursor)
 
 def test_move_cursor_up_normal():
     text = te.Text([
@@ -48,6 +48,7 @@ def test_move_cursor_up_normal():
     }
     cursor = te.Cursor(text, 1, 1)
     initialize(text, screen)
+def initialize(text, screen, state, cursor):
     te.move_cursor_up(text, screen, state, cursor) 
     print(screen.get_data())
     assert screen.get_data() == [

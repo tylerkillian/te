@@ -14,7 +14,7 @@ class FakeScreen:
         for line_index, line in enumerate(data):
             for character_index, character in enumerate(line):
                 self.data[line_index][character_index] = character
-    def set_cursor_column(self, line_index, column_index):
+    def set_cursor_position(self, line_index, column_index):
         self.cursor_line_index = line_index
         self.cursor_column_index = column_index
     def get_num_lines(self):

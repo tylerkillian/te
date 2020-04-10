@@ -31,7 +31,7 @@ def test_move_cursor_up_normal():
         'this is line2',
         'line 3'
     ])
-    screen = FakeScreen(15, 15)
+    screen = FakeScreen(5, 15)
     state = {
         'cursor': {
             'line_index': 1,
@@ -45,6 +45,8 @@ def test_move_cursor_up_normal():
     }
     cursor = te.Cursor(text, 1, 1)
     te.move_cursor_up(text, screen, state, cursor) 
+    assert screen.get_data == [
+    ]
     assert state == {
         'cursor': {
             'line_index': 0,

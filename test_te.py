@@ -54,7 +54,7 @@ def test_move_cursor_up_normal():
     assert screen.get_data() == [
         'line1          ',
         'this is line2  ',
-        'line3          ',
+        'line 3         ',
         '               ',
         '               '
     ]

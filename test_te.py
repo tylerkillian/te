@@ -1,7 +1,7 @@
 import te
 
 class FakeScreen:
-    def __init__(self, num_lines, num_columns, text):
+    def __init__(self, num_lines, num_columns):
         self.data = []
         for line_index in range(0, num_lines):
             self.data.append(' ' * num_columns)
@@ -25,13 +25,16 @@ class FakeScreen:
     def get_data(self):
         return self.data
 
+def initialize(text, screen):
+    te.refresh()
+
 def test_move_cursor_up_normal():
     text = te.Text([
         'line1',
         'this is line2',
         'line 3'
     ])
-    screen = FakeScreen(5, 15, text)
+    screen = FakeScreen(5, 15)
     state = {
         'cursor': {
             'line_index': 1,
@@ -44,6 +47,7 @@ def test_move_cursor_up_normal():
         }
     }
     cursor = te.Cursor(text, 1, 1)
+    initialize(text, screen)
     te.move_cursor_up(text, screen, state, cursor) 
     print(screen.get_data())
     assert screen.get_data() == [

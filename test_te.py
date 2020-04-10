@@ -22,6 +22,8 @@ class FakeScreen:
         return len(self.data)
     def get_num_columns(self):
         return len(self.data[0])
+    def get_data(self):
+        return self.data
 
 def test_move_cursor_up_normal():
     text = te.Text([

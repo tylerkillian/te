@@ -38,3 +38,5 @@ def test_move_cursor_up_normal():
         }
     }
     te.move_cursor_up(text, screen, state, cursor) 
+
+test_move_cursor_up_nirmal()

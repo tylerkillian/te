@@ -26,7 +26,7 @@ class PressUpArrow:
     def handle():
         if self.cursor.get_line_index() == 0:
             return
-        self.cursor.set_line_index(cursor.get_line_index() - 1)
-        cursor.set_column_index(cursor.get_preferred_column())
-        snap_cursor_to_text(text, cursor)
+        self.cursor.set_line_index(self.cursor.get_line_index() - 1)
+        self.cursor.set_column_index(self.cursor.get_preferred_column())
+        snap_cursor_to_text(self.text, self.cursor)
         capture_cursor(self.screen, self.cursor, self.screen_offset)

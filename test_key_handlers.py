@@ -1,6 +1,7 @@
 from text import Text
 from tlib_fake_objects import FakeScreen
 from state import Cursor, ScreenOffset
+from redraw_screen import Redrawer
 from key_handlers import PressUpArrow
 
 def test_press_up_arrow_normal():

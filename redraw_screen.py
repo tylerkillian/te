@@ -14,4 +14,4 @@ class Redrawer:
         self.screen.draw(text_to_draw)
         self.screen.set_cursor_position(
             self.cursor.get_line_index() - self.screen_offset.get_line_index(),
-            self.cursor.get_column_index() - self.screen_offset.get_column_index()
+            self.cursor.get_column_index() - self.screen_offset.get_column_index())

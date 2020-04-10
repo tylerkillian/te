@@ -15,7 +15,7 @@ class FakeScreen:
         for line_index, line in enumerate(data):
             for character_index, character in enumerate(line):
                 self.data[line_index][character_index] = character
-    def set_cursor_position(self, line_index, column_index):
+    def set_cursor_column(self, line_index, column_index):
         self.cursor_line_index = line_index
         self.cursor_column_index = column_index
     def get_num_lines(self):
@@ -34,7 +34,7 @@ def test_move_cursor_up_normal():
         'cursor': {
             'line_index': 1,
             'column_index': 1,
-            'preferred_position': 1
+            'preferred_column': 1
         },
         'screen_offset': {
             'line_index': 0,
@@ -47,7 +47,7 @@ def test_move_cursor_up_normal():
         'cursor': {
             'line_index': 0,
             'column_index': 1,
-            'preferred_position': 1
+            'preferred_column': 1
         },
         'screen_offset': {
             'line_index': 0,

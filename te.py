@@ -257,4 +257,5 @@ def main():
     finally:
         curses_close(stdscr)
 
-main()
+if __name__ == '__main__':
+    main()

@@ -1,4 +1,4 @@
-from key_handlers
+from key_handlers import PressUpArrow
 from tlib_fake_objects import FakeScreen
 from state import Cursor, ScreenOffset
 from text import Text

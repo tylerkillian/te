@@ -8,7 +8,8 @@ class FakeScreen:
     def erase(self):
         self.data = []
         for line_index, line in enumerate(self.data):
-            self.data.append(' ' * num_columns)
+            for column_index in range(0, len(line)):
+                line[column_index] =  ' '
     def draw(self, data):
         self.erase()
         for line_index, line in enumerate(data):

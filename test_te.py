@@ -43,9 +43,9 @@ def test_move_cursor_up_normal():
     }
     cursor = te.Cursor(text, 1, 1)
     te.move_cursor_up(text, screen, state, cursor) 
-    state = {
+    assert state == {
         'cursor': {
-            'line_index': 1,
+            'line_index': 0,
             'column_index': 1,
             'preferred_position': 1
         },

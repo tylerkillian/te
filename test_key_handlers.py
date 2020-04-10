@@ -1,27 +1,19 @@
 import key_handlers
-import tlib_fake_objects
+from tlib_fake_objects import FakeScreen
+from state import Cursor, ScreenOffset
+from text import Text
 
-def test_move_cursor_up_normal():
-    text = te.Text([
+def test_press_up_arrow_normal():
+    text = Text([
         'line1',
         'this is line2',
         'line 3'
     ])
     screen = FakeScreen(5, 15)
-    state = {
-        'cursor': {
-            'line_index': 1,
-            'column_index': 1,
-            'preferred_column': 1
-        },
-        'screen_offset': {
-            'line_index': 0,
-            'column_index': 0
-        }
-    }
-    cursor = te.Cursor(text, 1, 1)
-    initialize(text, screen, state, cursor)
-    te.move_cursor_up(text, screen, state, cursor) 
+    cursor = Cursor(1, 1)
+    screen_offset = ScreenOffset(0, 0)
+    up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset)
+    up_arrow_pressed.handle()
     assert screen.get_data() == [
         'line1          ',
         'this is line2  ',
@@ -29,16 +21,5 @@ def test_move_cursor_up_normal():
         '               ',
         '               '
     ]
-    assert state == {
-        'cursor': {
-            'line_index': 0,
-            'column_index': 1,
-            'preferred_column': 1
-        },
-        'screen_offset': {
-            'line_index': 0,
-            'column_index': 0
-        }
-    }
-
-test_move_cursor_up_normal()
+    assert cursor.get_line_index() == 0
+test_press_up_arrow_normal()

@@ -30,6 +30,6 @@ def test_press_up_arrow_normal():
     assert cursor.get_line_index() == 0
     assert cursor.get_column_index() == 1
     assert screen_offset.get_line_index() == 0
-    assert screen_offset.get_column_index() == 1
+    assert screen_offset.get_column_index() == 0
 
 test_press_up_arrow_normal()

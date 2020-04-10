@@ -9,7 +9,13 @@ def test_press_up_arrow_normal():
         'this is line2',
         'line 3'
     ])
-    screen = FakeScreen(5, 15)
+    screen = FakeScreen([
+        'line1          ',
+        'this is line2  ',
+        'line 3         ',
+        '               ',
+        '               '
+    ])
     cursor = Cursor(1, 1)
     screen_offset = ScreenOffset(0, 0)
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset)

@@ -117,7 +117,7 @@ def move_cursor_left(text, screen, state):
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
-def move_cursor_right(text, screen, state, cursor):
+def move_cursor_right(text, screen, state):
     if cursor_at_end_of_text(text, state['cursor']):
         return
     if cursor_at_end_of_line(text, state['cursor']):
@@ -136,7 +136,7 @@ def insert(text, screen, state, cursor, character):
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
     state['cursor']['line_index'] = cursor.get_line_index() #temp
     state['cursor']['column_index'] = cursor.get_column_index() #temp
-    move_cursor_right(text, screen, state, cursor)
+    move_cursor_right(text, screen, state)
     cursor.set_line_index(state['cursor']['line_index'])
     cursor.set_column_index(state['cursor']['column_index'])
 
@@ -149,7 +149,7 @@ def insert_line(text, screen, state, cursor):
     text.insert_line(line_index + 1, line_after_cursor)
     state['cursor']['line_index'] = cursor.get_line_index() #temp
     state['cursor']['column_index'] = cursor.get_column_index() #temp
-    move_cursor_right(text, screen, state, cursor)
+    move_cursor_right(text, screen, state)
     cursor.set_line_index(state['cursor']['line_index'])
     cursor.set_column_index(state['cursor']['column_index'])
 
@@ -214,7 +214,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'RIGHT':
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp
-            move_cursor_right(text, screen, state, cursor)
+            move_cursor_right(text, screen, state)
             cursor.set_line_index(state['cursor']['line_index'])
             cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal[0:10] == 'CHARACTER_':

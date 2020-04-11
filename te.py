@@ -177,6 +177,8 @@ def delete_character(text, screen, state, cursor):
 def backspace(text, screen, state, cursor):
     if cursor_at_beginning_of_text(cursor):
         return
+    state['cursor']['line_index'] = cursor.get_line_index() #temp
+    state['cursor']['column_index'] = cursor.get_column_index() #temp
     move_cursor_left(text, screen, state, cursor)
     delete_character(text, screen, state, cursor)
 

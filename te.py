@@ -67,7 +67,7 @@ def snap_cursor_to_text(text, cursor):
         cursor['column_index'] = len(text.get_line(cursor['line_index']))
 
 def cursor_at_beginning_of_text(cursor):
-    if cursor.get_line_index() == 0 and cursor.get_column_index() == 0:
+    if cursor['line_index'] == 0 and cursor['column_index'] == 0:
         return True
     return False
 
@@ -106,7 +106,7 @@ def move_cursor_down(text, screen, state):
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 
 def move_cursor_left(text, screen, state, cursor):
-    if cursor_at_beginning_of_text(cursor):
+    if cursor_at_beginning_of_text(state['cursor']):
         return
     if state['cursor']['column_index'] == 0:
         state['cursor']['line_index'] -= 1
@@ -175,10 +175,10 @@ def delete_character(text, screen, state, cursor):
     state['cursor']['preferred_column'] = cursor.get_column_index()
 
 def backspace(text, screen, state, cursor):
-    if cursor_at_beginning_of_text(cursor):
-        return
     state['cursor']['line_index'] = cursor.get_line_index() #temp
     state['cursor']['column_index'] = cursor.get_column_index() #temp
+    if cursor_at_beginning_of_text(state['cursor']):
+        return
     move_cursor_left(text, screen, state, cursor)
     cursor.set_line_index(state['cursor']['line_index'])
     cursor.set_column_index(state['cursor']['column_index'])

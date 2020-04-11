@@ -141,8 +141,6 @@ def insert(text, screen, state, cursor, character):
     cursor.set_column_index(state['cursor']['column_index'])
 
 def insert_line(text, screen, state, cursor):
-    line_index = cursor.get_line_index()
-    cursor_column = cursor.get_column_index()
     line_index = state['cursor']['line_index']
     cursor_column = state['cursor']['column_index']
     line_before_cursor = text.get_line(line_index)[0:cursor_column]

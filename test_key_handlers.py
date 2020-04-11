@@ -167,7 +167,7 @@ def test_press_up_arrow_move_screen_up_and_left():
         '               ',
         '               '
     ])
-    cursor = Cursor(2, 6, 6)
+    cursor = Cursor(1, 10, 10)
     screen_offset = ScreenOffset(2, 0)
     redrawer = Redrawer(text, screen, cursor, screen_offset)
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)

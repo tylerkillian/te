@@ -9,7 +9,6 @@ class Redrawer:
             self.screen_offset.get_line_offset(),
             self.screen.get_num_lines(),
             self.screen_offset.get_column_offset(),
-            self.screen.get_num_lines(),
             self.screen.get_num_columns())
         self.screen.draw(text_to_draw)
         self.screen.set_cursor_position(

@@ -144,8 +144,6 @@ def insert_line(text, screen, state, cursor):
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, state)
-    cursor.set_line_index(state['cursor']['line_index'])
-    cursor.set_column_index(state['cursor']['column_index'])
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor['line_index']

@@ -154,7 +154,7 @@ def insert_line(text, screen, state, cursor):
     cursor.set_column_index(state['cursor']['column_index'])
 
 def append_next_line_to_current_line(text, cursor):
-    current_line_index = cursor.get_line_index()
+    current_line_index = cursor['line_index']
     current_line = text.get_line(current_line_index)
     next_line = text.get_line(current_line_index + 1)
     text.set_line(current_line_index, current_line + next_line)
@@ -174,7 +174,7 @@ def delete_character(text, screen, state, cursor):
     if cursor_at_end_of_text(text, state['cursor']):
         return
     if cursor_at_end_of_line(text, state['cursor']):
-        append_next_line_to_current_line(text, cursor)
+        append_next_line_to_current_line(text, state['cursor'])
         delete_next_line(text, cursor)
         return
     delete_current_character(text, cursor)

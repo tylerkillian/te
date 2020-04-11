@@ -121,14 +121,12 @@ def move_cursor_right(text, screen, state, cursor):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
-        cursor.set_column_index(0)
-        cursor.set_line_index(cursor.get_line_index() + 1)
+        state['cursor']['column_index'] = 0
+        state['cursor']['line_index'] += 1
     else:
-        cursor.set_column_index(cursor.get_column_index() + 1)
-    state['cursor']['line_index'] = cursor.get_line_index() #temp
-    state['cursor']['column_index'] = cursor.get_column_index() #temp
+        state['cursor']['column_index'] += 1
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
-    state['cursor']['preferred_column'] = cursor.get_column_index()
+    state['cursor']['preferred_column'] = state['cursor']['column_index']
 
 def insert(text, screen, state, cursor, character):
     line_index = cursor.get_line_index()

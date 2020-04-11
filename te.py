@@ -72,7 +72,7 @@ def cursor_at_beginning_of_text(cursor):
     return False
 
 def cursor_at_last_line(text, cursor):
-    if cursor.get_line_index() == text.get_num_lines() - 1:
+    if cursor['line_index'] == text.get_num_lines() - 1:
         return True
     return False
 
@@ -81,8 +81,8 @@ def cursor_at_end_of_line(text, cursor):
         return True
     return False
 
-def cursor_at_end_of_text(text, cursor, cursor_old):
-    if cursor_at_last_line(text, cursor_old) and cursor_at_end_of_line(text, cursor):
+def cursor_at_end_of_text(text, cursor):
+    if cursor_at_last_line(text, cursor) and cursor_at_end_of_line(text, cursor):
         return True
     return False
 

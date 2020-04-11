@@ -117,7 +117,7 @@ def move_cursor_left(text, screen, state, cursor):
     state['cursor']['line_index'] = cursor.get_line_index() #temp
     state['cursor']['column_index'] = cursor.get_column_index() #temp
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
-    state['cursor']['preferred_column'] = cursor.get_column_index()
+    state['cursor']['preferred_column'] = state['cursor']['column_index']
 
 def move_cursor_right(text, screen, state, cursor):
     if cursor_at_end_of_text(text, cursor):

@@ -261,9 +261,8 @@ def start_editor(screen, signal_stream):
             'column_index': 0
         }
     }
-    cursor = Cursor(text, 0, 0)
     refresh(text, screen, state)
-    dispatch_signals(signal_stream, text, screen, state, cursor)
+    dispatch_signals(signal_stream, text, screen, state)
 
 def main():
     try:

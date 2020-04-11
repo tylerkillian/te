@@ -222,7 +222,11 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'ENTER':
             insert_line(text, screen, state, cursor)
         elif next_signal == 'BACKSPACE':
+            state['cursor']['line_index'] = cursor.get_line_index() #temp
+            state['cursor']['column_index'] = cursor.get_column_index() #temp
             backspace(text, screen, state, cursor)
+            cursor.set_line_index(state['cursor']['line_index'])
+            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'DELETE':
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp

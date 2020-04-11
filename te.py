@@ -178,60 +178,26 @@ def backspace(text, screen, state):
     move_cursor_left(text, screen, state)
     delete_character(text, screen, state)
 
-def dispatch_signals(signal_stream, text, screen, state, cursor):
+def dispatch_signals(signal_stream, text, screen, state):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             move_cursor_up(text, screen, state)
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'DOWN':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             move_cursor_down(text, screen, state)
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'LEFT':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             move_cursor_left(text, screen, state)
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'RIGHT':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             move_cursor_right(text, screen, state)
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal[0:10] == 'CHARACTER_':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             insert(text, screen, state, next_signal[-1])
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'ENTER':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             insert_line(text, screen, state)
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'BACKSPACE':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             backspace(text, screen, state)
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'DELETE':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             delete_character(text, screen, state)
-            cursor.set_line_index(state['cursor']['line_index'])
-            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'RESIZE':
-            state['cursor']['line_index'] = cursor.get_line_index() #temp
-            state['cursor']['column_index'] = cursor.get_column_index() #temp
             resize(text, screen, state)
         refresh(text, screen, state)
 

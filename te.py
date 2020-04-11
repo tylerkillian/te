@@ -180,6 +180,8 @@ def backspace(text, screen, state, cursor):
     state['cursor']['line_index'] = cursor.get_line_index() #temp
     state['cursor']['column_index'] = cursor.get_column_index() #temp
     move_cursor_left(text, screen, state, cursor)
+    cursor.set_line_index(state['cursor']['line_index'])
+    cursor.set_column_index(state['cursor']['column_index'])
     delete_character(text, screen, state, cursor)
 
 def dispatch_signals(signal_stream, text, screen, state, cursor):

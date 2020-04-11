@@ -136,7 +136,7 @@ def insert(text, screen, state, character):
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
     move_cursor_right(text, screen, state)
 
-def insert_line(text, screen, state, cursor):
+def insert_line(text, screen, state):
     line_index = state['cursor']['line_index']
     cursor_column = state['cursor']['column_index']
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
@@ -218,7 +218,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'ENTER':
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp
-            insert_line(text, screen, state, cursor)
+            insert_line(text, screen, state)
             cursor.set_line_index(state['cursor']['line_index'])
             cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'BACKSPACE':

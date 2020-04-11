@@ -160,7 +160,7 @@ def append_next_line_to_current_line(text, cursor):
     text.set_line(current_line_index, current_line + next_line)
 
 def delete_next_line(text, cursor):
-    next_line_index = cursor.get_line_index() + 1
+    next_line_index = cursor['line_index'] + 1
     text.delete_line(next_line_index)
 
 def delete_current_character(text, cursor):
@@ -175,7 +175,7 @@ def delete_character(text, screen, state, cursor):
         return
     if cursor_at_end_of_line(text, state['cursor']):
         append_next_line_to_current_line(text, state['cursor'])
-        delete_next_line(text, cursor)
+        delete_next_line(text, state['cursor'])
         return
     delete_current_character(text, cursor)
     state['cursor']['preferred_column'] = cursor.get_column_index()

@@ -77,12 +77,12 @@ def cursor_at_last_line(text, cursor):
     return False
 
 def cursor_at_end_of_line(text, cursor):
-    if cursor.get_column_index() == len(text.get_line(cursor.get_line_index())):
+    if cursor['column_index'] == len(text.get_line(cursor['line_index'])):
         return True
     return False
 
 def cursor_at_end_of_text(text, cursor, cursor_old):
-    if cursor_at_last_line(text, cursor_old) and cursor_at_end_of_line(text, cursor_old):
+    if cursor_at_last_line(text, cursor_old) and cursor_at_end_of_line(text, cursor):
         return True
     return False
 
@@ -120,7 +120,7 @@ def move_cursor_left(text, screen, state):
 def move_cursor_right(text, screen, state, cursor):
     if cursor_at_end_of_text(text, state['cursor'], cursor):
         return
-    if cursor_at_end_of_line(text, cursor):
+    if cursor_at_end_of_line(text, state['cursor']):
         state['cursor']['column_index'] = 0
         state['cursor']['line_index'] += 1
     else:
@@ -173,7 +173,7 @@ def delete_current_character(text, cursor):
 def delete_character(text, screen, state, cursor):
     if cursor_at_end_of_text(text, state['cursor'], cursor):
         return
-    if cursor_at_end_of_line(text, cursor):
+    if cursor_at_end_of_line(text, state['cursor']):
         append_next_line_to_current_line(text, cursor)
         delete_next_line(text, cursor)
         return

@@ -154,9 +154,39 @@ def test_press_up_arrow_move_screen_up():
     assert screen_offset.get_line_offset() == 1
     assert screen_offset.get_column_offset() == 0
 
+def test_press_up_arrow_move_screen_up_and_left():
+    text = Text([
+        'line1',
+        'this is line2',
+        'line 3'
+    ])
+    screen = FakeScreen([
+        'line2          ',
+        '               ',
+        '               ',
+        '               ',
+        '               '
+    ])
+    cursor = Cursor(2, 6, 6)
+    screen_offset = ScreenOffset(2, 0)
+    redrawer = Redrawer(text, screen, cursor, screen_offset)
+    up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
+    up_arrow_pressed.handle(None)
+    assert screen.get_data() == [
+        'this is line2  ',
+        'line 3         ',
+        '               ',
+        '               ',
+        '               '
+    ]
+    assert cursor.get_line_index() == 1
+    assert cursor.get_column_index() == 6
+    assert screen_offset.get_line_offset() == 1
+    assert screen_offset.get_column_offset() == 0
 
 test_press_up_arrow_normal()
 test_press_up_arrow_top_of_screen()
 test_press_up_arrow_move_to_shorter_line()
 test_press_up_arrow_move_to_longer_line()
 test_press_up_arrow_move_screen_up()
+test_press_up_arrow_move_screen_up_and_left()

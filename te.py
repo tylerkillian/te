@@ -129,8 +129,8 @@ def move_cursor_right(text, screen, state):
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
 def insert(text, screen, state, cursor, character):
-    line_index = cursor.get_line_index()
-    cursor_column = cursor.get_column_index()
+    line_index = state['cursor']['line_index']
+    cursor_column = state['cursor']['column_index']
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)

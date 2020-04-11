@@ -143,8 +143,6 @@ def insert_line(text, screen, state, cursor):
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
-    state['cursor']['line_index'] = cursor.get_line_index() #temp
-    state['cursor']['column_index'] = cursor.get_column_index() #temp
     move_cursor_right(text, screen, state)
     cursor.set_line_index(state['cursor']['line_index'])
     cursor.set_column_index(state['cursor']['column_index'])

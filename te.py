@@ -170,7 +170,7 @@ def delete_current_character(text, cursor):
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
     text.set_line(current_line_index, new_line)
 
-def delete_character(text, screen, state, cursor):
+def delete_character(text, screen, state):
     if cursor_at_end_of_text(text, state['cursor']):
         return
     if cursor_at_end_of_line(text, state['cursor']):
@@ -188,7 +188,7 @@ def backspace(text, screen, state, cursor):
     move_cursor_left(text, screen, state)
     cursor.set_line_index(state['cursor']['line_index'])
     cursor.set_column_index(state['cursor']['column_index'])
-    delete_character(text, screen, state, cursor)
+    delete_character(text, screen, state)
 
 def dispatch_signals(signal_stream, text, screen, state, cursor):
     while True:

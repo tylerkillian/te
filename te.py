@@ -105,17 +105,15 @@ def move_cursor_down(text, screen, state):
     snap_cursor_to_text(text, state['cursor'])
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 
-def move_cursor_left(text, screen, state):
+def move_cursor_left(text, screen, state, cursor):
     if cursor_at_beginning_of_text(cursor):
         return
-    if cursor.get_column_index() == 0:
-        cursor.set_line_index(cursor.get_line_index() - 1)
-        line_length = len(text.get_line(cursor.get_line_index()))
-        cursor.set_column_index(line_length)
+    if state['cursor']['column_index'] == 0:
+        state['cursor']['line_index'] -= 1
+        line_length = len(text.get_line(state['cursor']['line_index']))
+        state['cursor']['column_index'] = line_length
     else:
-        cursor.set_column_index(cursor.get_column_index() - 1)
-    state['cursor']['line_index'] = cursor.get_line_index() #temp
-    state['cursor']['column_index'] = cursor.get_column_index() #temp
+        state['cursor']['column_index'] -= 1
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = state['cursor']['column']
 
@@ -200,7 +198,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'LEFT':
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp
-            move_cursor_left(text, screen, state)
+            move_cursor_left(text, screen, state, cursor)
             cursor.set_line_index(state['cursor']['line_index'])
             cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'RIGHT':

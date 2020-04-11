@@ -72,12 +72,12 @@ def cursor_at_beginning_of_text(cursor):
     return False
 
 def cursor_at_last_line(text, cursor):
-    if cursor['line_index'] == text.get_num_lines() - 1:
+    if cursor.get_line_index() == text.get_num_lines() - 1:
         return True
     return False
 
 def cursor_at_end_of_line(text, cursor):
-    if cursor['column_index'] == len(text.get_line(cursor['line_index'])):
+    if cursor.get_column_index() == len(text.get_line(cursor.get_line_index())):
         return True
     return False
 
@@ -118,9 +118,9 @@ def move_cursor_left(text, screen, state):
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
 def move_cursor_right(text, screen, state, cursor):
-    if cursor_at_end_of_text(text, state['cursor']):
+    if cursor_at_end_of_text(text, cursor):
         return
-    if cursor_at_end_of_line(text, state['cursor']):
+    if cursor_at_end_of_line(text, cursor):
         state['cursor']['column_index'] = 0
         state['cursor']['line_index'] += 1
     else:
@@ -171,12 +171,8 @@ def delete_current_character(text, cursor):
     text.set_line(current_line_index, new_line)
 
 def delete_character(text, screen, state, cursor):
-    state['cursor']['line_index'] = cursor.get_line_index() #temp
-    state['cursor']['column_index'] = cursor.get_column_index() #temp
-    if cursor_at_end_of_text(text, state['cursor']):
+    if cursor_at_end_of_text(text, cursor):
         return
-    cursor.set_line_index(state['cursor']['line_index'])
-    cursor.set_column_index(state['cursor']['column_index'])
     if cursor_at_end_of_line(text, cursor):
         append_next_line_to_current_line(text, cursor)
         delete_next_line(text, cursor)

@@ -113,7 +113,6 @@ def move_cursor_left(text, screen, state, cursor):
         line_length = len(text.get_line(state['cursor']['line_index']))
         state['cursor']['column_index'] = line_length
     else:
-        cursor.set_column_index(cursor.get_column_index() - 1)
         state['cursor']['column_index'] -= 1
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = state['cursor']['column_index']

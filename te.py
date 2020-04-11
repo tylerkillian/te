@@ -172,14 +172,10 @@ def delete_character(text, screen, state):
     delete_current_character(text, state['cursor'])
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
-def backspace(text, screen, state, cursor):
-    state['cursor']['line_index'] = cursor.get_line_index() #temp
-    state['cursor']['column_index'] = cursor.get_column_index() #temp
+def backspace(text, screen, state):
     if cursor_at_beginning_of_text(state['cursor']):
         return
     move_cursor_left(text, screen, state)
-    cursor.set_line_index(state['cursor']['line_index'])
-    cursor.set_column_index(state['cursor']['column_index'])
     delete_character(text, screen, state)
 
 def dispatch_signals(signal_stream, text, screen, state, cursor):
@@ -224,7 +220,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'BACKSPACE':
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp
-            backspace(text, screen, state, cursor)
+            backspace(text, screen, state)
             cursor.set_line_index(state['cursor']['line_index'])
             cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'DELETE':

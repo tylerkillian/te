@@ -119,7 +119,7 @@ def test_press_up_arrow_move_to_longer_line():
         '               ',
         '               '
     ]
-    assert cursor.get_line_index() == 0
+    assert cursor.get_line_index() == 1
     assert cursor.get_column_index() == 9
     assert screen_offset.get_line_offset() == 0
     assert screen_offset.get_column_offset() == 0

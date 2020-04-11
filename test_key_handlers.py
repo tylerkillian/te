@@ -20,7 +20,7 @@ def test_press_up_arrow_normal():
     cursor = Cursor(1, 1)
     screen_offset = ScreenOffset(0, 0)
     redrawer = Redrawer(text, screen, cursor, screen_offset)
-    up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset)
+    up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
     up_arrow_pressed.handle(None)
     assert screen.get_data() == [
         'line1          ',

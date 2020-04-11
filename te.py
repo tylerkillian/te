@@ -36,7 +36,7 @@ class Cursor:
     def set_column_index(self, value):
         self.column_index = value
 
-def refresh(text, screen, state, cursor):
+def refresh(text, screen, state):
     text_to_draw = text.get_text(
         state['screen_offset']['line_index'],
         screen.get_num_lines(),
@@ -233,7 +233,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp
             resize(text, screen, state)
-        refresh(text, screen, state, cursor)
+        refresh(text, screen, state)
 
 def curses_open():
     stdscr = curses.initscr()
@@ -262,7 +262,7 @@ def start_editor(screen, signal_stream):
         }
     }
     cursor = Cursor(text, 0, 0)
-    refresh(text, screen, state, cursor)
+    refresh(text, screen, state)
     dispatch_signals(signal_stream, text, screen, state, cursor)
 
 def main():

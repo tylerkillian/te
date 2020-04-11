@@ -21,6 +21,7 @@ class PressUpArrow:
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
+        self.redrawer = redrawer
     def handle(self, event):
         if self.cursor.get_line_index() == 0:
             return

@@ -22,20 +22,6 @@ class Text:
     def delete_line(self, line_index):
         del self.text[line_index]
 
-class Cursor:
-    def __init__(self, text, line_index=0, column_index=0):
-        self.line_index = line_index
-        self.column_index = column_index
-        self.text = text
-    def get_line_index(self):
-        return self.line_index
-    def set_line_index(self, value):
-        self.line_index = value
-    def get_column_index(self):
-        return self.column_index
-    def set_column_index(self, value):
-        self.column_index = value
-
 def refresh(text, screen, state):
     text_to_draw = text.get_text(
         state['screen_offset']['line_index'],

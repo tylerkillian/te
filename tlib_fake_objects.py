@@ -6,7 +6,7 @@ class FakeScreen:
         for line_index in range(0, num_lines):
             self.data.append([' '] * num_columns)
             assert len(data[line_index]) == num_columns
-            for column_index, character in enumerate(data):
+            for column_index, character in enumerate(data[line_index]):
                 self.data[line_index][column_index] = character
     def erase(self):
         for line_index, line in enumerate(self.data):

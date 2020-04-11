@@ -77,7 +77,7 @@ def test_press_up_arrow_move_to_shorter_line():
         '               ',
         '               '
     ])
-    cursor = Cursor(0, 7, 7)
+    cursor = Cursor(1, 7, 7)
     screen_offset = ScreenOffset(0, 0)
     redrawer = Redrawer(text, screen, cursor, screen_offset)
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
@@ -90,7 +90,6 @@ def test_press_up_arrow_move_to_shorter_line():
         '               '
     ]
     assert cursor.get_line_index() == 0
-    print(cursor.get_column_index())
     assert cursor.get_column_index() == 5
     assert screen_offset.get_line_offset() == 0
     assert screen_offset.get_column_offset() == 0

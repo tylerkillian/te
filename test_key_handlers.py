@@ -47,13 +47,11 @@ def test_press_up_arrow_top_of_screen():
         '               ',
         '               '
     ])
-    print(screen.get_data())
     cursor = Cursor(0, 1, 1)
     screen_offset = ScreenOffset(0, 0)
     redrawer = Redrawer(text, screen, cursor, screen_offset)
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
     up_arrow_pressed.handle(None)
-    print(screen.get_data())
     assert screen.get_data() == [
         'line1          ',
         'this is line2  ',

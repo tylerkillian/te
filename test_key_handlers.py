@@ -90,6 +90,7 @@ def test_press_up_arrow_move_to_shorter_line():
         '               '
     ]
     assert cursor.get_line_index() == 0
+    print(cursor.get_column_index())
     assert cursor.get_column_index() == 5
     assert screen_offset.get_line_offset() == 0
     assert screen_offset.get_column_offset() == 0

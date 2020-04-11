@@ -204,8 +204,8 @@ def test_press_up_arrow_move_screen_up_and_right():
     up_arrow_pressed.handle(None)
     assert screen.get_data() == [
         'is a much longe',
-        's line2       ',
-        '3              ',
+        's line2        ',
+        'e 3            ',
         '               ',
         '               '
     ]

@@ -1,10 +1,10 @@
 class Redrawer:
-    def __init__(text, screen, cursor, screen_offset):
+    def __init__(self, text, screen, cursor, screen_offset):
         self.text = text
         self.screen = screen
         self.cursor = cursor
         self.screen_offset = screen_offset
-    def redraw():
+    def redraw(self):
         text_to_draw = self.text.get_text(
             self.screen_offset.get_line_index(),
             self.screen.get_num_lines(),

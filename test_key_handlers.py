@@ -191,7 +191,7 @@ def test_press_up_arrow_move_screen_up_and_right():
         'line 3'
     ])
     screen = FakeScreen([
-        'line2          ',
+        ' line2         ',
         '               ',
         '               ',
         '               ',

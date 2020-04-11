@@ -202,6 +202,7 @@ def test_press_up_arrow_move_screen_up_and_right():
     redrawer = Redrawer(text, screen, cursor, screen_offset)
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
     up_arrow_pressed.handle(None)
+    print(screen.get_data())
     assert screen.get_data() == [
         'is a much longe',
         's line2        ',

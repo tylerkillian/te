@@ -203,8 +203,8 @@ def test_press_up_arrow_move_screen_up_and_right():
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
     up_arrow_pressed.handle(None)
     assert screen.get_data() == [
-        '               ',
-        'is line2       ',
+        'is a much longe',
+        's line2       ',
         '3              ',
         '               ',
         '               '

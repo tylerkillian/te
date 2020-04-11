@@ -8,8 +8,8 @@ def capture_index(interval_start, interval_width, index_to_capture):
 def capture_cursor(screen, cursor, screen_offset):
     screen_num_lines = screen.get_num_lines()
     screen_num_columns = screen.get_num_columns()
-    screen_offset.set_line_offset(capture_index(screen_offset['line_index'], screen_num_lines, cursor['line_index']))
-    screen_offset.set_column_offset(capture_index(screen_offset['column_index'], screen_num_columns, cursor['column_index']))
+    screen_offset.set_line_offset(capture_index(screen_offset.get_line_offset(), screen_num_lines, cursor.get_line_index()))
+    screen_offset.set_column_offset(capture_index(screen_offset.get_column_offset(), screen_num_columns, cursor.get_column_index()))
 
 def snap_cursor_to_text(text, cursor):
     if cursor.get_column_index() > len(text.get_line(cursor.get_line_index())):

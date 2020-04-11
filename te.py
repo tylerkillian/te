@@ -105,7 +105,7 @@ def move_cursor_down(text, screen, state):
     snap_cursor_to_text(text, state['cursor'])
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
 
-def move_cursor_left(text, screen, state, cursor):
+def move_cursor_left(text, screen, state):
     if cursor_at_beginning_of_text(state['cursor']):
         return
     if state['cursor']['column_index'] == 0:
@@ -179,7 +179,7 @@ def backspace(text, screen, state, cursor):
     state['cursor']['column_index'] = cursor.get_column_index() #temp
     if cursor_at_beginning_of_text(state['cursor']):
         return
-    move_cursor_left(text, screen, state, cursor)
+    move_cursor_left(text, screen, state)
     cursor.set_line_index(state['cursor']['line_index'])
     cursor.set_column_index(state['cursor']['column_index'])
     delete_character(text, screen, state, cursor)
@@ -202,7 +202,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         elif next_signal == 'LEFT':
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp
-            move_cursor_left(text, screen, state, cursor)
+            move_cursor_left(text, screen, state)
             cursor.set_line_index(state['cursor']['line_index'])
             cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'RIGHT':

@@ -1,5 +1,5 @@
 class Redrawer:
-    def init__(text, screen, cursor, screen_offset):
+    def __init__(text, screen, cursor, screen_offset):
         self.text = text
         self.screen = screen
         self.cursor = cursor

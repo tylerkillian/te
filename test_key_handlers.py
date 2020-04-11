@@ -168,7 +168,7 @@ def test_press_up_arrow_move_screen_up_and_left():
         '               '
     ])
     cursor = Cursor(1, 10, 10)
-    screen_offset = ScreenOffset(2, 0)
+    screen_offset = ScreenOffset(1, 0)
     redrawer = Redrawer(text, screen, cursor, screen_offset)
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
     up_arrow_pressed.handle(None)
@@ -180,8 +180,8 @@ def test_press_up_arrow_move_screen_up_and_left():
         '               ',
         '               '
     ]
-    assert cursor.get_line_index() == 1
-    assert cursor.get_column_index() == 6
+    assert cursor.get_line_index() == 0
+    assert cursor.get_column_index() == 5
     assert screen_offset.get_line_offset() == 1
     assert screen_offset.get_column_offset() == 0
 

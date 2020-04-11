@@ -17,9 +17,7 @@ def test_press_up_arrow_normal():
         '               ',
         '               '
     ])
-    cursor = Cursor(1, 1)
-    print(cursor.get_line_index())
-    print(cursor.get_column_index())
+    cursor = Cursor(1, 1, 1)
     screen_offset = ScreenOffset(0, 0)
     redrawer = Redrawer(text, screen, cursor, screen_offset)
     up_arrow_pressed = PressUpArrow(text, screen, cursor, screen_offset, redrawer)
@@ -32,8 +30,6 @@ def test_press_up_arrow_normal():
         '               '
     ]
     assert cursor.get_line_index() == 0
-    print(cursor.get_line_index())
-    print(cursor.get_column_index())
     assert cursor.get_column_index() == 1
     assert screen_offset.get_line_index() == 0
     assert screen_offset.get_column_index() == 0

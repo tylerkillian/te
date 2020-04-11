@@ -93,12 +93,9 @@ def move_cursor_up(text, screen, state):
     if state['cursor']['line_index'] == 0:
         return
     state['cursor']['line_index'] -= 1
-    state['cursor']['column_index'] = cursor.get_column_index() #temp
-    cursor.set_column_index(state['cursor']['preferred_column'])
+    state['cursor']['column_index'] = state['cursor']['preferred_column']
     snap_cursor_to_text(text, state['cursor'])
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
-    cursor.set_line_index(state['cursor']['line_index'])
-    cursor.set_column_index(state['cursor']['column_index'])
 
 def move_cursor_down(text, screen, state, cursor):
     if cursor.get_line_index() == text.get_num_lines() - 1:
@@ -195,7 +192,7 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
         if next_signal == 'UP':
             state['cursor']['line_index'] = cursor.get_line_index() #temp
             state['cursor']['column_index'] = cursor.get_column_index() #temp
-            move_cursor_up(text, screen, state, cursor)
+            move_cursor_up(text, screen, state)
             cursor.set_line_index(state['cursor']['line_index'])
             cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'DOWN':

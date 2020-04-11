@@ -164,9 +164,9 @@ def delete_next_line(text, cursor):
     text.delete_line(next_line_index)
 
 def delete_current_character(text, cursor):
-    current_line_index = cursor.get_line_index()
+    current_line_index = cursor['line_index']
     current_line = text.get_line(current_line_index)
-    current_character_index = cursor.get_column_index()
+    current_character_index = cursor['column_index']
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
     text.set_line(current_line_index, new_line)
 
@@ -177,7 +177,7 @@ def delete_character(text, screen, state, cursor):
         append_next_line_to_current_line(text, state['cursor'])
         delete_next_line(text, state['cursor'])
         return
-    delete_current_character(text, cursor)
+    delete_current_character(text, state['cursor'])
     state['cursor']['preferred_column'] = cursor.get_column_index()
 
 def backspace(text, screen, state, cursor):

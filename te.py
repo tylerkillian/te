@@ -134,7 +134,11 @@ def insert(text, screen, state, cursor, character):
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
+    state['cursor']['line_index'] = cursor.get_line_index() #temp
+    state['cursor']['column_index'] = cursor.get_column_index() #temp
     move_cursor_right(text, screen, state, cursor)
+    cursor.set_line_index(state['cursor']['line_index'])
+    cursor.set_column_index(state['cursor']['column_index'])
 
 def insert_line(text, screen, state, cursor):
     line_index = cursor.get_line_index()
@@ -143,7 +147,11 @@ def insert_line(text, screen, state, cursor):
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
+    state['cursor']['line_index'] = cursor.get_line_index() #temp
+    state['cursor']['column_index'] = cursor.get_column_index() #temp
     move_cursor_right(text, screen, state, cursor)
+    cursor.set_line_index(state['cursor']['line_index'])
+    cursor.set_column_index(state['cursor']['column_index'])
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor.get_line_index()
@@ -204,7 +212,11 @@ def dispatch_signals(signal_stream, text, screen, state, cursor):
             cursor.set_line_index(state['cursor']['line_index'])
             cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal == 'RIGHT':
+            state['cursor']['line_index'] = cursor.get_line_index() #temp
+            state['cursor']['column_index'] = cursor.get_column_index() #temp
             move_cursor_right(text, screen, state, cursor)
+            cursor.set_line_index(state['cursor']['line_index'])
+            cursor.set_column_index(state['cursor']['column_index'])
         elif next_signal[0:10] == 'CHARACTER_':
             insert(text, screen, state, cursor, next_signal[-1])
         elif next_signal == 'ENTER':

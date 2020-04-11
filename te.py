@@ -108,14 +108,12 @@ def move_cursor_down(text, screen, state):
 def move_cursor_left(text, screen, state, cursor):
     if cursor_at_beginning_of_text(cursor):
         return
-    if cursor.get_column_index() == 0:
-        cursor.set_line_index(cursor.get_line_index() - 1)
-        line_length = len(text.get_line(cursor.get_line_index()))
+    if state['cursor']['column_index'] == 0:
+        state['cursor']['line_index'] -= 1
+        line_length = len(text.get_line(state['cursor']['line_index']))
         cursor.set_column_index(line_length)
     else:
         cursor.set_column_index(cursor.get_column_index() - 1)
-    state['cursor']['line_index'] = cursor.get_line_index() #temp
-    state['cursor']['column_index'] = cursor.get_column_index() #temp
     state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 

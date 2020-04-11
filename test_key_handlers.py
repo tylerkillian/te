@@ -129,4 +129,4 @@ def test_press_up_arrow_move_to_longer_line():
 test_press_up_arrow_normal()
 test_press_up_arrow_top_of_screen()
 test_press_up_arrow_move_to_shorter_line()
-test_press_up_arrow_move_to_shorter_line()
+test_press_up_arrow_move_to_longer_line()

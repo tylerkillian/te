@@ -186,7 +186,7 @@ def test_press_up_arrow_move_screen_up_and_left():
 
 def test_press_up_arrow_move_screen_up_and_right():
     text = Text([
-        'line1',
+        'line1 is a much longer line than line2',
         'this is line2',
         'line 3'
     ])

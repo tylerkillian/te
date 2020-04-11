@@ -177,7 +177,6 @@ def test_press_up_arrow_move_screen_up_and_left():
         'is line2       ',
         '3              ',
         '               ',
-        '               ',
         '               '
     ]
     assert cursor.get_line_index() == 0

@@ -6,8 +6,6 @@ from curses_interface import CursesScreen, CursesSignalStream
 class Text:
     def __init__(self, text=['']):
         self.text = text
-    def get_line(self, line_index):
-        return self.text[line_index]
     def set_line(self, line_index, value):
         self.text[line_index] = value
     def insert_line(self, line_index, line):
@@ -47,8 +45,8 @@ def capture_cursor(screen, cursor, screen_offset):
     screen_offset['column_index'] = capture_index(screen_offset['column_index'], screen_num_columns, cursor['column_index'])
 
 def snap_cursor_to_text(text, cursor):
-    if cursor['column_index'] > len(text.get_line(cursor['line_index'])):
-        cursor['column_index'] = len(text.get_line(cursor['line_index']))
+    if cursor['column_index'] > len(text.text[cursor['line_index']]):
+        cursor['column_index'] = len(text.text[cursor['line_index']])
 
 def cursor_at_beginning_of_text(cursor):
     if cursor['line_index'] == 0 and cursor['column_index'] == 0:
@@ -61,7 +59,7 @@ def cursor_at_last_line(text, cursor):
     return False
 
 def cursor_at_end_of_line(text, cursor):
-    if cursor['column_index'] == len(text.get_line(cursor['line_index'])):
+    if cursor['column_index'] == len(text.text[cursor['line_index']]):
         return True
     return False
 
@@ -94,7 +92,7 @@ def move_cursor_left(text, screen, cursor, screen_offset):
         return
     if cursor['column_index'] == 0:
         cursor['line_index'] -= 1
-        line_length = len(text.get_line(cursor['line_index']))
+        line_length = len(text.text[cursor['line_index']])
         cursor['column_index'] = line_length
     else:
         cursor['column_index'] -= 1
@@ -115,24 +113,24 @@ def move_cursor_right(text, screen, cursor, screen_offset):
 def insert(text, screen, cursor, screen_offset, character):
     line_index = cursor['line_index']
     cursor_column = cursor['column_index']
-    line_before_cursor = text.get_line(line_index)[0:cursor_column]
-    line_after_cursor = text.get_line(line_index)[cursor_column:]
+    line_before_cursor = text.text[line_index][0:cursor_column]
+    line_after_cursor = text.text[line_index][cursor_column:]
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
 
 def insert_line(text, screen, cursor, screen_offset):
     line_index = cursor['line_index']
     cursor_column = cursor['column_index']
-    line_before_cursor = text.get_line(line_index)[0:cursor_column]
-    line_after_cursor = text.get_line(line_index)[cursor_column:]
+    line_before_cursor = text.text[line_index][0:cursor_column]
+    line_after_cursor = text.text[line_index][cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor['line_index']
-    current_line = text.get_line(current_line_index)
-    next_line = text.get_line(current_line_index + 1)
+    current_line = text.text[current_line_index]
+    next_line = text.text[current_line_index + 1]
     text.set_line(current_line_index, current_line + next_line)
 
 def delete_next_line(text, cursor):
@@ -141,7 +139,7 @@ def delete_next_line(text, cursor):
 
 def delete_current_character(text, cursor):
     current_line_index = cursor['line_index']
-    current_line = text.get_line(current_line_index)
+    current_line = text.text[current_line_index]
     current_character_index = cursor['column_index']
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
     text.set_line(current_line_index, new_line)

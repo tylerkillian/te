@@ -43,7 +43,6 @@ def cursor_at_top_of_text(cursor):
 
 def cursor_at_beginning_of_text(cursor):
     return cursor['line_index'] == 0 and cursor['column_index'] == 0 
-    return False
 
 def cursor_at_last_line(text, cursor):
     return cursor['line_index'] == len(text) - 1

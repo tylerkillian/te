@@ -101,16 +101,16 @@ def move_cursor_left(text, screen, cursor, screen_offset):
     capture_cursor(screen, cursor, screen_offset)
     cursor['preferred_column'] = cursor['column_index']
 
-def move_cursor_right(text, screen, state):
-    if cursor_at_end_of_text(text, state['cursor']):
+def move_cursor_right(text, screen, cursor, screen_offset):
+    if cursor_at_end_of_text(text, cursor):
         return
-    if cursor_at_end_of_line(text, state['cursor']):
-        state['cursor']['column_index'] = 0
-        state['cursor']['line_index'] += 1
+    if cursor_at_end_of_line(text, cursor):
+        cursor['column_index'] = 0
+        cursor['line_index'] += 1
     else:
-        state['cursor']['column_index'] += 1
-    capture_cursor(screen, state['cursor'], state['screen_offset'])
-    state['cursor']['preferred_column'] = state['cursor']['column_index']
+        cursor['column_index'] += 1
+    capture_cursor(screen, cursor, screen_offset)
+    cursor['preferred_column'] = cursor['column_index']
 
 def insert(text, screen, state, character):
     line_index = state['cursor']['line_index']
@@ -118,7 +118,7 @@ def insert(text, screen, state, character):
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
-    move_cursor_right(text, screen, state)
+    move_cursor_right(text, screen, state['cursor'], state['screen_offset'])
 
 def insert_line(text, screen, state):
     line_index = state['cursor']['line_index']
@@ -127,7 +127,7 @@ def insert_line(text, screen, state):
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
-    move_cursor_right(text, screen, state)
+    move_cursor_right(text, screen, state['cursor'], state['screen_offset'])
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor['line_index']
@@ -172,7 +172,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         elif next_signal == 'LEFT':
             move_cursor_left(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal == 'RIGHT':
-            move_cursor_right(text, screen, state)
+            move_cursor_right(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal[0:10] == 'CHARACTER_':
             insert(text, screen, state, next_signal[-1])
         elif next_signal == 'ENTER':

@@ -17,7 +17,7 @@ def slice_text(text, line_index, num_lines, column_index, num_columns):
 
 def refresh(text, screen, cursor, screen_offset):
     text_to_draw = slice_text(
-        text.text,
+        text,
         screen_offset['line_index'],
         screen.get_num_lines(),
         screen_offset['column_index'],
@@ -41,8 +41,8 @@ def capture_cursor(screen, cursor, screen_offset):
     screen_offset['column_index'] = capture_index(screen_offset['column_index'], screen_num_columns, cursor['column_index'])
 
 def snap_cursor_to_text(text, cursor):
-    if cursor['column_index'] > len(text.text[cursor['line_index']]):
-        cursor['column_index'] = len(text.text[cursor['line_index']])
+    if cursor['column_index'] > len(text[cursor['line_index']]):
+        cursor['column_index'] = len(text[cursor['line_index']])
 
 def cursor_at_beginning_of_text(cursor):
     if cursor['line_index'] == 0 and cursor['column_index'] == 0:
@@ -50,12 +50,12 @@ def cursor_at_beginning_of_text(cursor):
     return False
 
 def cursor_at_last_line(text, cursor):
-    if cursor['line_index'] == len(text.text) - 1:
+    if cursor['line_index'] == len(text) - 1:
         return True
     return False
 
 def cursor_at_end_of_line(text, cursor):
-    if cursor['column_index'] == len(text.text[cursor['line_index']]):
+    if cursor['column_index'] == len(text[cursor['line_index']]):
         return True
     return False
 
@@ -76,7 +76,7 @@ def move_cursor_up(text, screen, cursor, screen_offset):
     capture_cursor(screen, cursor, screen_offset)
 
 def move_cursor_down(text, screen, cursor, screen_offset):
-    if cursor['line_index'] == len(text.text) - 1:
+    if cursor['line_index'] == len(text) - 1:
         return
     cursor['line_index'] += 1
     cursor['column_index'] = cursor['preferred_column']
@@ -88,7 +88,7 @@ def move_cursor_left(text, screen, cursor, screen_offset):
         return
     if cursor['column_index'] == 0:
         cursor['line_index'] -= 1
-        line_length = len(text.text[cursor['line_index']])
+        line_length = len(text[cursor['line_index']])
         cursor['column_index'] = line_length
     else:
         cursor['column_index'] -= 1
@@ -109,36 +109,36 @@ def move_cursor_right(text, screen, cursor, screen_offset):
 def insert(text, screen, cursor, screen_offset, character):
     line_index = cursor['line_index']
     cursor_column = cursor['column_index']
-    line_before_cursor = text.text[line_index][0:cursor_column]
-    line_after_cursor = text.text[line_index][cursor_column:]
-    text.text[line_index] = line_before_cursor + character + line_after_cursor
+    line_before_cursor = text[line_index][0:cursor_column]
+    line_after_cursor = text[line_index][cursor_column:]
+    text[line_index] = line_before_cursor + character + line_after_cursor
     move_cursor_right(text, screen, cursor, screen_offset)
 
 def insert_line(text, screen, cursor, screen_offset):
     line_index = cursor['line_index']
     cursor_column = cursor['column_index']
-    line_before_cursor = text.text[line_index][0:cursor_column]
-    line_after_cursor = text.text[line_index][cursor_column:]
-    text.text[line_index] = line_before_cursor
-    text.text.insert(line_index + 1, line_after_cursor)
+    line_before_cursor = text[line_index][0:cursor_column]
+    line_after_cursor = text[line_index][cursor_column:]
+    text[line_index] = line_before_cursor
+    text.insert(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor['line_index']
-    current_line = text.text[current_line_index]
-    next_line = text.text[current_line_index + 1]
-    text.text[current_line_index] = current_line + next_line
+    current_line = text[current_line_index]
+    next_line = text[current_line_index + 1]
+    text[current_line_index] = current_line + next_line
 
 def delete_next_line(text, cursor):
     next_line_index = cursor['line_index'] + 1
-    del text.text[next_line_index]
+    del text[next_line_index]
 
 def delete_current_character(text, cursor):
     current_line_index = cursor['line_index']
-    current_line = text.text[current_line_index]
+    current_line = text[current_line_index]
     current_character_index = cursor['column_index']
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
-    text.text[current_line_index] = new_line
+    text[current_line_index] = new_line
 
 def delete_character(text, cursor):
     if cursor_at_end_of_text(text, cursor):

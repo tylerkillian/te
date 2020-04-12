@@ -22,16 +22,16 @@ class Text:
     def delete_line(self, line_index):
         del self.text[line_index]
 
-def refresh(text, screen, state):
+def refresh(text, screen, cursor, screen_offset):
     text_to_draw = text.get_text(
-        state['screen_offset']['line_index'],
+        screen_offset['line_index'],
         screen.get_num_lines(),
-        state['screen_offset']['column_index'],
+        screen_offset['column_index'],
         screen.get_num_columns())
     screen.draw(text_to_draw)
     screen.set_cursor_position(
-        state['cursor']['line_index'] - state['screen_offset']['line_index'],
-        state['cursor']['column_index'] - state['screen_offset']['column_index'])
+        cursor['line_index'] - screen_offset['line_index'],
+        cursor['column_index'] - screen_offset['column_index'])
 
 def capture_index(interval_start, interval_width, index_to_capture):
     if index_to_capture < interval_start:
@@ -183,7 +183,7 @@ def dispatch_signals(signal_stream, text, screen, state):
             delete_character(text, screen, state['cursor'])
         elif next_signal == 'RESIZE':
             resize(text, screen, state['cursor'], state['screen_offset'])
-        refresh(text, screen, state)
+        refresh(text, screen, state['cursor'], state['screen_offset'])
 
 def curses_open():
     stdscr = curses.initscr()
@@ -211,7 +211,7 @@ def start_editor(screen, signal_stream):
             'column_index': 0
         }
     }
-    refresh(text, screen, state)
+    refresh(text, screen, state['cursor'], state['screen_offset'])
     dispatch_signals(signal_stream, text, screen, state)
 
 def main():

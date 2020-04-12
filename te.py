@@ -154,7 +154,7 @@ def delete_character(text, screen, state):
         delete_next_line(text, cursor)
         return
     delete_current_character(text, cursor)
-    state['cursor']['preferred_column'] = state['cursor']['column_index']
+    cursor['preferred_column'] = cursor['column_index']
 
 def backspace(text, screen, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):

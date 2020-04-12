@@ -6,8 +6,6 @@ from curses_interface import CursesScreen, CursesSignalStream
 class Text:
     def __init__(self, text=['']):
         self.text = text
-    def set_line(self, line_index, value):
-        self.text[line_index] = value
     def insert_line(self, line_index, line):
         self.text.insert(line_index, line)
     def delete_line(self, line_index):
@@ -115,7 +113,7 @@ def insert(text, screen, cursor, screen_offset, character):
     cursor_column = cursor['column_index']
     line_before_cursor = text.text[line_index][0:cursor_column]
     line_after_cursor = text.text[line_index][cursor_column:]
-    text.set_line(line_index, line_before_cursor + character + line_after_cursor)
+    text.text[line_index] = line_before_cursor + character + line_after_cursor
     move_cursor_right(text, screen, cursor, screen_offset)
 
 def insert_line(text, screen, cursor, screen_offset):
@@ -123,7 +121,7 @@ def insert_line(text, screen, cursor, screen_offset):
     cursor_column = cursor['column_index']
     line_before_cursor = text.text[line_index][0:cursor_column]
     line_after_cursor = text.text[line_index][cursor_column:]
-    text.set_line(line_index, line_before_cursor)
+    text.text[line_index] = line_before_cursor
     text.insert_line(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
 
@@ -131,7 +129,7 @@ def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor['line_index']
     current_line = text.text[current_line_index]
     next_line = text.text[current_line_index + 1]
-    text.set_line(current_line_index, current_line + next_line)
+    text.text[current_line_index] = current_line + next_line
 
 def delete_next_line(text, cursor):
     next_line_index = cursor['line_index'] + 1
@@ -142,7 +140,7 @@ def delete_current_character(text, cursor):
     current_line = text.text[current_line_index]
     current_character_index = cursor['column_index']
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
-    text.set_line(current_line_index, new_line)
+    text.text[current_line_index] = new_line
 
 def delete_character(text, cursor):
     if cursor_at_end_of_text(text, cursor):

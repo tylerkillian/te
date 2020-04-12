@@ -38,20 +38,20 @@ def snap_cursor_to_text(text, cursor):
     if cursor['column_index'] > len(text[cursor['line_index']]):
         cursor['column_index'] = len(text[cursor['line_index']])
 
-def cursor_at_top_of_text(cursor):
+def cursor_on_first_line(cursor):
     return cursor['line_index'] == 0
 
 def cursor_at_beginning_of_text(cursor):
     return cursor['line_index'] == 0 and cursor['column_index'] == 0 
 
-def cursor_at_last_line(text, cursor):
+def cursor_on_last_line(text, cursor):
     return cursor['line_index'] == len(text) - 1
 
 def cursor_at_end_of_line(text, cursor):
     return cursor['column_index'] == len(text[cursor['line_index']])
 
 def cursor_at_end_of_text(text, cursor):
-    return cursor_at_last_line(text, cursor) and cursor_at_end_of_line(text, cursor) 
+    return cursor_on_last_line(text, cursor) and cursor_at_end_of_line(text, cursor) 
 
 def resize(screen, cursor, screen_offset):
     capture_cursor(screen, cursor, screen_offset)

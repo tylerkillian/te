@@ -147,13 +147,13 @@ def delete_current_character(text, cursor):
     text.set_line(current_line_index, new_line)
 
 def delete_character(text, screen, state):
-    if cursor_at_end_of_text(text, state['cursor']):
+    if cursor_at_end_of_text(text, cursor):
         return
-    if cursor_at_end_of_line(text, state['cursor']):
-        append_next_line_to_current_line(text, state['cursor'])
-        delete_next_line(text, state['cursor'])
+    if cursor_at_end_of_line(text, cursor):
+        append_next_line_to_current_line(text, cursor)
+        delete_next_line(text, cursor)
         return
-    delete_current_character(text, state['cursor'])
+    delete_current_character(text, cursor)
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
 def backspace(text, screen, cursor, screen_offset):

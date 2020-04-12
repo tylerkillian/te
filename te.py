@@ -3,11 +3,6 @@ import curses
 import traceback
 from curses_interface import CursesScreen, CursesSignalStream
 
-def __init__(self, text=['']):
-        self.text = text
-    def delete_line(self, line_index):
-        del self.text[line_index]
-
 def slice_text(text, line_index, num_lines, column_index, num_columns):
     result = []
     for line in text[line_index:line_index + num_lines]:

@@ -182,7 +182,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         elif next_signal == 'DELETE':
             delete_character(text, screen, state['cursor'])
         elif next_signal == 'RESIZE':
-            resize(text, screen, state['cursor']['screen_offset'])
+            resize(text, screen, state['cursor'], state['screen_offset'])
         refresh(text, screen, state)
 
 def curses_open():

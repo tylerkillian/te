@@ -193,7 +193,7 @@ def curses_close(stdscr):
     curses.endwin()
 
 def start_editor(screen, signal_stream):
-    text = Text()
+    text = ['']
     cursor = {
         'line_index': 0,
         'column_index': 0,

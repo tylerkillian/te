@@ -131,7 +131,7 @@ def append_next_line_to_current_line(text, cursor):
 
 def delete_next_line(text, cursor):
     next_line_index = cursor['line_index'] + 1
-    text.delete_line(next_line_index)
+    del text.text(next_line_index)
 
 def delete_current_character(text, cursor):
     current_line_index = cursor['line_index']

@@ -146,7 +146,7 @@ def delete_current_character(text, cursor):
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
     text.set_line(current_line_index, new_line)
 
-def delete_character(text, screen, cursor):
+def delete_character(text, cursor):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
@@ -160,7 +160,7 @@ def backspace(text, screen, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
         return
     move_cursor_left(text, screen, cursor, screen_offset)
-    delete_character(text, screen, cursor)
+    delete_character(text, cursor)
 
 def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
     while True:
@@ -180,7 +180,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
         elif next_signal == 'BACKSPACE':
             backspace(text, screen, cursor, screen_offset)
         elif next_signal == 'DELETE':
-            delete_character(text, screen, cursor)
+            delete_character(text, cursor)
         elif next_signal == 'RESIZE':
             resize(screen, cursor, screen_offset)
         refresh(text, screen, cursor, screen_offset)

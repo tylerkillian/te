@@ -58,7 +58,7 @@ def cursor_at_beginning_of_text(cursor):
     return False
 
 def cursor_at_last_line(text, cursor):
-    if cursor['line_index'] == text.get_num_lines() - 1:
+    if cursor['line_index'] == len(text.text) - 1:
         return True
     return False
 
@@ -84,7 +84,7 @@ def move_cursor_up(text, screen, cursor, screen_offset):
     capture_cursor(screen, cursor, screen_offset)
 
 def move_cursor_down(text, screen, cursor, screen_offset):
-    if cursor['line_index'] == text.get_num_lines() - 1:
+    if cursor['line_index'] == len(text.text) - 1:
         return
     cursor['line_index'] += 1
     cursor['column_index'] = cursor['preferred_column']

@@ -6,11 +6,6 @@ from curses_interface import CursesScreen, CursesSignalStream
 class Text:
     def __init__(self, text=['']):
         self.text = text
-    def get_text(self, line_index, num_lines, column_index, num_columns):
-        result = []
-        for line in self.text[line_index:line_index + num_lines]:
-            result.append(line[column_index:column_index + num_columns])
-        return result
     def get_num_lines(self):
         return len(self.text)
     def get_line(self, line_index):

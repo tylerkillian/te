@@ -53,6 +53,9 @@ def cursor_at_end_of_line(text, cursor):
 def cursor_at_end_of_text(text, cursor):
     return cursor_on_last_line(text, cursor) and cursor_at_end_of_line(text, cursor) 
 
+def cursor_at_end_of_text(text, cursor):
+    return cursor_on_last_line(text, cursor) and cursor_at_end_of_line(text, cursor) 
+
 def resize(screen, cursor, screen_offset):
     capture_cursor(screen, cursor, screen_offset)
 

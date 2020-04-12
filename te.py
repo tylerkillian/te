@@ -22,6 +22,12 @@ class Text:
     def delete_line(self, line_index):
         del self.text[line_index]
 
+    def get_text(self, line_index, num_lines, column_index, num_columns):
+        result = []
+        for line in self.text[line_index:line_index + num_lines]:
+            result.append(line[column_index:column_index + num_columns])
+        return result
+
 def refresh(text, screen, cursor, screen_offset):
     text_to_draw = text.get_text(
         screen_offset['line_index'],

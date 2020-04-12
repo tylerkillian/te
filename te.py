@@ -39,7 +39,7 @@ def snap_cursor_to_text(text, cursor):
         cursor['column_index'] = len(text[cursor['line_index']])
 
 def cursor_at_top_of_text(cursor):
-    return cursor['line_index'] == -
+    return cursor['line_index'] == 0
 
 def cursor_at_beginning_of_text(cursor):
     if cursor['line_index'] == 0 and cursor['column_index'] == 0:

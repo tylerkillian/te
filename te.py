@@ -89,17 +89,17 @@ def move_cursor_down(text, screen, cursor, screen_offset):
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)
 
-def move_cursor_left(text, screen, state):
-    if cursor_at_beginning_of_text(state['cursor']):
+def move_cursor_left(text, screen, cursor, screen_offset):
+    if cursor_at_beginning_of_text(cursor):
         return
-    if state['cursor']['column_index'] == 0:
-        state['cursor']['line_index'] -= 1
-        line_length = len(text.get_line(state['cursor']['line_index']))
-        state['cursor']['column_index'] = line_length
+    if cursor['column_index'] == 0:
+        cursor['line_index'] -= 1
+        line_length = len(text.get_line(cursor['line_index']))
+        cursor['column_index'] = line_length
     else:
-        state['cursor']['column_index'] -= 1
-    capture_cursor(screen, state['cursor'], state['screen_offset'])
-    state['cursor']['preferred_column'] = state['cursor']['column_index']
+        cursor['column_index'] -= 1
+    capture_cursor(screen, cursor, screen_offset)
+    cursor['preferred_column'] = cursor['column_index']
 
 def move_cursor_right(text, screen, state):
     if cursor_at_end_of_text(text, state['cursor']):
@@ -159,7 +159,7 @@ def delete_character(text, screen, state):
 def backspace(text, screen, state):
     if cursor_at_beginning_of_text(state['cursor']):
         return
-    move_cursor_left(text, screen, state)
+    move_cursor_left(text, screen, state['cursor'], state['screen_offset'])
     delete_character(text, screen, state)
 
 def dispatch_signals(signal_stream, text, screen, state):
@@ -170,7 +170,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         elif next_signal == 'DOWN':
             move_cursor_down(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal == 'LEFT':
-            move_cursor_left(text, screen, state)
+            move_cursor_left(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal == 'RIGHT':
             move_cursor_right(text, screen, state)
         elif next_signal[0:10] == 'CHARACTER_':

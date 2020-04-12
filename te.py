@@ -156,10 +156,10 @@ def delete_character(text, screen, state):
     delete_current_character(text, state['cursor'])
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
-def backspace(text, screen, state):
-    if cursor_at_beginning_of_text(state['cursor']):
+def backspace(text, screen, cursor, screen_offset):
+    if cursor_at_beginning_of_text(cursor):
         return
-    move_cursor_left(text, screen, state['cursor'], state['screen_offset'])
+    move_cursor_left(text, screen, cursor, screen_offset)
     delete_character(text, screen, state)
 
 def dispatch_signals(signal_stream, text, screen, state):
@@ -178,7 +178,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         elif next_signal == 'ENTER':
             insert_line(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal == 'BACKSPACE':
-            backspace(text, screen, state)
+            backspace(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal == 'DELETE':
             delete_character(text, screen, state)
         elif next_signal == 'RESIZE':

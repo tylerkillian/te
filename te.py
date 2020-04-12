@@ -162,28 +162,28 @@ def backspace(text, screen, cursor, screen_offset):
     move_cursor_left(text, screen, cursor, screen_offset)
     delete_character(text, screen, cursor)
 
-def dispatch_signals(signal_stream, text, screen, state):
+def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':
-            move_cursor_up(text, screen, state['cursor'], state['screen_offset'])
+            move_cursor_up(text, screen, cursor, screen_offset)
         elif next_signal == 'DOWN':
-            move_cursor_down(text, screen, state['cursor'], state['screen_offset'])
+            move_cursor_down(text, screen, cursor, screen_offset)
         elif next_signal == 'LEFT':
-            move_cursor_left(text, screen, state['cursor'], state['screen_offset'])
+            move_cursor_left(text, screen, cursor, screen_offset)
         elif next_signal == 'RIGHT':
-            move_cursor_right(text, screen, state['cursor'], state['screen_offset'])
+            move_cursor_right(text, screen, cursor, screen_offset)
         elif next_signal[0:10] == 'CHARACTER_':
-            insert(text, screen, state['cursor'], state['screen_offset'], next_signal[-1])
+            insert(text, screen, cursor, screen_offset, next_signal[-1])
         elif next_signal == 'ENTER':
-            insert_line(text, screen, state['cursor'], state['screen_offset'])
+            insert_line(text, screen, cursor, screen_offset)
         elif next_signal == 'BACKSPACE':
-            backspace(text, screen, state['cursor'], state['screen_offset'])
+            backspace(text, screen, cursor, screen_offset)
         elif next_signal == 'DELETE':
-            delete_character(text, screen, state['cursor'])
+            delete_character(text, screen, cursor)
         elif next_signal == 'RESIZE':
-            resize(text, screen, state['cursor'], state['screen_offset'])
-        refresh(text, screen, state['cursor'], state['screen_offset'])
+            resize(text, screen, cursor, screen_offset)
+        refresh(text, screen, cursor, screen_offset)
 
 def curses_open():
     stdscr = curses.initscr()
@@ -200,19 +200,17 @@ def curses_close(stdscr):
 
 def start_editor(screen, signal_stream):
     text = Text()
-    state = {
-        'cursor': {
-            'line_index': 0,
-            'column_index': 0,
-            'preferred_position': 0
-        },
-        'screen_offset': {
-            'line_index': 0,
-            'column_index': 0
-        }
+    cursor = {
+        'line_index': 0,
+        'column_index': 0,
+        'preferred_position': 0
     }
-    refresh(text, screen, state['cursor'], state['screen_offset'])
-    dispatch_signals(signal_stream, text, screen, state)
+    screen_offset = {
+        'line_index': 0,
+        'column_index': 0
+    }
+    refresh(text, screen, cursor, screen_offset)
+    dispatch_signals(signal_stream, text, screen, cursor, screen_offset)
 
 def main():
     try:

@@ -6,8 +6,6 @@ from curses_interface import CursesScreen, CursesSignalStream
 class Text:
     def __init__(self, text=['']):
         self.text = text
-    def insert_line(self, line_index, line):
-        self.text.insert(line_index, line)
     def delete_line(self, line_index):
         del self.text[line_index]
 
@@ -122,7 +120,7 @@ def insert_line(text, screen, cursor, screen_offset):
     line_before_cursor = text.text[line_index][0:cursor_column]
     line_after_cursor = text.text[line_index][cursor_column:]
     text.text[line_index] = line_before_cursor
-    text.insert_line(line_index + 1, line_after_cursor)
+    text.text.insert(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
 
 def append_next_line_to_current_line(text, cursor):

@@ -168,7 +168,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         if next_signal == 'UP':
             move_cursor_up(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal == 'DOWN':
-            move_cursor_down(text, screen, state['cursor'], state['screen_offset'])state)
+            move_cursor_down(text, screen, state)
         elif next_signal == 'LEFT':
             move_cursor_left(text, screen, state)
         elif next_signal == 'RIGHT':

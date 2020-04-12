@@ -47,12 +47,10 @@ def cursor_at_beginning_of_text(cursor):
     return False
 
 def cursor_at_last_line(text, cursor):
-    return cursor['line_index'] == len(text) - 1:
+    return cursor['line_index'] == len(text) - 1
 
 def cursor_at_end_of_line(text, cursor):
-    if cursor['column_index'] == len(text[cursor['line_index']]):
-        return True
-    return False
+    return cursor['column_index'] == len(text[cursor['line_index']])
 
 def cursor_at_end_of_text(text, cursor):
     if cursor_at_last_line(text, cursor) and cursor_at_end_of_line(text, cursor):

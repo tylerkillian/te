@@ -160,7 +160,7 @@ def backspace(text, screen, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
         return
     move_cursor_left(text, screen, cursor, screen_offset)
-    delete_character(text, screen, state)
+    delete_character(text, screen, cursor)
 
 def dispatch_signals(signal_stream, text, screen, state):
     while True:

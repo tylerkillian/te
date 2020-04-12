@@ -174,7 +174,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         elif next_signal == 'RIGHT':
             move_cursor_right(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal[0:10] == 'CHARACTER_':
-            insert(text, screen, cursor, screen_offset, next_signal[-1])
+            insert(text, screen, state['cursor'], state['screen_offset'], next_signal[-1])
         elif next_signal == 'ENTER':
             insert_line(text, screen, state)
         elif next_signal == 'BACKSPACE':

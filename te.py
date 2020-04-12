@@ -180,7 +180,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         elif next_signal == 'BACKSPACE':
             backspace(text, screen, state['cursor'], state['screen_offset'])
         elif next_signal == 'DELETE':
-            delete_character(text, screen, state)
+            delete_character(text, screen, state['cursor'])
         elif next_signal == 'RESIZE':
             resize(text, screen, state)
         refresh(text, screen, state)

@@ -43,10 +43,8 @@ def capture_index(interval_start, interval_width, index_to_capture):
 def capture_cursor(screen, cursor, screen_offset):
     screen_num_lines = screen.get_num_lines()
     screen_num_columns = screen.get_num_columns()
-    return {
-        'line_index': capture_index(screen_offset['line_index'], screen_num_lines, cursor['line_index']),
-        'column_index': capture_index(screen_offset['column_index'], screen_num_columns, cursor['column_index'])
-    }
+    screen_offset['line_index'] = capture_index(screen_offset['line_index'], screen_num_lines, cursor['line_index'])
+    screen_offset['column_index'] = capture_index(screen_offset['column_index'], screen_num_columns, cursor['column_index'])
 
 def snap_cursor_to_text(text, cursor):
     if cursor['column_index'] > len(text.get_line(cursor['line_index'])):
@@ -73,7 +71,7 @@ def cursor_at_end_of_text(text, cursor):
     return False
 
 def resize(text, screen, state):
-    state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
+    capture_cursor(screen, state['cursor'], state['screen_offset'])
 
 def move_cursor_up(text, screen, state):
     if state['cursor']['line_index'] == 0:
@@ -81,7 +79,7 @@ def move_cursor_up(text, screen, state):
     state['cursor']['line_index'] -= 1
     state['cursor']['column_index'] = state['cursor']['preferred_column']
     snap_cursor_to_text(text, state['cursor'])
-    state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
+    capture_cursor(screen, state['cursor'], state['screen_offset'])
 
 def move_cursor_down(text, screen, state):
     if state['cursor']['line_index'] == text.get_num_lines() - 1:
@@ -89,7 +87,7 @@ def move_cursor_down(text, screen, state):
     state['cursor']['line_index'] += 1
     state['cursor']['column_index'] = state['cursor']['preferred_column']
     snap_cursor_to_text(text, state['cursor'])
-    state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
+    capture_cursor(screen, state['cursor'], state['screen_offset'])
 
 def move_cursor_left(text, screen, state):
     if cursor_at_beginning_of_text(state['cursor']):
@@ -100,7 +98,7 @@ def move_cursor_left(text, screen, state):
         state['cursor']['column_index'] = line_length
     else:
         state['cursor']['column_index'] -= 1
-    state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
+    capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
 def move_cursor_right(text, screen, state):
@@ -111,7 +109,7 @@ def move_cursor_right(text, screen, state):
         state['cursor']['line_index'] += 1
     else:
         state['cursor']['column_index'] += 1
-    state['screen_offset'] = capture_cursor(screen, state['cursor'], state['screen_offset'])
+    capture_cursor(screen, state['cursor'], state['screen_offset'])
     state['cursor']['preferred_column'] = state['cursor']['column_index']
 
 def insert(text, screen, state, character):

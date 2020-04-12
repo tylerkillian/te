@@ -146,7 +146,7 @@ def delete_current_character(text, cursor):
     new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
     text.set_line(current_line_index, new_line)
 
-def delete_character(text, screen, state):
+def delete_character(text, screen, cursor):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):

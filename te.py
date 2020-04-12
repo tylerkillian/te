@@ -120,14 +120,14 @@ def insert(text, screen, cursor, screen_offset, character):
     text.set_line(line_index, line_before_cursor + character + line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
 
-def insert_line(text, screen, state):
-    line_index = state['cursor']['line_index']
-    cursor_column = state['cursor']['column_index']
+def insert_line(text, screen, cursor, screen_offset):
+    line_index = cursor['line_index']
+    cursor_column = cursor['column_index']
     line_before_cursor = text.get_line(line_index)[0:cursor_column]
     line_after_cursor = text.get_line(line_index)[cursor_column:]
     text.set_line(line_index, line_before_cursor)
     text.insert_line(line_index + 1, line_after_cursor)
-    move_cursor_right(text, screen, state['cursor'], state['screen_offset'])
+    move_cursor_right(text, screen, cursor, screen_offset)
 
 def append_next_line_to_current_line(text, cursor):
     current_line_index = cursor['line_index']
@@ -176,7 +176,7 @@ def dispatch_signals(signal_stream, text, screen, state):
         elif next_signal[0:10] == 'CHARACTER_':
             insert(text, screen, state['cursor'], state['screen_offset'], next_signal[-1])
         elif next_signal == 'ENTER':
-            insert_line(text, screen, state)
+            insert_line(text, state['cursor'], state['screen_offset'])
         elif next_signal == 'BACKSPACE':
             backspace(text, screen, state)
         elif next_signal == 'DELETE':

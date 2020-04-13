@@ -84,8 +84,8 @@ def move_cursor_left(text, screen, cursor, screen_offset):
         cursor['column_index'] = line_length
     else:
         cursor['column_index'] -= 1
-    capture_cursor(screen, cursor, screen_offset)
     cursor['preferred_column'] = cursor['column_index']
+    capture_cursor(screen, cursor, screen_offset)
 
 def move_cursor_right(text, screen, cursor, screen_offset):
     if cursor_at_end_of_text(text, cursor):
@@ -95,8 +95,8 @@ def move_cursor_right(text, screen, cursor, screen_offset):
         cursor['line_index'] += 1
     else:
         cursor['column_index'] += 1
-    capture_cursor(screen, cursor, screen_offset)
     cursor['preferred_column'] = cursor['column_index']
+    capture_cursor(screen, cursor, screen_offset)
 
 def insert(text, screen, cursor, screen_offset, character):
     line_index = cursor['line_index']

@@ -78,7 +78,7 @@ def move_cursor_down(text, screen, cursor, screen_offset):
 def move_cursor_left(text, screen, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
         return
-    if cursor['column_index'] == 0:
+    if cursor_at_beginning_of_line(cursor):
         cursor['line_index'] -= 1
         line_length = len(text[cursor['line_index']])
         cursor['column_index'] = line_length

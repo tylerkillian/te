@@ -51,7 +51,7 @@ def cursor_at_end_of_line(text, cursor):
     return cursor['column_index'] == len(text[cursor['line_index']])
 
 def cursor_at_beginning_of_text(cursor):
-    return cursor_one_first_line(cursor) and cursor_at_beginning_of_line(cursor):
+    return cursor_one_first_line(cursor) and cursor_at_beginning_of_line(cursor)
 
 def cursor_at_end_of_text(text, cursor):
     return cursor_on_last_line(text, cursor) and cursor_at_end_of_line(text, cursor) 

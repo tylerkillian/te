@@ -9,14 +9,20 @@ def slice_text(text, line_index, num_lines, column_index, num_columns):
         result.append(line[column_index:column_index + num_columns])
     return result
 
+def join_line(text, line_index):
+    text[line_index] = text[line_index] + text[line_index + 1]
+    del text[line_index + 1]
+
+def delete_character(text, line_index, column_index):
+    text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
+
 def refresh(text, screen, cursor, screen_offset):
-    text_to_draw = slice_text(
+    screen.draw(slice_text(
         text,
         screen_offset['line_index'],
         screen.get_num_lines(),
         screen_offset['column_index'],
-        screen.get_num_columns())
-    screen.draw(text_to_draw)
+        screen.get_num_columns()))
     screen.set_cursor_position(
         cursor['line_index'] - screen_offset['line_index'],
         cursor['column_index'] - screen_offset['column_index'])
@@ -114,13 +120,6 @@ def insert_line(text, screen, cursor, screen_offset):
     text[line_index] = line_before_cursor
     text.insert(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
-
-def join_line(text, line_index):
-    text[line_index] = text[line_index] + text[line_index + 1]
-    del text[line_index + 1]
-
-def delete_character(text, line_index, column_index):
-    text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
 
 def delete(text, cursor):
     if cursor_at_end_of_text(text, cursor):

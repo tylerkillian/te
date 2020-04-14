@@ -120,6 +120,7 @@ def append_next_line_to_current_line(text, cursor):
     current_line = text[current_line_index]
     next_line = text[current_line_index + 1]
     text[current_line_index] = current_line + next_line
+    del text[current_line_index + 1]
 
 def delete_next_line(text, cursor):
     next_line_index = cursor['line_index'] + 1
@@ -137,7 +138,6 @@ def delete_character(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
         append_next_line_to_current_line(text, cursor)
-        delete_next_line(text, cursor)
         return
     delete_current_character(text, cursor)
     cursor['preferred_column'] = cursor['column_index']

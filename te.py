@@ -115,16 +115,9 @@ def insert_line(text, screen, cursor, screen_offset):
     text.insert(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
 
-def append_next_line_to_current_line(text, cursor):
-    current_line_index = cursor['line_index']
-    current_line = text[current_line_index]
-    next_line = text[current_line_index + 1]
-    text[current_line_index] = current_line + next_line
-    del text[current_line_index + 1]
-
-def delete_next_line(text, cursor):
-    next_line_index = cursor['line_index'] + 1
-    del text[next_line_index]
+def join_line(text, line_index):
+    text[line_index] = text[line_index] + text[line_index + 1]
+    del text[line_index + 1]
 
 def delete_current_character(text, cursor):
     current_line_index = cursor['line_index']
@@ -137,7 +130,7 @@ def delete_character(text, cursor):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
-        append_next_line_to_current_line(text, cursor)
+        join_line(text, cursor['line_index'])
         return
     delete_current_character(text, cursor)
     cursor['preferred_column'] = cursor['column_index']

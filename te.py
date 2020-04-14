@@ -119,27 +119,23 @@ def join_line(text, line_index):
     text[line_index] = text[line_index] + text[line_index + 1]
     del text[line_index + 1]
 
-def delete_current_character(text, cursor):
-    current_line_index = cursor['line_index']
-    current_line = text[current_line_index]
-    current_character_index = cursor['column_index']
-    new_line = current_line[0:current_character_index] + current_line[current_character_index+1:]
-    text[current_line_index] = new_line
+def delete_character(text, line_index, column_index):
+    text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
 
-def delete_character(text, cursor):
+def delete(text, cursor):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
         join_line(text, cursor['line_index'])
         return
-    delete_current_character(text, cursor)
+    delete_character(text, cursor['line_index'], cursor['column_index'])
     cursor['preferred_column'] = cursor['column_index']
 
 def backspace(text, screen, cursor, screen_offset):
     if cursor_at_beginning_of_text(cursor):
         return
     move_cursor_left(text, screen, cursor, screen_offset)
-    delete_character(text, cursor)
+    delete(text, cursor)
 
 def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
     while True:
@@ -159,7 +155,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
         elif next_signal == 'BACKSPACE':
             backspace(text, screen, cursor, screen_offset)
         elif next_signal == 'DELETE':
-            delete_character(text, cursor)
+            delete(text, cursor)
         elif next_signal == 'RESIZE':
             resize(screen, cursor, screen_offset)
         refresh(text, screen, cursor, screen_offset)

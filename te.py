@@ -3,7 +3,7 @@ import curses
 import traceback
 from curses_interface import CursesScreen, CursesSignalStream
 
-def slice_text(text, line_index, num_lines, column_index, num_columns):
+def get_section(text, line_index, num_lines, column_index, num_columns):
     result = []
     for line in text[line_index:line_index + num_lines]:
         result.append(line[column_index:column_index + num_columns])
@@ -17,7 +17,7 @@ def delete_character(text, line_index, column_index):
     text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
 
 def refresh(text, screen, cursor, screen_offset):
-    screen.draw(slice_text(
+    screen.draw(get_section(
         text,
         screen_offset['line_index'],
         screen.get_num_lines(),

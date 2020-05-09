@@ -8,6 +8,16 @@ def replace_line(line_index, new_value):
         text[line_index] = new_value
     return _op
 
+def replace_line(line_index, new_value):
+    def _op(text):
+        text[line_index] = new_value
+    return _op
+
+def replace_line(line_index, new_value):
+    def _op(text):
+        text[line_index] = new_value
+    return _op
+
 def undo(text, undo_sequence, redo_sequence):
     pass
 

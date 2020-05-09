@@ -3,6 +3,12 @@ import curses
 import traceback
 from curses_interface import CursesScreen, CursesSignalStream
 
+def undo(text, undo_sequence, redo_sequence):
+    pass
+
+def redo(text, undo_sequence, redo_sequence):
+    pass
+
 def get_section(text, line_index, num_lines, column_index, num_columns):
     result = []
     for line in text[line_index:line_index + num_lines]:

@@ -18,7 +18,7 @@ def insert_line(line_index, value):
         text.insert(line_index, value)
     return _op
 
-def undo(text, undo_sequence, redo_sequence):
+def undo(text, behind, ahead):
     pass
 
 def redo(text, undo_sequence, redo_sequence):

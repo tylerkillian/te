@@ -55,7 +55,7 @@ def get_section(text, line_index, num_lines, column_index, num_columns):
         result.append(line[column_index:column_index + num_columns])
     return result
 
-def join_line(text, line_index):
+def join_line(text, line_index, undo_redo_pairs):
     text[line_index] = text[line_index] + text[line_index + 1]
     del text[line_index + 1]
 
@@ -186,7 +186,7 @@ def delete(text, cursor, undo_redo_pairs):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
-        join_line(text, cursor['line_index'])
+        join_line(text, cursor['line_index'], undo_redo_pairs)
         return
     delete_character(text, cursor['line_index'], cursor['column_index'])
     cursor['preferred_column'] = cursor['column_index']

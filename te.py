@@ -170,6 +170,15 @@ def insert_line(text, screen, cursor, screen_offset):
     text[line_index] = line_before_cursor
     text.insert(line_index + 1, line_after_cursor)
     move_cursor_right(text, screen, cursor, screen_offset)
+    add_undo_redo_pair(
+        undo_redo_pairs,
+        multiple_ops([
+            delete_line(line_index + 1),
+            replace_line(line_index, line_before_cursor + line_after_cursor)]),
+        multiple_ops([
+            replace_line(line_index, line_before_cursor),
+            insert_line(line_index + 1, line_after_cursor)
+        ]))
 
 def delete(text, cursor):
     if cursor_at_end_of_text(text, cursor):

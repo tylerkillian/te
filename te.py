@@ -205,13 +205,13 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_re
 def curses_open():
     stdscr = curses.initscr()
     curses.noecho()
-    curses.cbreak()
+    curses.raw()
     stdscr.keypad(True)
     return stdscr
 
 def curses_close(stdscr):
     stdscr.keypad(False)
-    curses.nocbreak()
+    curses.noraw()
     curses.echo()
     curses.endwin()
 

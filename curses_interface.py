@@ -29,6 +29,12 @@ class CursesSignalStream:
         chr_int = self.stdscr.getch()
         if chr_int == 10:
             return 'ENTER'
+        elif chr_int == 3:
+            return 'CTRL-C'
+        elif chr_int == 26:
+            return 'CTRL-Z'
+        elif chr_int == 25:
+            return 'CTRL-Y'
         elif chr_int < 256:
             return 'CHARACTER_' + chr(chr_int)
         elif chr_int == curses.KEY_RESIZE:

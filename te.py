@@ -56,7 +56,6 @@ def get_section(text, line_index, num_lines, column_index, num_columns):
     return result
 
 def join_line(text, line_index, undo_redo_pairs):
-    text[line_index] = text[line_index] + text[line_index + 1]
     add_undo_redo_pair(
         undo_redo_pairs,
         multiple_ops([
@@ -67,6 +66,7 @@ def join_line(text, line_index, undo_redo_pairs):
             replace_line(line_index, text[line_index] + text[line_index + 1]),
             delete_line(line_index + 1)
         ]))
+    text[line_index] = text[line_index] + text[line_index + 1]
     del text[line_index + 1]
 
 def delete_character(text, line_index, column_index, undo_redo_pairs):

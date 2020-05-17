@@ -24,6 +24,13 @@ def undo(text, behind, ahead):
 def redo(text, undo_sequence, redo_sequence):
     pass
 
+def add_undo_redo_pair(undo_redo_pairs, undo_command, redo_command):
+    undo_redo_pairs['after'].clear()
+    undo_redo_pairs['before'].append({
+        'undo': undo_command,
+        'redo': redo_command
+    })
+
 def get_section(text, line_index, num_lines, column_index, num_columns):
     result = []
     for line in text[line_index:line_index + num_lines]:

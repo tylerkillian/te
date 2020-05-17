@@ -226,8 +226,12 @@ def start_editor(screen, signal_stream):
         'line_index': 0,
         'column_index': 0
     }
+    undo_redo_pairs = {
+        'before': [],
+        'after': []
+    }
     refresh(text, screen, cursor, screen_offset)
-    dispatch_signals(signal_stream, text, screen, cursor, screen_offset)
+    dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_redo_pairs)
 
 def main():
     try:

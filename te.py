@@ -19,9 +19,18 @@ def insert_line(line_index, value):
     return _op
 
 def undo(undo_redo_pairs, text):
-    pass
+    if len(undo_redo_pairs['before']) == 0:
+        return
+    current_pair = undo_redo_pairs['before'].pop()
+    current_pair['undo']()
+    undo_redo_pairs['after'].insert(0, current_pair)
 
 def redo(undo_redo_pairs, text):
+    if len(undo_redo_pairs['after']) == 0:
+        return
+    current_pair = undo_redo_pairs['after'].pop(0)
+    current_pair['redo']()
+    undo_redo_pairs['before'].append(current_pair)
     
 
 def add_undo_redo_pair(undo_redo_pairs, undo_command, redo_command):

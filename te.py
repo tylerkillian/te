@@ -61,8 +61,8 @@ def join_line(text, line_index, undo_redo_pairs):
         undo_redo_pairs,
         multiple_ops([
             replace_line(line_index, text[line_index]),
-            insert_line_op(line_index + 1),
-            replace_line(line_index + 1, text[line_index + 1])
+            insert_line_op(line_index + 1,text[line_index + 1])
+            replace_line(line_index + 1, 
         ]),
         multiple_ops([
             replace_line(line_index, text[line_index] + text[line_index + 1]),

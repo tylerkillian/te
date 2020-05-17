@@ -70,11 +70,11 @@ def join_line(text, line_index, undo_redo_pairs):
     del text[line_index + 1]
 
 def delete_character(text, line_index, column_index):
-    text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
     add_undo_redo_pair(
         undo_redo_pairs,
-        replace_line(line_index, line_before_cursor + line_after_cursor),
-        replace_line(line_index, line_before_cursor + character + line_after_cursor))
+        replace_line(line_index, text[line_index]),
+        replace_line(line_index, text[line_index][0:column_index] + text[line_index][column_index+1:]))
+    text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
 
 def refresh(text, screen, cursor, screen_offset):
     screen.draw(get_section(

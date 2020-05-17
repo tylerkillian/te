@@ -200,6 +200,10 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_re
             delete(text, cursor)
         elif next_signal == 'RESIZE':
             resize(screen, cursor, screen_offset)
+        elif next_signal == 'CTRL-Z':
+            undo(undo_redo_pairs, text)
+        elif next_signal == 'CTRL-Y':
+            redo(undo_redo_pairs, text)
         elif next_signal == 'CTRL-C':
             return
         refresh(text, screen, cursor, screen_offset)

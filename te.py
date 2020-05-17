@@ -179,7 +179,7 @@ def backspace(text, screen, cursor, screen_offset):
     move_cursor_left(text, screen, cursor, screen_offset)
     delete(text, cursor)
 
-def dispatch_signals(signal_stream, text, screen, cursor, screen_offset):
+def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_redo_pairs):
     while True:
         next_signal = signal_stream.get_next_signal()
         if next_signal == 'UP':

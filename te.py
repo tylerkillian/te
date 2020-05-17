@@ -13,7 +13,7 @@ def delete_line(line_index):
         del text[line_index]
     return _op
 
-def insert_line(line_index, value):
+def insert_line_op(line_index, value):
     def _op(text):
         text.insert(line_index, value)
     return _op
@@ -162,7 +162,7 @@ def insert(text, screen, cursor, screen_offset, character, undo_redo_pairs):
         replace_line(line_index, line_before_cursor + line_after_cursor),
         replace_line(line_index, line_before_cursor + character + line_after_cursor))
 
-def insert_line(text, screen, cursor, screen_offset):
+def insert_line(text, screen, cursor, screen_offset, undo_redo_pairs):
     line_index = cursor['line_index']
     cursor_column = cursor['column_index']
     line_before_cursor = text[line_index][0:cursor_column]
@@ -177,7 +177,7 @@ def insert_line(text, screen, cursor, screen_offset):
             replace_line(line_index, line_before_cursor + line_after_cursor)]),
         multiple_ops([
             replace_line(line_index, line_before_cursor),
-            insert_line(line_index + 1, line_after_cursor)
+            insert_line_op(line_index + 1, line_after_cursor)
         ]))
 
 def delete(text, cursor):
@@ -209,7 +209,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_re
         elif next_signal[0:10] == 'CHARACTER_':
             insert(text, screen, cursor, screen_offset, next_signal[-1], undo_redo_pairs)
         elif next_signal == 'ENTER':
-            insert_line(text, screen, cursor, screen_offset)
+            insert_line(text, screen, cursor, screen_offset, undo_redo_pairs)
         elif next_signal == 'BACKSPACE':
             backspace(text, screen, cursor, screen_offset)
         elif next_signal == 'DELETE':

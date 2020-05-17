@@ -24,20 +24,23 @@ def multiple_ops(ops):
             op(text)
     return _call_ops
 
-def undo(undo_redo_pairs, text):
+def undo(text, screen, cursor, screen_offset, undo_redo_pairs):
     if len(undo_redo_pairs['before']) == 0:
         return
     current_pair = undo_redo_pairs['before'].pop()
     current_pair['undo'](text)
     undo_redo_pairs['after'].insert(0, current_pair)
+    snap_cursor_to_text(text, cursor)
+    capture_cursor(screen, cursor, screen_offset)
 
-def redo(undo_redo_pairs, text):
+def redo(text, screen, cursor, screen_offset, undo_redo_pairs):
     if len(undo_redo_pairs['after']) == 0:
         return
     current_pair = undo_redo_pairs['after'].pop(0)
     current_pair['redo'](text)
     undo_redo_pairs['before'].append(current_pair)
-    
+    snap_cursor_to_text(text, cursor)
+    capture_cursor(screen, cursor, screen_offset)
 
 def add_undo_redo_pair(undo_redo_pairs, undo_command, redo_command):
     undo_redo_pairs['after'].clear()

@@ -147,13 +147,17 @@ def move_cursor_right(text, screen, cursor, screen_offset):
     cursor['preferred_column'] = cursor['column_index']
     capture_cursor(screen, cursor, screen_offset)
 
-def insert(text, screen, cursor, screen_offset, character):
+def insert(text, screen, cursor, screen_offset, character, undo_redo_pairs):
     line_index = cursor['line_index']
     cursor_column = cursor['column_index']
     line_before_cursor = text[line_index][0:cursor_column]
     line_after_cursor = text[line_index][cursor_column:]
     text[line_index] = line_before_cursor + character + line_after_cursor
     move_cursor_right(text, screen, cursor, screen_offset)
+    add_undo_redo_pair(
+        undo_redo_pairs,
+        replace_line(line_index, line_before_cursor + line_after_cursor),
+        replace_line(line_index, line_before_cursor + character + line_after_cursor))
 
 def insert_line(text, screen, cursor, screen_offset):
     line_index = cursor['line_index']
@@ -191,7 +195,7 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_re
         elif next_signal == 'RIGHT':
             move_cursor_right(text, screen, cursor, screen_offset)
         elif next_signal[0:10] == 'CHARACTER_':
-            insert(text, screen, cursor, screen_offset, next_signal[-1])
+            insert(text, screen, cursor, screen_offset, next_signal[-1], undo_redo_pairs)
         elif next_signal == 'ENTER':
             insert_line(text, screen, cursor, screen_offset)
         elif next_signal == 'BACKSPACE':

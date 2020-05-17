@@ -69,7 +69,7 @@ def join_line(text, line_index, undo_redo_pairs):
         ]))
     del text[line_index + 1]
 
-def delete_character(text, line_index, column_index):
+def delete_character(text, line_index, column_index, undo_redo_pairs):
     add_undo_redo_pair(
         undo_redo_pairs,
         replace_line(line_index, text[line_index]),

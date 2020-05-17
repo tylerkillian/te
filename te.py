@@ -71,6 +71,10 @@ def join_line(text, line_index, undo_redo_pairs):
 
 def delete_character(text, line_index, column_index):
     text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
+    add_undo_redo_pair(
+        undo_redo_pairs,
+        replace_line(line_index, line_before_cursor + line_after_cursor),
+        replace_line(line_index, line_before_cursor + character + line_after_cursor))
 
 def refresh(text, screen, cursor, screen_offset):
     screen.draw(get_section(
@@ -198,7 +202,7 @@ def delete(text, cursor, undo_redo_pairs):
     if cursor_at_end_of_line(text, cursor):
         join_line(text, cursor['line_index'], undo_redo_pairs)
         return
-    delete_character(text, cursor['line_index'], cursor['column_index'])
+    delete_character(text, cursor['line_index'], cursor['column_index'], undo_redo_pairs)
     cursor['preferred_column'] = cursor['column_index']
 
 def backspace(text, screen, cursor, screen_offset, undo_redo_pairs):

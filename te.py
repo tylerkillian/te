@@ -18,6 +18,12 @@ def insert_line(line_index, value):
         text.insert(line_index, value)
     return _op
 
+def multiple_ops(ops):
+    def _call_ops(text):
+        for op in ops:
+            op(text)
+    return _call_ops
+
 def undo(undo_redo_pairs, text):
     if len(undo_redo_pairs['before']) == 0:
         return

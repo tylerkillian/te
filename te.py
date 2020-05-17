@@ -200,6 +200,8 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_re
             delete(text, cursor)
         elif next_signal == 'RESIZE':
             resize(screen, cursor, screen_offset)
+        elif next_signal == 'CTRL-C':
+            return
         refresh(text, screen, cursor, screen_offset)
 
 def curses_open():

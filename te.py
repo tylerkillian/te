@@ -182,7 +182,7 @@ def insert_line(text, screen, cursor, screen_offset, undo_redo_pairs):
             insert_line_op(line_index + 1, line_after_cursor)
         ]))
 
-def delete(text, cursor):
+def delete(text, cursor, undo_redo_pairs):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
@@ -191,11 +191,11 @@ def delete(text, cursor):
     delete_character(text, cursor['line_index'], cursor['column_index'])
     cursor['preferred_column'] = cursor['column_index']
 
-def backspace(text, screen, cursor, screen_offset):
+def backspace(text, screen, cursor, screen_offset, undo_redo_pairs):
     if cursor_at_beginning_of_text(cursor):
         return
     move_cursor_left(text, screen, cursor, screen_offset)
-    delete(text, cursor)
+    delete(text, cursor, undo_redo_pairs)
 
 def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_redo_pairs):
     while True:
@@ -213,9 +213,9 @@ def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_re
         elif next_signal == 'ENTER':
             insert_line(text, screen, cursor, screen_offset, undo_redo_pairs)
         elif next_signal == 'BACKSPACE':
-            backspace(text, screen, cursor, screen_offset)
+            backspace(text, screen, cursor, screen_offset, undo_redo_pairs)
         elif next_signal == 'DELETE':
-            delete(text, cursor)
+            delete(text, cursor, undo_redo_pairs)
         elif next_signal == 'RESIZE':
             resize(screen, cursor, screen_offset)
         elif next_signal == 'CTRL-Z':

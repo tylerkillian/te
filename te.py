@@ -18,11 +18,11 @@ def insert_line(line_index, value):
         text.insert(line_index, value)
     return _op
 
-def undo(text, behind, ahead):
+def undo(undo_redo_pairs, text):
     pass
 
-def redo(text, undo_sequence, redo_sequence):
-    pass
+def redo(undo_redo_pairs, text):
+    
 
 def add_undo_redo_pair(undo_redo_pairs, undo_command, redo_command):
     undo_redo_pairs['after'].clear()

@@ -61,17 +61,19 @@ def get_section(text, line_index, num_lines, column_index, num_columns):
         result.append(line[column_index:column_index + num_columns])
     return result
 
-def join_line(text, line_index, undo_redo_pairs):
+def join_line(text, cursor, line_index, undo_redo_pairs):
+    line_index = cursor['line_index']
+    cursor_column = cursor['column_index']
     add_undo_redo_pair(
         undo_redo_pairs,
         multiple_ops([
             replace_line(line_index, text[line_index]),
-            insert_line_op(line_index + 1, text[line_index + 1])
-        ]),
+            insert_line_op(line_index + 1, text[line_index + 1]),
+            move_cursor_op(line_index, cursor_column)]),
         multiple_ops([
             replace_line(line_index, text[line_index] + text[line_index + 1]),
-            delete_line(line_index + 1)
-        ]))
+            delete_line(line_index + 1),
+            move_cursor_op(cursor['line_index'], cursor['column_index'])]))
     text[line_index] = text[line_index] + text[line_index + 1]
     del text[line_index + 1]
 
@@ -212,7 +214,7 @@ def delete(text, cursor, undo_redo_pairs):
     if cursor_at_end_of_text(text, cursor):
         return
     if cursor_at_end_of_line(text, cursor):
-        join_line(text, cursor['line_index'], undo_redo_pairs)
+        join_line(text, cursor, cursor['line_index'], undo_redo_pairs)
         return
     delete_character(text, cursor['line_index'], cursor['column_index'], undo_redo_pairs)
     cursor['preferred_column'] = cursor['column_index']

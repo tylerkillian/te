@@ -18,6 +18,12 @@ def insert_line_op(line_index, value):
         text.insert(line_index, value)
     return _op
 
+def move_cursor_op(line_index, column_index):
+    def _op(text, cursor):
+        cursor['line_index'] = line_index
+        cursor['column_index'] = column_index
+    return _op
+
 def multiple_ops(ops):
     def _call_ops(text):
         for op in ops:

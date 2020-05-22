@@ -4,17 +4,17 @@ import traceback
 from curses_interface import CursesScreen, CursesSignalStream
 
 def replace_line(line_index, new_value):
-    def _op(text):
+    def _op(text, cursor):
         text[line_index] = new_value
     return _op
 
 def delete_line(line_index):
-    def _op(text):
+    def _op(text, cursor):
         del text[line_index]
     return _op
 
 def insert_line_op(line_index, value):
-    def _op(text):
+    def _op(text, cursor):
         text.insert(line_index, value)
     return _op
 

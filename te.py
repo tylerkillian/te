@@ -200,8 +200,8 @@ def insert_line(text, screen, cursor, screen_offset, undo_redo_pairs):
             move_cursor_op(line_index, cursor_column)]),
         multiple_ops([
             replace_line(line_index, line_before_cursor),
-            insert_line_op(line_index + 1, line_after_cursor)
-        ]))
+            insert_line_op(line_index + 1, line_after_cursor),
+            move_cursor_op(cursor['line_index'], cursor['column_index']) ]))
 
 def delete(text, cursor, undo_redo_pairs):
     if cursor_at_end_of_text(text, cursor):

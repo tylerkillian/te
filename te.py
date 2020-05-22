@@ -196,7 +196,8 @@ def insert_line(text, screen, cursor, screen_offset, undo_redo_pairs):
         undo_redo_pairs,
         multiple_ops([
             delete_line(line_index + 1),
-            replace_line(line_index, line_before_cursor + line_after_cursor)]),
+            replace_line(line_index, line_before_cursor + line_after_cursor),
+            move_cursor_op(line_index, column_index)]),
         multiple_ops([
             replace_line(line_index, line_before_cursor),
             insert_line_op(line_index + 1, line_after_cursor)

@@ -78,10 +78,17 @@ def join_line(text, cursor, line_index, undo_redo_pairs):
     del text[line_index + 1]
 
 def delete_character(text, line_index, column_index, undo_redo_pairs):
+    cursor_column = column_index
     add_undo_redo_pair(
         undo_redo_pairs,
-        replace_line(line_index, text[line_index]),
-        replace_line(line_index, text[line_index][0:column_index] + text[line_index][column_index+1:]))
+        multiple_ops([
+            replace_line(line_index, text[line_index]),
+            move_cursor_op(line_index, cursor_column)
+        ]),
+        multiple_ops([
+            replace_line(line_index, text[line_index][0:column_index] + text[line_index][column_index+1:]),
+            move_cursor_op(line_index, cursor_column)
+        ]))
     text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
 
 def refresh(text, screen, cursor, screen_offset):

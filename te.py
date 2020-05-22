@@ -25,16 +25,16 @@ def move_cursor_op(line_index, column_index):
     return _op
 
 def multiple_ops(ops):
-    def _call_ops(text):
+    def _call_ops(text, cursor):
         for op in ops:
-            op(text)
+            op(text, cursor)
     return _call_ops
 
 def undo(text, screen, cursor, screen_offset, undo_redo_pairs):
     if len(undo_redo_pairs['before']) == 0:
         return
     current_pair = undo_redo_pairs['before'].pop()
-    current_pair['undo'](text)
+    current_pair['undo'](text, cursor)
     undo_redo_pairs['after'].insert(0, current_pair)
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)
@@ -43,7 +43,7 @@ def redo(text, screen, cursor, screen_offset, undo_redo_pairs):
     if len(undo_redo_pairs['after']) == 0:
         return
     current_pair = undo_redo_pairs['after'].pop(0)
-    current_pair['redo'](text)
+    current_pair['redo'](text, cursor)
     undo_redo_pairs['before'].append(current_pair)
     snap_cursor_to_text(text, cursor)
     capture_cursor(screen, cursor, screen_offset)

@@ -57,7 +57,7 @@ def add_undo_redo_pair(undo_redo_pairs, undo_command, redo_command):
 
 def pop_undo_redo_pair(undo_redo_pairs):
     undo_redo_pairs['after'].clear()
-    last_pair = undo_redo_pairs['before'][-1].pop()
+    last_pair = undo_redo_pairs['before'].pop()
     return last_pair['undo'], last_pair['redo']
 
 def get_section(text, line_index, num_lines, column_index, num_columns):

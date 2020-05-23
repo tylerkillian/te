@@ -3,7 +3,7 @@ import curses
 import traceback
 from curses_interface import CursesScreen, CursesSignalStream
 
-def replace_line(line_index, new_value):
+def replace_line_op(line_index, new_value):
     def _op(text, cursor):
         text[line_index] = new_value
     return _op
@@ -72,11 +72,11 @@ def join_line(text, cursor, line_index, undo_redo_pairs):
     add_undo_redo_pair(
         undo_redo_pairs,
         multiple_ops([
-            replace_line(line_index, text[line_index]),
+            replace_line_op(line_index, text[line_index]),
             insert_line_op(line_index + 1, text[line_index + 1]),
             move_cursor_op(line_index, column_index)]),
         multiple_ops([
-            replace_line(line_index, text[line_index] + text[line_index + 1]),
+            replace_line_op(line_index, text[line_index] + text[line_index + 1]),
             delete_line(line_index + 1),
             move_cursor_op(cursor['line_index'], cursor['column_index'])]))
     text[line_index] = text[line_index] + text[line_index + 1]
@@ -86,11 +86,11 @@ def delete_character(text, line_index, column_index, undo_redo_pairs):
     add_undo_redo_pair(
         undo_redo_pairs,
         multiple_ops([
-            replace_line(line_index, text[line_index]),
+            replace_line_op(line_index, text[line_index]),
             move_cursor_op(line_index, column_index)
         ]),
         multiple_ops([
-            replace_line(line_index, text[line_index][0:column_index] + text[line_index][column_index+1:]),
+            replace_line_op(line_index, text[line_index][0:column_index] + text[line_index][column_index+1:]),
             move_cursor_op(line_index, column_index)
         ]))
     text[line_index] = text[line_index][0:column_index] + text[line_index][column_index+1:]
@@ -195,10 +195,10 @@ def insert(text, screen, cursor, screen_offset, character, undo_redo_pairs):
     add_undo_redo_pair(
         undo_redo_pairs,
         multiple_ops([
-            replace_line(line_index, line_before_cursor + line_after_cursor),
+            replace_line_op(line_index, line_before_cursor + line_after_cursor),
             move_cursor_op(line_index, column_index)]),
         multiple_ops([
-            replace_line(line_index, line_before_cursor + character + line_after_cursor),
+            replace_line_op(line_index, line_before_cursor + character + line_after_cursor),
             move_cursor_op(cursor['line_index'], cursor['column_index'])]))
             
 
@@ -214,10 +214,10 @@ def insert_line(text, screen, cursor, screen_offset, undo_redo_pairs):
         undo_redo_pairs,
         multiple_ops([
             delete_line(line_index + 1),
-            replace_line(line_index, line_before_cursor + line_after_cursor),
+            replace_line_op(line_index, line_before_cursor + line_after_cursor),
             move_cursor_op(line_index, column_index)]),
         multiple_ops([
-            replace_line(line_index, line_before_cursor),
+            replace_line_op(line_index, line_before_cursor),
             insert_line_op(line_index + 1, line_after_cursor),
             move_cursor_op(cursor['line_index'], cursor['column_index'])]))
 

@@ -8,7 +8,7 @@ def replace_line_op(line_index, new_value):
         text[line_index] = new_value
     return _op
 
-def delete_line(line_index):
+def delete_line_op(line_index):
     def _op(text, cursor):
         del text[line_index]
     return _op
@@ -77,7 +77,7 @@ def join_line(text, cursor, line_index, undo_redo_pairs):
             move_cursor_op(line_index, column_index)]),
         multiple_ops([
             replace_line_op(line_index, text[line_index] + text[line_index + 1]),
-            delete_line(line_index + 1),
+            delete_line_op(line_index + 1),
             move_cursor_op(cursor['line_index'], cursor['column_index'])]))
     text[line_index] = text[line_index] + text[line_index + 1]
     del text[line_index + 1]
@@ -213,7 +213,7 @@ def insert_line(text, screen, cursor, screen_offset, undo_redo_pairs):
     add_undo_redo_pair(
         undo_redo_pairs,
         multiple_ops([
-            delete_line(line_index + 1),
+            delete_line_op(line_index + 1),
             replace_line_op(line_index, line_before_cursor + line_after_cursor),
             move_cursor_op(line_index, column_index)]),
         multiple_ops([

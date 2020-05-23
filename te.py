@@ -55,6 +55,11 @@ def add_undo_redo_pair(undo_redo_pairs, undo_command, redo_command):
         'redo': redo_command
     })
 
+def pop_undo_redo_pair(undo_redo_pairs):
+    undo_redo_pairs['after'].clear()
+    last_pair = undo_redo_pairs['before'][-1].pop()
+    return last_pair['undo'], last_pair['redo']
+
 def get_section(text, line_index, num_lines, column_index, num_columns):
     result = []
     for line in text[line_index:line_index + num_lines]:
@@ -231,6 +236,7 @@ def backspace(text, screen, cursor, screen_offset, undo_redo_pairs):
         return
     move_cursor_left(text, screen, cursor, screen_offset)
     delete(text, cursor, undo_redo_pairs)
+    undo_command, redo_command = pop_undo_redo_pair(undo_redo_pairs)
 
 def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_redo_pairs):
     while True:

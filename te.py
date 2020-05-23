@@ -237,6 +237,7 @@ def backspace(text, screen, cursor, screen_offset, undo_redo_pairs):
     move_cursor_left(text, screen, cursor, screen_offset)
     delete(text, cursor, undo_redo_pairs)
     undo_command, redo_command = pop_undo_redo_pair(undo_redo_pairs)
+    multiple_ops([undo_command, move_cursor_op(cursor['line_index'], cursor['column_index'] + 1)])
 
 def dispatch_signals(signal_stream, text, screen, cursor, screen_offset, undo_redo_pairs):
     while True:

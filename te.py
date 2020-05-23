@@ -187,16 +187,16 @@ def move_cursor_right(text, screen, cursor, screen_offset):
 
 def insert(text, screen, cursor, screen_offset, character, undo_redo_pairs):
     line_index = cursor['line_index']
-    cursor_column = cursor['column_index']
-    line_before_cursor = text[line_index][0:cursor_column]
-    line_after_cursor = text[line_index][cursor_column:]
+    column_index = cursor['column_index']
+    line_before_cursor = text[line_index][0:column_index]
+    line_after_cursor = text[line_index][column_index:]
     text[line_index] = line_before_cursor + character + line_after_cursor
     move_cursor_right(text, screen, cursor, screen_offset)
     add_undo_redo_pair(
         undo_redo_pairs,
         multiple_ops([
             replace_line(line_index, line_before_cursor + line_after_cursor),
-            move_cursor_op(line_index, cursor_column)]),
+            move_cursor_op(line_index, column_index)]),
         multiple_ops([
             replace_line(line_index, line_before_cursor + character + line_after_cursor),
             move_cursor_op(cursor['line_index'], cursor['column_index'])]))
